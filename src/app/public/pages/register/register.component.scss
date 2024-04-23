@@ -1,0 +1,105 @@
+.main-register {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #01233e;
+  .main-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    .auth-form {
+      background-image: linear-gradient(
+          rgba(0, 0, 0, 0.514),
+          rgba(0, 0, 0, 0.514)
+        ),
+        url(../../../../assets/img/image3.png);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      width: 100%;
+      height: 100vh;
+      &.form-hero {
+        color: var(--primary);
+        text-align: center;
+        .title-no-acount {
+          margin-top: 500px;
+          font-size: 30px;
+        }
+        .auth-inscription {
+          border: 1px solid var(--primary);
+          margin: 25px;
+          border-radius: 30px;
+          color: var(--primary);
+          background-color: var(--orange);
+          padding: 4px 90px;
+          opacity: 0.9;
+          // border: 0;
+          outline: 0;
+          font-weight: bold;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          &:hover {
+            opacity: 1;
+            filter: brightness(1.2);
+          }
+          &:active {
+            transform: scale(0.9);
+          }
+        }
+      }
+      &.form-content {
+        color: var(--primary);
+        background: var(--blue);
+        border-radius: 0 8px 8px 0;
+        h1 {
+          margin: 30px;
+          font-size: 29px;
+        }
+        .form-container-text {
+          input {
+            height: 20px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 800px;
+            border: none;
+            outline: 0;
+            margin: 20px;
+            padding: 20px;
+            &:focus {
+              border: 2px solid var(--orange);
+            }
+            &:nth-child(1) {
+              font-weight: bold;
+              text-transform: uppercase;
+            }
+          }
+        }
+
+        .btn-submit {
+          margin-top: 30px;
+          .btn {
+            width: 100%;
+            max-width: 800px;
+            color: var(--orange);
+            padding: 4px 90px;
+            margin: 0 20px;
+            border: 1px solid var(--orange);
+            border-radius: 30px;
+            opacity: 0.9;
+            font-weight: bold;
+            background-color: transparent;
+            text-transform: uppercase;
+
+            &:hover {
+              opacity: 1;
+              background-color: var(--blue);
+              filter: brightness(1.2);
+            }
+            &:active {
+              transform: scale(0.9);
+            }
+          }
+        }
+      }
+    }
+  }
+}

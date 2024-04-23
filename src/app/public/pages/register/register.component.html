@@ -1,0 +1,36 @@
+<main class="main-register">
+  <app-navbar></app-navbar>
+  <section class="main-body">
+    <div class="auth-form form-content">
+      <form class="form-container">
+        <h1>Enregistrement</h1>
+        <hr />
+        <div class="form-container-text">
+          <input type="text" placeholder=" Nom*" required />
+          <input type="text" placeholder=" Prenom*" required />
+          <input type="text" placeholder=" Contact*" required />
+
+          <input type="text" placeholder=" Nom utilisateur*" required />
+          <input type="text" placeholder=" CE ou CIN" />
+          <input type="text" placeholder=" Adresse*" required />
+        </div>
+        <div class="btn-submit">
+          <button class="btn btn-primary">S'inscrire</button>
+        </div>
+      </form>
+    </div>
+    <div class="auth-form form-hero">
+      <h1 class="title-no-acount">
+        Si vous avez deja un compte, connecer-vous
+      </h1>
+      <button
+        type="button"
+        class="btn btn-primary auth-inscription"
+        [routerLink]="['/login']"
+        routerLinkActive="router-link-active"
+      >
+        <i class="fa fa-arrow-left"> </i> connecter
+      </button>
+    </div>
+  </section>
+</main>

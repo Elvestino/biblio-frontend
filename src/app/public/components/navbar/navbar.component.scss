@@ -1,0 +1,36 @@
+.navbar {
+  outline: 0;
+  border: none;
+  color: var(--primary);
+  background-color: #eeeeee6e;
+  display: flex;
+  justify-content: space-between;
+  padding: 9px 70px;
+  font-size: 20px;
+  h1 {
+    font-weight: bold;
+    font-size: 30px;
+  }
+  .links {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    .nav-link {
+      font-size: 15px;
+      background-color: var(--orange);
+      padding: 5px 30px;
+      border-radius: 6px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: #fff;
+      opacity: 0.9;
+      &:hover {
+        opacity: 1;
+        filter: brightness(1.2);
+      }
+      &:active {
+        transform: scale(0.9);
+      }
+    }
+  }
+}

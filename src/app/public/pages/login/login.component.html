@@ -1,0 +1,68 @@
+<main class="main-login">
+  <app-navbar></app-navbar>
+  <section class="main-body">
+    <div class="auth-form form-hero">
+      <h1 class="title-no-acount">Si vous n'avez pas de compte</h1>
+      <button
+        type="button"
+        class="btn btn-primary auth-inscription"
+        [routerLink]="['/register']"
+        routerLinkActive="router-link-active"
+      >
+        inscription <i class="fa fa-arrow-right"> </i>
+      </button>
+    </div>
+    <div class="auth-form form-content">
+      <form class="form-container">
+        <h1><i class="fa fa-lock-open"></i> Se Connecter</h1>
+        <hr />
+        <div class="form-container-text">
+          <i class="fa fa-user"></i>
+          <input type="text" placeholder=" Nom Utilisateur" required />
+        </div>
+        <div class="form-container-text password-form">
+          <i class="fa fa-key"></i>
+          <input
+            type="{{ showPassword ? 'text' : 'password' }}"
+            placeholder="Mot de passe"
+            name="password"
+          />
+
+          <button
+            class="btn-show-password transition"
+            (click)="PassordVisible()"
+            type="button"
+          >
+            @if (!showPassword) {
+            <i class="fa fa-eye"></i>
+            } @else {
+            <i class="fa fa-eye-slash"></i>
+            }
+          </button>
+        </div>
+
+        <div class="btn-submit">
+          <button class="btn btn-primary">Connecter</button>
+        </div>
+        <!-- <div class="btn-submit">
+          @if (loginForm.valid) {
+          <button
+            class="{{
+              isLoginSuccess
+                ? 'btn-login success transition'
+                : 'btn-login transition'
+            }}"
+            type="submit"
+          >
+            @if (isSubmitting) {
+            <i class="fa fa-circle-notch fa-spin"></i>
+            } @else { @if (isLoginSuccess) {
+            <i class="fa fa-check"></i>
+            } @else { Se connecter } }
+          </button>
+          }
+        </div> -->
+      </form>
+    </div>
+  </section>
+</main>

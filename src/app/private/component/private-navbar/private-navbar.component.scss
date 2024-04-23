@@ -1,0 +1,55 @@
+.navbar {
+  width: 230px;
+  height: 100vh;
+  background: var(--blue);
+  border-right: 1px solid #eee;
+  color: var(--primary);
+  position: relative;
+
+  .nav-links {
+    width: 100%;
+    padding: 15px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    .nav-link {
+      font-size: 14px;
+      font-weight: 800;
+      padding: 12px;
+      border-radius: 5px;
+      &.active {
+        background: var(--blue);
+        color: var(--orange);
+      }
+      i {
+        width: 20px;
+        margin-right: 5px;
+      }
+    }
+  }
+  .log {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 15px;
+    width: 100%;
+    .logout-btn {
+      width: 100%;
+      color: var(--primary);
+      padding: 4px 0px;
+      border: 1px solid var(--primary);
+      border-radius: 8px;
+      opacity: 0.9;
+      font-weight: bold;
+      background-color: var(--orange);
+      &:hover {
+        opacity: 1;
+        filter: brightness(1.2);
+      }
+      &:active {
+        transform: scale(0.9);
+      }
+    }
+  }
+}

@@ -1,1 +1,14 @@
-/* You can add global styles to this file, and also import other style files */
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+@import "../node_modules/@fortawesome/fontawesome-free/css/all.css";
+* {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  box-sizing: border-box;
+}
+:root {
+  --primary: #ffffff;
+  --span: rgb(235, 20, 20);
+  --orange: #ff7c1f;
+  --blue: #22232ac5;
+}

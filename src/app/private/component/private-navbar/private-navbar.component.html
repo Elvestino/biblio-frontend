@@ -1,0 +1,31 @@
+<nav class="navbar">
+  <!-- -----------ROUTES--------------- -->
+
+  <div class="nav-links">
+    <a
+      routerLink="/private"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="nav-link"
+    >
+      <i class="fa fa-dashboard"></i> Tableau de Bord
+    </a>
+
+    <a routerLink="adherent" routerLinkActive="active" class="nav-link">
+      <i class="fa fa-users"></i> Adherents
+    </a>
+    <a routerLink="bibliothecaire" routerLinkActive="active" class="nav-link">
+      <i class="fa-solid fa-gears"></i>
+      Bibliothecaire
+    </a>
+    <a routerLink="livre" routerLinkActive="active" class="nav-link">
+      <i class="fa fa-book"></i> Livres
+    </a>
+    <a routerLink="parametre" routerLinkActive="active" class="nav-link">
+      <i class="fa-solid fa-gears"></i> Parametres
+    </a>
+  </div>
+  <div class="log">
+    <button class="logout-btn" (click)="logOut()">Se deconnecter</button>
+  </div>
+</nav>
