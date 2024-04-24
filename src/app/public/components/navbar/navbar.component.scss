@@ -3,6 +3,7 @@
   border: none;
   color: var(--primary);
   background-color: #eeeeee6e;
+  backdrop-filter: blur(10px);
   display: flex;
   justify-content: space-between;
   padding: 9px 70px;

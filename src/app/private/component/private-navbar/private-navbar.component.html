@@ -1,6 +1,5 @@
+<!-- -----------ROUTES--------------- -->
 <nav class="navbar">
-  <!-- -----------ROUTES--------------- -->
-
   <div class="nav-links">
     <a
       routerLink="/private"
@@ -15,17 +14,19 @@
       <i class="fa fa-users"></i> Adherents
     </a>
     <a routerLink="bibliothecaire" routerLinkActive="active" class="nav-link">
-      <i class="fa-solid fa-gears"></i>
+      <i class="fa fa-user"></i>
       Bibliothecaire
     </a>
     <a routerLink="livre" routerLinkActive="active" class="nav-link">
       <i class="fa fa-book"></i> Livres
     </a>
     <a routerLink="parametre" routerLinkActive="active" class="nav-link">
-      <i class="fa-solid fa-gears"></i> Parametres
+      <i class="fa-solid fa-gear"></i> Parametres
     </a>
   </div>
   <div class="log">
-    <button class="logout-btn" (click)="logOut()">Se deconnecter</button>
+    <button class="logout-btn" (click)="logOut()">
+      <i class="fa fa-door-open"></i> Se deconnecter
+    </button>
   </div>
 </nav>

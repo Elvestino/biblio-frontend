@@ -18,15 +18,20 @@
         <hr />
         <div class="form-container-text">
           <i class="fa fa-user"></i>
-          <input type="text" placeholder=" Nom Utilisateur" required />
+
+          <input type="text" required />
+          <p></p>
+          <span>Nom Utilisateur</span>
         </div>
         <div class="form-container-text password-form">
           <i class="fa fa-key"></i>
           <input
             type="{{ showPassword ? 'text' : 'password' }}"
-            placeholder="Mot de passe"
             name="password"
+            required
           />
+          <span>Mot de passe</span>
+          <p></p>
 
           <button
             class="btn-show-password transition"
