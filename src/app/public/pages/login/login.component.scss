@@ -97,18 +97,20 @@
             }
             input {
               border: none;
+              color: white;
               padding: 20px 10px 10px;
               font-size: 1em;
               letter-spacing: 0.05em;
               transition: 0.5s;
+
               z-index: 10;
               width: 100%;
-              padding: 15px;
+              outline: 0;
               margin: 5px 0 22px 0;
               box-shadow: none;
-              border-radius: 8px;
+              border-radius: 4px;
               background: transparent;
-              transition: all 0.2s ease-in-out;
+
               &:focus ~ span {
                 color: var(--orange);
                 font-size: 0.75em;
@@ -116,16 +118,16 @@
                 border: none;
               }
               &:valid ~ span {
-                color: var(--primary);
+                color: var(--orange);
                 border: none;
                 font-size: 0.75em;
                 transform: translateY(-34px);
               }
               &:focus ~ p {
-                height: 44px;
+                height: 60px;
               }
               &:valid ~ p {
-                height: 44px;
+                height: 60px;
               }
             }
             &.password-form {

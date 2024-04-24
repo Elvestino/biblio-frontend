@@ -2,6 +2,7 @@
   width: 100%;
   height: 100vh;
   overflow: hidden;
+  color: black;
   background-color: #01233e;
   .main-body {
     display: grid;
@@ -15,7 +16,7 @@
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;
-      width: 100%;
+
       height: 100vh;
       &.form-hero {
         color: var(--primary);
@@ -32,7 +33,7 @@
           background-color: var(--orange);
           padding: 4px 90px;
           opacity: 0.9;
-          // border: 0;
+
           outline: 0;
           font-weight: bold;
           text-transform: uppercase;
@@ -54,22 +55,69 @@
           margin: 30px;
           font-size: 29px;
         }
+
         .form-container-text {
-          input {
-            height: 20px;
-            border-radius: 8px;
+          flex-direction: column;
+          margin: 0px 30px;
+          position: relative;
+          span {
+            position: absolute;
+            left: 0;
+            padding: 20px 10px 10px;
+            pointer-events: none;
+            color: #8f8f8f;
+            font-size: 1em;
+            letter-spacing: 0.05em;
+            transition: 0.5s;
+          }
+          p {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+
             width: 100%;
             max-width: 800px;
+            height: 2px;
+            background: var(--orange);
+            border-radius: 4px;
+            overflow: hidden;
+            transition: 0.5s;
+            pointer-events: none;
+          }
+          input {
             border: none;
+            color: white;
+            padding: 20px 20px 10px;
+            font-size: 1em;
+            letter-spacing: 0.05em;
+            transition: 0.5s;
+            z-index: 10;
+
+            max-width: 900px;
             outline: 0;
-            margin: 20px;
-            padding: 20px;
-            &:focus {
-              border: 2px solid var(--orange);
+            margin: 5px 0 22px 0;
+            box-shadow: none;
+            border-radius: 4px;
+            background: transparent;
+
+            &:focus ~ span {
+              color: var(--orange);
+              font-size: 0.75em;
+              transform: translateY(-34px);
+              border: none;
             }
-            &:nth-child(1) {
-              font-weight: bold;
-              text-transform: uppercase;
+
+            &:valid ~ span {
+              color: var(--orange);
+              border: none;
+              font-size: 0.75em;
+              transform: translateY(-34px);
+            }
+            &:focus ~ p {
+              height: 60px;
+            }
+            &:valid ~ p {
+              height: 60px;
             }
           }
         }
