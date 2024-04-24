@@ -11,6 +11,7 @@ import { AdherentComponent } from './private/pages/adherent/adherent.component';
 import { BibliothecaireComponent } from './private/pages/bibliothecaire/bibliothecaire.component';
 import { LivreComponent } from './private/pages/livre/livre.component';
 import { ParametreComponent } from './private/pages/parametre/parametre.component';
+import { ScannerComponent } from './private/pages/scanner/scanner.component';
 
 export const routes: Routes = [
   // public routes;
@@ -28,6 +29,7 @@ export const routes: Routes = [
     component: WrapperComponent,
     canActivate: [privateGuardGuard],
     children: [
+      // { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: '', component: DashboardComponent },
       // {
       //   path: 'materiel',
@@ -41,6 +43,7 @@ export const routes: Routes = [
       { path: 'adherent', component: AdherentComponent },
       { path: 'bibliothecaire', component: BibliothecaireComponent },
       { path: 'livre', component: LivreComponent },
+      { path: 'scanner', component: ScannerComponent },
       { path: 'parametre', component: ParametreComponent },
     ],
   },
