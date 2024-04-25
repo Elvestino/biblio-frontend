@@ -51,14 +51,16 @@
         color: var(--primary);
         background: var(--blue);
         border-radius: 0 8px 8px 0;
+
         h1 {
           margin: 30px;
           font-size: 29px;
         }
 
         .form-container-text {
+          border-bottom: 2px solid var(--orange);
           flex-direction: column;
-          margin: 0px 30px;
+          margin: 20px 30px;
           position: relative;
           span {
             position: absolute;
@@ -70,24 +72,12 @@
             letter-spacing: 0.05em;
             transition: 0.5s;
           }
-          p {
-            position: absolute;
-            left: 0;
-            bottom: 0;
 
-            width: 100%;
-            max-width: 800px;
-            height: 2px;
-            background: var(--orange);
-            border-radius: 4px;
-            overflow: hidden;
-            transition: 0.5s;
-            pointer-events: none;
-          }
           input {
+            width: 100%;
             border: none;
             color: white;
-            padding: 20px 20px 10px;
+            padding: 15px 20px 10px;
             font-size: 1em;
             letter-spacing: 0.05em;
             transition: 0.5s;
@@ -95,7 +85,7 @@
 
             max-width: 900px;
             outline: 0;
-            margin: 5px 0 22px 0;
+            margin: 5px 0 12px 0;
             box-shadow: none;
             border-radius: 4px;
             background: transparent;
@@ -103,7 +93,7 @@
             &:focus ~ span {
               color: var(--orange);
               font-size: 0.75em;
-              transform: translateY(-34px);
+              transform: translateY(-20px);
               border: none;
             }
 
@@ -111,7 +101,7 @@
               color: var(--orange);
               border: none;
               font-size: 0.75em;
-              transform: translateY(-34px);
+              transform: translateY(-20px);
             }
             &:focus ~ p {
               height: 60px;

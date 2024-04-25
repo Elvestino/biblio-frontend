@@ -1,1 +1,15 @@
-<p>bibliothecaire works!</p>
+@if (isBibliothecaireComponentOpen) {
+<app-add-bibliothecaire (close)="closeCard()"></app-add-bibliothecaire>
+}
+<main class="main-bibliothecaire">
+  <div class="bibliothecaire">
+    <h1 class="title">Add</h1>
+    <button
+      type="button"
+      class="btn btn-priamry"
+      (click)="openAddBibliothecaire()"
+    >
+      <i class="fa fa-add"></i>
+    </button>
+  </div>
+</main>

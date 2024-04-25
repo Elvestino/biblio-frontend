@@ -1,0 +1,67 @@
+<main class="add-bibliothecaire">
+  <div class="form-container">
+    <button
+      class="btn-close-form"
+      type="button"
+      aria-label="close buttton"
+      (click)="closeForm()"
+    >
+      <i class="fa fa-times"></i>
+    </button>
+    <form class="style-form" [formGroup]="BibliothecaireForm">
+      <div class="container-form-body">
+        <h1>{{ title }}</h1>
+        <hr />
+
+        <div class="container-form nomBibliothecaire">
+          <input
+            type="text"
+            formControlName="nomBibliothecaire"
+            required
+          /><span>Nom* </span>
+        </div>
+        @if (nomBibliothecaire?.touched &&
+        nomBibliothecaire?.errors?.["required"]) {
+        <p class="error-text">Nom, s'il vous plait.</p>
+        }
+        <div class="container-form prenomBibliothecaire">
+          <input type="text" formControlName="prenomBibliothecaire" required />
+          <span>Prenom* </span>
+        </div>
+        @if (prenomBibliothecaire?.touched &&
+        prenomBibliothecaire?.errors?.["required"]) {
+        <p class="error-text">Prenom, s'il vous plait.</p>
+        }
+        <div class="container-form cin">
+          <input type="text" formControlName="cin" required />
+          <span>Carte d'Indentite Nationale (CIN)* </span>
+        </div>
+        @if (cin?.touched && cin?.errors?.["required"]) {
+        <p class="error-text">Adresse, s'il vous plait.</p>
+        }
+        <div class="container-form telbibliothecaire">
+          <input type="text" formControlName="telbibliothecaire" required />
+          <span>Contact* </span>
+        </div>
+        @if (telbibliothecaire?.touched &&
+        telbibliothecaire?.errors?.["required"]) {
+        <p class="error-text">Numero de telephone, s'il vous plait.</p>
+        }
+      </div>
+      <div class="btn-add">
+        @if (BibliothecaireForm.valid) {
+        <button
+          class="{{
+            isRegisterSuccess
+              ? 'btn btn-success transition'
+              : 'btn btn-primary transition'
+          }}"
+          type="submit"
+        >
+          @if(!isSubmitting && !isRegisterSuccess) { {{ formHeader }} }
+        </button>
+        }
+      </div>
+    </form>
+  </div>
+</main>
