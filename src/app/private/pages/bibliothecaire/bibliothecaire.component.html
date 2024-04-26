@@ -1,15 +1,56 @@
 @if (isBibliothecaireComponentOpen) {
 <app-add-bibliothecaire (close)="closeCard()"></app-add-bibliothecaire>
+}@if (qrcodeBibliothecaire) {
+<app-qrcode-bibliothecaire (close)="QrcodeClose()"></app-qrcode-bibliothecaire>
 }
 <main class="main-bibliothecaire">
   <div class="bibliothecaire">
-    <h1 class="title">Add</h1>
-    <button
-      type="button"
-      class="btn btn-priamry"
-      (click)="openAddBibliothecaire()"
-    >
-      <i class="fa fa-add"></i>
-    </button>
+    <div class="head"></div>
+    <div class="table">
+      <div class="add">
+        <h1 class="title">Ajouter</h1>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="openAddBibliothecaire()"
+        >
+          <i class="fa fa-add"></i>
+        </button>
+      </div>
+
+      <table class="section-table-bibliothecaire">
+        <thead class="table-heading-bibliothecaire">
+          <tr class="heading">
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>CIN</th>
+            <th>Contact</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody class="table-body-bibliothecaire">
+          <!-- @for (item of items; track $index) { -->
+          <tr class="data">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+
+            <td class="data-control">
+              <button class="btn btn-success">
+                <i class="fa-solid fa-pencil"></i>
+              </button>
+              <button class="btn btn-eye" (click)="QrcodeOpen()">
+                <i class="fa fa-qrcode"></i>
+              </button>
+              <button class="btn btn-danger">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+          <!-- } -->
+        </tbody>
+      </table>
+    </div>
   </div>
 </main>

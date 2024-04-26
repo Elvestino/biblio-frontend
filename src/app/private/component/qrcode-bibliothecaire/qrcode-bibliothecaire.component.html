@@ -1,0 +1,24 @@
+<main class="qrcode">
+  <div class="form-container">
+    <button
+      class="btn-close-form"
+      type="button"
+      aria-label="close buttton"
+      (click)="closeForm()"
+    >
+      <i class="fa fa-times"></i>
+    </button>
+
+    <div class="container-form-body">
+      <h1>Qrcode</h1>
+      <hr />
+
+      <div class="container-form" #content>eto no misy anle qrcode</div>
+      <div class="btn-download">
+        <button class="download" (click)="Qr()">
+          <i class="fa fa-download"></i> Telecharger
+        </button>
+      </div>
+    </div>
+  </div>
+</main>

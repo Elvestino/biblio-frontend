@@ -1,0 +1,136 @@
+.main-bibliothecaire {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  .bibliothecaire {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    .head {
+      background-image: linear-gradient(
+          rgba(0, 0, 0, 0.397),
+          rgba(0, 0, 0, 0.397)
+        ),
+        url(../../../../assets/img/book5.jpg);
+      background-size: cover;
+      background-position: center;
+      width: 100%;
+      max-width: 700px;
+      height: 100vh;
+    }
+
+    .table {
+      margin: 40px 40px 0 0;
+      .add {
+        display: flex;
+        justify-content: space-between;
+        background-color: #eee;
+        border-radius: 6px;
+        .title {
+          font-size: 20px;
+          margin: 10px 20px;
+          font-weight: 800;
+          text-transform: uppercase;
+        }
+        button {
+          background-color: transparent;
+          border: none;
+          outline: 0;
+
+          i {
+            color: var(--blue);
+            background-color: transparent;
+            &:hover {
+              opacity: 1;
+              color: blue;
+              filter: brightness(1.2);
+            }
+            &:active {
+              transform: scale(0.9);
+            }
+          }
+        }
+      }
+      .section-table-bibliothecaire {
+        width: 100%;
+        margin-right: 90px;
+        margin-top: 20px;
+        .table-heading-bibliothecaire {
+          width: 100%;
+
+          text-align: center;
+          .heading {
+            color: var(--primary);
+
+            background: var(--blue);
+            border: 1px solid var(--orange);
+            &:nth-child(even) {
+              background-color: var(--orange);
+            }
+            th {
+              padding: 20px;
+              &:first-child {
+                width: 200px;
+              }
+              &:nth-child(2) {
+                width: 200px;
+              }
+              &:nth-child(3) {
+                width: 200px;
+              }
+              &:nth-child(4) {
+                width: 200px;
+              }
+              &:last-child {
+                width: 150px;
+              }
+            }
+          }
+        }
+        .table-body-bibliothecaire {
+          padding-top: 90px;
+          font-size: 16px;
+          text-align: center;
+          td {
+            padding: 8px 20px;
+            border: 1px solid #eee;
+
+            &:last-child {
+              display: flex;
+              justify-content: space-between;
+              border: none;
+            }
+            &.data-control {
+              gap: 20px;
+              .btn-eye {
+                background-color: #eee;
+                border: none;
+                &:hover {
+                  opacity: 1;
+                  filter: brightness(1.2);
+                }
+                &:active {
+                  transform: scale(0.9);
+                }
+              }
+              .btn {
+                border: none;
+                &:hover {
+                  opacity: 1;
+                  filter: brightness(1.2);
+                }
+                &:active {
+                  transform: scale(0.9);
+                }
+              }
+            }
+            &:nth-child(1) {
+              font-weight: bold;
+              text-transform: uppercase;
+            }
+          }
+        }
+      }
+    }
+  }
+}
