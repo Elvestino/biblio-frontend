@@ -17,7 +17,7 @@ import { QrcodeBibliothecaireComponent } from '../../component/qrcode-bibliothec
 })
 export class BibliothecaireComponent {
   isBibliothecaireComponentOpen: boolean = false;
-  qrcodeBibliothecaire: boolean = true;
+  qrcodeBibliothecaire: boolean = false;
   closeCard() {
     this.isBibliothecaireComponentOpen = false;
   }
