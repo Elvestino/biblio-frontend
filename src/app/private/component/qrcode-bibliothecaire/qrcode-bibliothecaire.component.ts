@@ -1,13 +1,14 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { QRCodeModule } from 'angularx-qrcode';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-qrcode-bibliothecaire',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule],
+  imports: [RouterLink, ReactiveFormsModule, QRCodeModule],
   templateUrl: './qrcode-bibliothecaire.component.html',
   styleUrl: './qrcode-bibliothecaire.component.scss',
 })
