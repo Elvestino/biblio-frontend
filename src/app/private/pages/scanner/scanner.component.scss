@@ -1,0 +1,96 @@
+::ng-deep zxing-scanner video {
+  width: 400px;
+  height: 400px;
+}
+
+.app-qr-scanner {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 7;
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .scanner-card {
+    width: inherit;
+    height: inherit;
+    max-width: 500px;
+    max-height: 500px;
+    background: var(--white);
+    border-radius: 10px;
+    border: 1px solid #eee;
+    position: relative;
+    opacity: 0;
+    animation: fade-up 0.3s 0.3s forwards;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 30px;
+    span {
+      color: var(--soft-dark);
+      font-size: 14px;
+    }
+    i {
+      @extend span;
+    }
+    .btn-close {
+      width: 30px;
+      height: 30px;
+      border-radius: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 0;
+      outline: 0;
+      transition: all 0.2s ease-in-out;
+      font-size: 20px;
+      position: absolute;
+      top: -15px;
+      right: -15px;
+      background: var(--danger);
+      color: var(--white);
+      cursor: pointer;
+      &:hover {
+        transform: scale(1.3);
+        i {
+          color: var(--white);
+        }
+      }
+      &:active {
+        transform: scale(0.9);
+      }
+    }
+    .scanner {
+      width: 250px;
+      height: 250px;
+      border: 1px solid var(--soft-dark);
+      overflow: hidden;
+      video {
+        width: inherit;
+        height: inherit;
+        object-fit: cover;
+        &:host {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,79 @@
+<main class="add-bibliothecaire">
+  <div class="form-container">
+    <button
+      class="btn-close-form"
+      type="button"
+      aria-label="close buttton"
+      (click)="closeForm()"
+    >
+      <i class="fa fa-times"></i>
+    </button>
+    <form class="style-form" [formGroup]="LivreForm">
+      <div class="image">
+        <input type="file" name="image" formControlName="image" id="photo" />
+      </div>
+      <div class="container-form-body">
+        <h1>{{ title }}</h1>
+        <hr />
+
+        <div class="container-form titreLivre">
+          <input type="text" formControlName="titreLivre" required /><span
+            >Titre*
+          </span>
+        </div>
+        @if (titreLivre?.touched && titreLivre?.errors?.["required"]) {
+        <p class="error-text">Titre, s'il vous plait.</p>
+        }
+        <div class="container-form auteurLivre">
+          <input type="text" formControlName="auteurLivre" required />
+          <span>Auteur* </span>
+        </div>
+        @if (auteurLivre?.touched && auteurLivre?.errors?.["required"]) {
+        <p class="error-text">Auteur, s'il vous plait.</p>
+        }
+        <div class="container-form editionLivre">
+          <input type="text" formControlName="editionLivre" required />
+          <span>Edition* </span>
+        </div>
+        @if (editionLivre?.touched && editionLivre?.errors?.["required"]) {
+        <p class="error-text">Edition, s'il vous plait.</p>
+        }
+        <div class="container-form categorieLivre">
+          <!-- <input type="text" formControlName="categorieLivre" required /> -->
+          <!-- <span>Categorie* </span> -->
+          <select name="categorieLivre" id="categorieLivre" required>
+            @for (item of categorieLivre; track $index) {
+            <option value="{{ item }}">{{ item }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="description">
+          <textarea
+            class="text"
+            name="description"
+            id="description"
+            cols="30"
+            rows="10"
+            required
+          ></textarea>
+          <span>Description* </span>
+        </div>
+        <div class="btn-add">
+          @if (LivreForm.valid) {
+          <button
+            class="{{
+              isRegisterSuccess
+                ? 'btn btn-success transition'
+                : 'btn btn-primary transition'
+            }}"
+            type="submit"
+          >
+            @if(!isSubmitting && !isRegisterSuccess) { {{ formHeader }} }
+          </button>
+          }
+        </div>
+      </div>
+    </form>
+  </div>
+</main>

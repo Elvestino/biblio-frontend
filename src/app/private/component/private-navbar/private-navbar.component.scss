@@ -5,7 +5,7 @@
   border-right: 1px solid #eee;
   color: var(--primary);
   position: relative;
-
+  display: flex;
   .nav-links {
     .title {
       margin-bottom: 150px;
@@ -14,8 +14,9 @@
         border: 1px solid var(--orange);
         border-radius: 5px;
         padding: 9px;
-        font-size: 30px;
+        font-size: 20px;
         color: var(--primary);
+        font-weight: bold;
       }
     }
     margin-bottom: 400px;
@@ -53,6 +54,7 @@
       border-radius: 8px;
       opacity: 0.9;
       font-weight: bold;
+      padding: 12px;
       background-color: var(--orange);
       &:hover {
         opacity: 1;

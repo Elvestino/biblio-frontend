@@ -1,4 +1,16 @@
-<div class="scanner">
-  <video #videoElement></video>
-  <button class="scan" (click)="scanQRCode()">test</button>
+<div class="app-qr-scanner">
+  <div class="scanner-card">
+    <!-- close button -->
+    <button type="button" (click)="test()" class="btn-close">
+      <i class="fa fa-times"></i>
+    </button>
+    <span>Veuillez analyser le code QR ici...</span>
+    <i class="fa fa-arrow-down"></i>
+    <div class="scanner">
+      <zxing-scanner
+        (scanError)="onScanError($event)"
+        (scanSuccess)="onScanSuccess($event)"
+      ></zxing-scanner>
+    </div>
+  </div>
 </div>

@@ -1,49 +1,36 @@
-import { Component } from '@angular/core';
-import { BrowserMultiFormatReader } from '@zxing/library';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
+import { ZXingScannerModule } from '@zxing/ngx-scanner';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-scanner',
   standalone: true,
-  imports: [],
+  imports: [ZXingScannerModule, RouterLink, ReactiveFormsModule],
   templateUrl: './scanner.component.html',
   styleUrl: './scanner.component.scss',
 })
 export class ScannerComponent {
-  private codeReader: BrowserMultiFormatReader;
+  // open camera to scan qr code(
 
-  constructor() {
-    this.codeReader = new BrowserMultiFormatReader();
+  selectedDevice: MediaDeviceInfo | undefined;
+  // handle close button event
+  @Output() result = new EventEmitter<string>();
+  @Output() close = new EventEmitter();
+  test() {
+    this.close.emit();
+  }
+  onScanSuccess(result: string): void {
+    this.result.emit(result);
   }
 
-  async scanQRCode() {
-    try {
-      const videoInputDevices = await this.codeReader.listVideoInputDevices();
-      const videoDevice = videoInputDevices[0];
-      const constraints = {
-        video: {
-          deviceId: videoDevice.deviceId
-            ? { exact: videoDevice.deviceId }
-            : undefined,
-        },
-      };
-
-      const stream = await navigator.mediaDevices.getUserMedia(constraints);
-
-      this.codeReader.decodeFromStream(
-        stream,
-        '',
-        (result: { getText: () => any }, error: any) => {
-          if (result) {
-            console.log('QR Code result:', result.getText());
-            // Faites quelque chose avec le résultat du QR code
-          }
-          if (error) {
-            console.error('QR Code scan error:', error);
-          }
-        }
-      );
-    } catch (error) {
-      console.error('Scanner initialization error:', error);
-    }
+  onScanError(error: Error): void {
+    Swal.fire({
+      position: 'center',
+      icon: 'error',
+      showConfirmButton: false,
+      timer: 1500,
+    });
   }
 }
