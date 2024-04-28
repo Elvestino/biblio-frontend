@@ -18,11 +18,12 @@ export class ScannerComponent {
   // handle close button event
   @Output() result = new EventEmitter<string>();
   @Output() close = new EventEmitter();
-  test() {
+  CloseScanner() {
     this.close.emit();
   }
   onScanSuccess(result: string): void {
     this.result.emit(result);
+    // console.log(result);
   }
 
   onScanError(error: Error): void {

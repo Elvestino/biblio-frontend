@@ -1,3 +1,6 @@
+@if(issueBook){
+<app-emprunter></app-emprunter>
+}
 <main class="add-bibliothecaire">
   <div class="form-container">
     <button
@@ -42,16 +45,20 @@
           ></textarea>
         </div>
         <div class="btn-add">
-          <div class="down">
+          <!-- <div class="down">
             <button class="btn download">
               <i class="fa fa-download"></i> Telecharger
             </button>
           </div>
           <div class="down">
-            <button class="btn lire"><i class="fa fa-sound"></i>Lire</button>
-          </div>
-          <div class="down">
-            <button class="btn link">En savoir plus...</button>
+            <button class="btn lire">
+              <i class="fas fa-microphone"></i>Lire
+            </button>
+          </div> -->
+          <div class="issuebook">
+            <button class="btn link" (click)="openissueBook()">
+              <i class="fas fa-hand-holding-usd"></i> Emprunter
+            </button>
           </div>
         </div>
       </div>
