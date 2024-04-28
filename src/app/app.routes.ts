@@ -47,7 +47,7 @@ export const routes: Routes = [
       },
       { path: 'bibliothecaire', component: BibliothecaireComponent },
       { path: 'livre', component: LivreComponent },
-      { path: 'emprunter', component: LivreEmprunterComponent },
+      { path: 'livre-emprunter', component: LivreEmprunterComponent },
       { path: 'scanner', component: ScannerComponent },
       { path: 'parametre', component: ParametreComponent },
     ],

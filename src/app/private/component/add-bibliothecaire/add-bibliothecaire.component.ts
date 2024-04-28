@@ -17,22 +17,30 @@ export class AddBibliothecaireComponent {
   }
   title = 'Enregistrement';
   BibliothecaireForm = this.formBuilder.group({
-    nomBibliothecaire: ['', [Validators.required]],
-    prenomBibliothecaire: ['', [Validators.required]],
-    cin: ['', [Validators.required]],
-    telbibliothecaire: ['', [Validators.required]],
+    nom_biblio: ['', [Validators.required]],
+    prenom_biblio: ['', [Validators.required]],
+    date_naissance: ['', [Validators.required]],
+    lieu_naissance: ['', [Validators.required]],
+    cin_biblio: ['', [Validators.required]],
+    tel_biblio: ['', [Validators.required]],
   });
-  get nomBibliothecaire() {
-    return this.BibliothecaireForm.get('nomBibliothecaire');
+  get nom_biblio() {
+    return this.BibliothecaireForm.get('nom_biblio');
   }
-  get prenomBibliothecaire() {
-    return this.BibliothecaireForm.get('prenomBibliothecaire');
+  get prenom_biblio() {
+    return this.BibliothecaireForm.get('prenom_biblio');
   }
-  get cin() {
-    return this.BibliothecaireForm.get('cin');
+  get cin_biblio() {
+    return this.BibliothecaireForm.get('cin_biblio');
   }
-  get telbibliothecaire() {
-    return this.BibliothecaireForm.get('telbibliothecaire');
+  get date_naissance() {
+    return this.BibliothecaireForm.get('date_naissance');
+  }
+  get lieu_naissance() {
+    return this.BibliothecaireForm.get('lieu_naissance');
+  }
+  get tel_biblio() {
+    return this.BibliothecaireForm.get('tel_biblio');
   }
 
   isSubmitting: boolean = false;

@@ -13,38 +13,47 @@
         <h1>{{ title }}</h1>
         <hr />
 
-        <div class="container-form nomBibliothecaire">
-          <input
-            type="text"
-            formControlName="nomBibliothecaire"
-            required
-          /><span>Nom* </span>
+        <div class="container-form nom_biblio">
+          <input type="text" formControlName="nom_biblio" required /><span
+            >Nom*
+          </span>
         </div>
-        @if (nomBibliothecaire?.touched &&
-        nomBibliothecaire?.errors?.["required"]) {
+        @if (nom_biblio?.touched && nom_biblio?.errors?.["required"]) {
         <p class="error-text">Nom, s'il vous plait.</p>
         }
-        <div class="container-form prenomBibliothecaire">
-          <input type="text" formControlName="prenomBibliothecaire" required />
+        <div class="container-form prenom_biblio">
+          <input type="text" formControlName="prenom_biblio" required />
           <span>Prenom* </span>
         </div>
-        @if (prenomBibliothecaire?.touched &&
-        prenomBibliothecaire?.errors?.["required"]) {
+        @if (prenom_biblio?.touched && prenom_biblio?.errors?.["required"]) {
         <p class="error-text">Prenom, s'il vous plait.</p>
         }
-        <div class="container-form cin">
-          <input type="text" formControlName="cin" required />
+        <div class="container-form date_naissance">
+          <input type="date" formControlName="date_naissance" required />
+          <span>Date de naissance </span>
+        </div>
+        @if (date_naissance?.touched && date_naissance?.errors?.["required"]) {
+        <p class="error-text">Date de naissance , s'il vous plait.</p>
+        }
+        <div class="container-form lieu_naissance">
+          <input type="text" formControlName="lieu_naissance" required />
+          <span>Lieu de naissance </span>
+        </div>
+        @if (lieu_naissance?.touched && lieu_naissance?.errors?.["required"]) {
+        <p class="error-text">Lieu de naissance, s'il vous plait.</p>
+        }
+        <div class="container-form cin_biblio">
+          <input type="text" formControlName="cin_biblio" required />
           <span>Carte d'Indentite Nationale (CIN)* </span>
         </div>
-        @if (cin?.touched && cin?.errors?.["required"]) {
-        <p class="error-text">Adresse, s'il vous plait.</p>
+        @if (cin_biblio?.touched && cin_biblio?.errors?.["required"]) {
+        <p class="error-text">CIN, s'il vous plait.</p>
         }
-        <div class="container-form telbibliothecaire">
-          <input type="text" formControlName="telbibliothecaire" required />
+        <div class="container-form tel_biblio">
+          <input type="text" formControlName="tel_biblio" required />
           <span>Contact* </span>
         </div>
-        @if (telbibliothecaire?.touched &&
-        telbibliothecaire?.errors?.["required"]) {
+        @if (tel_biblio?.touched && tel_biblio?.errors?.["required"]) {
         <p class="error-text">Numero de telephone, s'il vous plait.</p>
         }
       </div>

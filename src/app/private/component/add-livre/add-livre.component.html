@@ -38,13 +38,8 @@
         @if (editionLivre?.touched && editionLivre?.errors?.["required"]) {
         <p class="error-text">Edition, s'il vous plait.</p>
         }
-        <div class="categorieLivre">
-          <select
-            name="categorieLivre"
-            formControlName="categorieLivre"
-            id="categorieLivre"
-            required
-          >
+        <div class="categorie">
+          <select name="categorie" id="categorie" required>
             <option value="choisir">Choisiser la categorie</option>
             @for (item of categorieLivre; track $index) {
 
