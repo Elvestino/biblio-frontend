@@ -14,7 +14,7 @@ PATCH /profile
 
 
 
-PIE_BAR
+BAR
 
       ts
       import { Component } from '@angular/core';
