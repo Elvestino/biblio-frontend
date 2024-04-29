@@ -1,9 +1,86 @@
-<nav class="navbar-adherent">
-  <div class="title">
-    <h1 class="adherent-title">Adherents</h1>
+@if (isAdherentComponentOpen) {
+<app-add-adherent (close)="closeCard()"></app-add-adherent>
+}@if (qrcodeBibliothecaire) {
+<app-qrcode-adherent (close)="QrcodeClose()"></app-qrcode-adherent>
+}
+<section class="count-group">
+  <div class="count">
+    <div class="dashboard teacher">
+      <span>Professeur</span>
+      <hr />
+      <p>3</p>
+    </div>
   </div>
-  <div class="nav-link">
-    <app-adherent-link></app-adherent-link>
-    <router-outlet></router-outlet>
+  <div class="count">
+    <div class="dashboard student">
+      <span>Eleve</span>
+      <hr />
+      <p>3</p>
+    </div>
   </div>
-</nav>
+  <div class="count">
+    <div class="dashboard other">
+      <span>Externe</span>
+      <hr />
+      <p>3</p>
+    </div>
+  </div>
+</section>
+<div class="filtrer">
+  <span>Filtrer :</span>
+  <select name="filter-adherent" id="filter-adherent">
+    @for(item of filter; track $index){
+    <option [value]="item">{{ item }}</option>
+    }
+  </select>
+</div>
+<main class="main-adherent">
+  <div class="adherent">
+    <div class="table">
+      <div class="add">
+        <h1 class="title">Ajouter Aherent</h1>
+        <button type="button" class="btn btn-primary" (click)="openAdd()">
+          <i class="fa fa-add"></i>
+        </button>
+      </div>
+
+      <table class="section-table-adherent">
+        <thead class="table-heading-adherent">
+          <tr class="heading">
+            <th>Nom</th>
+            <th>Prenom</th>
+            <th>Adresse</th>
+            <th>Contact</th>
+            <th>Date d'adhesion</th>
+            <th>Categorie</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody class="table-body-adherent">
+          <!-- @for (item of items; track $index) { -->
+          <tr class="data">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+
+            <td class="data-control">
+              <button class="btn btn-success">
+                <i class="fa-solid fa-pencil"></i>
+              </button>
+              <button class="btn btn-eye" (click)="QrcodeOpen()">
+                <i class="fa fa-qrcode"></i>
+              </button>
+              <button class="btn btn-danger">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+          <!-- } -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>

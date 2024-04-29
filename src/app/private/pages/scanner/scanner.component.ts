@@ -19,6 +19,7 @@ export class ScannerComponent {
   @Output() result = new EventEmitter<string>();
   @Output() close = new EventEmitter();
   CloseScanner() {
+    console.log('exit dumb');
     this.close.emit();
   }
   onScanSuccess(result: string): void {

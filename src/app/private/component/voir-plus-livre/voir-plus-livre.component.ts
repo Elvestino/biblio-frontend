@@ -10,15 +10,23 @@ import { EmprunterComponent } from '../emprunter/emprunter.component';
 })
 export class VoirPlusLivreComponent {
   @Output() close = new EventEmitter();
+  @Output() openIssuBook = new EventEmitter();
+  @Output() openEmpreint = new EventEmitter();
   closeForm(): void {
     this.close.emit();
   }
-  issueBook: boolean = false;
 
-  openissueBook() {
-    this.issueBook = true;
+  ohatra() {
+    console.log('telecharger');
   }
-  closeissueBook() {
-    this.issueBook = false;
+  test() {
+    console.log('lire');
+  }
+  openIssue(): void {
+    // this.issueBook = true;
+    this.openIssuBook.emit();
+  }
+  openEmpreinteComponents(): void {
+    this.openEmpreint.emit();
   }
 }

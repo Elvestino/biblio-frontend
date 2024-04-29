@@ -12,9 +12,6 @@ import { BibliothecaireComponent } from './private/pages/bibliothecaire/biblioth
 import { LivreComponent } from './private/pages/livre/livre.component';
 import { ParametreComponent } from './private/pages/parametre/parametre.component';
 import { ScannerComponent } from './private/pages/scanner/scanner.component';
-import { ProfesseurComponent } from './private/pages/adherent/professeur/professeur.component';
-import { EtudiantComponent } from './private/pages/adherent/etudiant/etudiant.component';
-import { ExterneComponent } from './private/pages/adherent/externe/externe.component';
 import { LivreEmprunterComponent } from './private/pages/livre-emprunter/livre-emprunter.component';
 
 export const routes: Routes = [
@@ -39,11 +36,6 @@ export const routes: Routes = [
       {
         path: 'adherent',
         component: AdherentComponent,
-        children: [
-          { path: '', component: ProfesseurComponent },
-          { path: 'etudiant', component: EtudiantComponent },
-          { path: 'externe', component: ExterneComponent },
-        ],
       },
       { path: 'bibliothecaire', component: BibliothecaireComponent },
       { path: 'livre', component: LivreComponent },

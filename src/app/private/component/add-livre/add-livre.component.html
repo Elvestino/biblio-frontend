@@ -1,4 +1,4 @@
-<main class="add-bibliothecaire">
+<main class="add-livre">
   <div class="form-container">
     <button
       class="btn-close-form"
@@ -60,18 +60,9 @@
           <span>Description* </span>
         </div>
         <div class="btn-add">
-          @if (LivreForm.valid) {
-          <button
-            class="{{
-              isRegisterSuccess
-                ? 'btn btn-success transition'
-                : 'btn btn-primary transition'
-            }}"
-            type="submit"
-          >
-            @if(!isSubmitting && !isRegisterSuccess) { {{ formHeader }} }
+          <button class="btn btn-primary" type="submit">
+            {{ formHeader }}
           </button>
-          }
         </div>
       </div>
     </form>

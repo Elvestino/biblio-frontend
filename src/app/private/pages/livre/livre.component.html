@@ -1,7 +1,15 @@
-@if(isAddLivre){
+@if(isEmprunterOpen) {
+<app-emprunter (close)="closeEmpreinte()"> </app-emprunter>
+} @if(isAddLivre){
 <app-add-livre (close)="closeCard()"></app-add-livre>
 } @if(isVoirplus){
-<app-voir-plus-livre (close)="closeVoirPLus()"></app-voir-plus-livre>
+<app-voir-plus-livre
+  (close)="closeVoirPLus()"
+  (openIssuBook)="handleIsIssuBookOpen()"
+  (openEmpreint)="openEmpreinte()"
+></app-voir-plus-livre>
+} @if(issueBook){
+<app-emprunter></app-emprunter>
 }
 <main class="main-livre">
   <section class="heading">

@@ -1,0 +1,68 @@
+<main class="add-adherent">
+  <div class="form-container">
+    <button
+      class="btn-close-form"
+      type="button"
+      aria-label="close buttton"
+      (click)="closeForm()"
+    >
+      <i class="fa fa-times"></i>
+    </button>
+    <form class="style-form" [formGroup]="AdherentForm">
+      <div class="container-form-body">
+        <h1>Enregistrement</h1>
+        <hr />
+
+        <div class="container-form nom_Adherent">
+          <input type="text" formControlName="nom_Adherent" required /><span
+            >Nom*
+          </span>
+        </div>
+        @if (nom_Adherent?.touched && nom_Adherent?.errors?.["required"]) {
+        <p class="error-text">Nom, s'il vous plait.</p>
+        }
+        <div class="container-form prenom_Adherent">
+          <input type="text" formControlName="prenom_Adherent" required />
+          <span>Prenom* </span>
+        </div>
+        @if (prenom_Adherent?.touched && prenom_Adherent?.errors?.["required"])
+        {
+        <p class="error-text">Prenom, s'il vous plait.</p>
+        }
+        <div class="container-form adrs_Adherent">
+          <input type="text" formControlName="adrs_Adherent" required />
+          <span>Adresse* </span>
+        </div>
+        @if (adrs_Adherent?.touched && adrs_Adherent?.errors?.["required"]) {
+        <p class="error-text">Adresse, s'il vous plait.</p>
+        }
+        <div class="container-form tel_Adherent">
+          <input type="text" formControlName="tel_Adherent" required />
+          <span>Contact* </span>
+        </div>
+        @if (tel_Adherent?.touched && tel_Adherent?.errors?.["required"]) {
+        <p class="error-text">Contact, s'il vous plait.</p>
+        }
+
+        <div class="date_Adherent">
+          <span>Date d'adhesion* </span>
+          <input type="date" required />
+        </div>
+
+        <div class="categorie_Adherent">
+          <select name="categorie_Adherent" id="categorie_Adherent" required>
+            <option value="choix">Choisiser la categorie</option>
+            @for (i of categorie; track $index) {
+
+            <option [value]="i">{{ i }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="btn-add">
+          <button class="btn btn-primary" type="submit">Valider</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</main>
