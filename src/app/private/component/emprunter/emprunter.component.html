@@ -1,4 +1,4 @@
-<main class="add-bibliothecaire">
+<main class="add-emprunter">
   <div class="form-container">
     <button
       class="btn-close-form"
@@ -14,43 +14,40 @@
         <hr />
 
         <div class="container-form titreLivre">
-          <select
-            name="titreLivre"
-            formControlName="titreLivre"
-            id="titreLivre"
-          >
+          <span>Titre du livre</span>
+          <select formControlName="titreLivre" id="titreLivre" required>
             <option value="titreLivre"></option>
           </select>
         </div>
 
         <div class="container-form nameAdhrent">
-          <select
-            name="nameAdhrent"
-            formControlName="nameAdhrent"
-            id="nameAdhrent"
-          >
+          <span>Le nom de l'Adherent</span>
+          <select formControlName="nameAdhrent" id="nameAdhrent" required>
             <option value="nameAdhrent"></option>
           </select>
         </div>
 
         <div class="container-form dateEmprunt">
-          <input type="datetime" formControlName="dateEmprunt" />
+          <span>Date d'emprunt du livre</span>
+          <input type="date" formControlName="dateEmprunt" required />
         </div>
 
         <div class="container-form dateRetour">
-          <input type="datetime" formControlName="dateRetour" />
+          <span>Date de retour du livre</span>
+          <input type="date" formControlName="dateRetour" required />
         </div>
 
         <div class="container-form statusLivre">
-          <select name="status" formControlName="status" id="status">
+          <span>Le status du Livre</span>
+          <select formControlName="status" id="status">
             @for (item of status; track $index) {
 
-            <option [value]="item">{{ item }}</option>
+            <option value="item">{{ item }}</option>
             }
           </select>
         </div>
         <div class="btn-add">
-          @if (EmprunterLivre.valid) {
+          <!-- @if (EmprunterLivre.valid) {
           <button
             class="{{
               isRegisterSuccess
@@ -61,7 +58,10 @@
           >
             @if(!isSubmitting && !isRegisterSuccess) { {{ formHeader }} }
           </button>
-          }
+          } -->
+          <button type="button" class="btn btn-primary">
+            {{ formHeader }}
+          </button>
         </div>
       </div>
     </form>

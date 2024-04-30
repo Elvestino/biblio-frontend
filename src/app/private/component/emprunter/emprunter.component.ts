@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -21,6 +21,12 @@ export class EmprunterComponent {
   isSubmitting: boolean = false;
   isRegisterSuccess: boolean = false;
   modifdata: any[] = [];
-  formHeader = 'Valider';
-  EmprunterLivre = this.formBuilder.group({});
+  formHeader = 'Emprunter';
+  EmprunterLivre = this.formBuilder.group({
+    titreLivre: ['', [Validators.required]],
+    nameAdhrent: ['', [Validators.required]],
+    dateEmprunt: ['', [Validators.required]],
+    dateRetour: ['', [Validators.required]],
+    status: ['', [Validators.required]],
+  });
 }

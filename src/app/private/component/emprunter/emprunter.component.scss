@@ -1,4 +1,4 @@
-.add-bibliothecaire {
+.add-emprunter {
   width: 100%;
   height: 100vh;
   position: fixed;
@@ -12,7 +12,7 @@
   animation: fade 0.3s 0.1s ease-in-out forwards;
   .form-container {
     width: 100%;
-    max-width: 850px;
+    max-width: 550px;
     min-height: 250px;
     border-radius: 9px;
     background: var(--blue);
@@ -38,84 +38,90 @@
         transform: scale(0.9);
       }
     }
-  }
-  .style-form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    background: #eee;
-    border-radius: 18px;
-    margin: 25px;
-    padding: 25px;
+    .style-form {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #eee;
+      border-radius: 18px;
+      margin: 25px;
+      padding: 25px;
 
-    .container-form-body {
-      display: grid;
-      margin: 0px 20px;
-      position: relative;
-      flex-direction: column;
-      h1 {
-        text-transform: uppercase;
-        font-size: 20px;
-        letter-spacing: 2px;
-        text-align: center;
-      }
-      hr {
-        border: 1px solid black;
-      }
-
-      .container-form {
-        flex-direction: column;
-        margin: 20px 0px;
+      .container-form-body {
+        display: grid;
+        margin: 0px 20px;
         position: relative;
-        select {
-          width: 100%;
-          height: 40px;
-          border-radius: 3px;
-          margin-bottom: 20px;
-          outline: 0;
-          font-size: 16px;
-          background-color: #eee;
-        }
-        input {
-          border: none;
-          color: var(--blue);
-          padding: 10px 10px;
-          font-size: 1em;
-          letter-spacing: 0.05em;
-          transition: 0.5s;
-          z-index: 10;
-          width: 100%;
-          max-width: 900px;
-          outline: 0;
-
-          box-shadow: none;
-          border-radius: 4px;
-          background: transparent;
-        }
-      }
-      .btn-add {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: none;
-
-        &:hover {
-          opacity: 1;
-          filter: brightness(1.2);
-        }
-        &:active {
-          transform: scale(0.9);
-        }
-        .btn {
-          color: #fff;
-          letter-spacing: 2px;
-          border-radius: 8px;
-          font-size: 15px;
-          opacity: 0.9;
-          border: none;
-          padding: 10px 90px;
-          font-weight: bold;
+        flex-direction: column;
+        h1 {
           text-transform: uppercase;
-          cursor: pointer;
+          font-size: 20px;
+          letter-spacing: 2px;
+          text-align: center;
+        }
+        hr {
+          border: 1px solid black;
+        }
+
+        .container-form {
+          flex-direction: column;
+          margin: 20px 0px;
+          position: relative;
+          span {
+            font-size: 16px;
+            padding: 10px;
+            color: var(--orange);
+          }
+          select {
+            width: 100%;
+            height: 40px;
+            border-radius: 3px;
+            margin-bottom: 20px;
+            outline: 0;
+            font-size: 16px;
+            background-color: #eee;
+          }
+          input {
+            border: none;
+            color: var(--blue);
+            padding: 10px 10px;
+            font-size: 1em;
+            letter-spacing: 0.05em;
+            transition: 0.5s;
+            z-index: 10;
+            width: 100%;
+            max-width: 900px;
+            outline: 0;
+
+            box-shadow: none;
+            border-radius: 4px;
+            background: transparent;
+          }
+        }
+        .btn-add {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border: none;
+
+          &:hover {
+            opacity: 1;
+            filter: brightness(1.2);
+          }
+          &:active {
+            transform: scale(0.9);
+          }
+          .btn {
+            color: #fff;
+            letter-spacing: 2px;
+            border-radius: 8px;
+            font-size: 15px;
+            opacity: 0.9;
+            border: none;
+            padding: 10px 90px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+          }
         }
       }
     }
