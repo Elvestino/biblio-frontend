@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddBibliothecaireComponent } from './add-bibliothecaire.component';
+import { AddBibliothecaireComponent } from './AddBibliothecaireComponent';
 
 describe('AddBibliothecaireComponent', () => {
   let component: AddBibliothecaireComponent;
@@ -8,10 +8,9 @@ describe('AddBibliothecaireComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AddBibliothecaireComponent]
-    })
-    .compileComponents();
-    
+      imports: [AddBibliothecaireComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(AddBibliothecaireComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "eb10",
+    "nom_biblio": "TSIANOY",
+    "prenom_biblio": "Karl Elvestino Dorelin",
+    "cin_biblio": "46545465",
+    "date_naissance": "2003-03-19",
+    "lieu_naissance": "Antananarivo",
+    "tel_biblio": "0345651731"
+  },
+  {
+    "id": "b214",
+    "nom_biblio": "RABEHEVITRA",
+    "prenom_biblio": "Fitiavana Nalahatra ",
+    "cin_biblio": "123456789788",
+    "date_naissance": "2000-12-12",
+    "lieu_naissance": "Ihosy",
+    "tel_biblio": "0389784566"
+  }
+]

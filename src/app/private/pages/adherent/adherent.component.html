@@ -1,6 +1,6 @@
 @if (isAdherentComponentOpen) {
 <app-add-adherent (close)="closeCard()"></app-add-adherent>
-}@if (qrcodeBibliothecaire) {
+}@if (qrcodeadherent) {
 <app-qrcode-adherent (close)="QrcodeClose()"></app-qrcode-adherent>
 }
 <section class="count-group">
@@ -28,7 +28,11 @@
 </section>
 <div class="filtrer">
   <span>Filtrer :</span>
-  <select name="filter-adherent" id="filter-adherent">
+  <select
+    name="filter-adherent"
+    id="filter-adherent"
+    [(ngModel)]="categorieSelectionnee"
+  >
     @for(item of filter; track $index){
     <option [value]="item">{{ item }}</option>
     }
@@ -57,28 +61,28 @@
           </tr>
         </thead>
         <tbody class="table-body-adherent">
-          <!-- @for (item of items; track $index) { -->
+          @for (item of filtrerDonnees(); track $index) {
           <tr class="data">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{ item.nom_Adh }}</td>
+            <td>{{ item.prenom_Adh }}</td>
+            <td>{{ item.adrs_Adh }}</td>
+            <td>{{ item.tel_Adh }}</td>
+            <td>{{ item.dt_adhesion }}</td>
+            <td>{{ item.categorie }}</td>
 
             <td class="data-control">
-              <button class="btn btn-success">
+              <button class="btn btn-success" (click)="updateadherent(item)">
                 <i class="fa-solid fa-pencil"></i>
               </button>
               <button class="btn btn-eye" (click)="QrcodeOpen()">
                 <i class="fa fa-qrcode"></i>
               </button>
-              <button class="btn btn-danger">
+              <button class="btn btn-danger" (click)="deleteadherent(item.id)">
                 <i class="fa-solid fa-trash"></i>
               </button>
             </td>
           </tr>
-          <!-- } -->
+          }
         </tbody>
       </table>
     </div>

@@ -8,7 +8,11 @@
     >
       <i class="fa fa-times"></i>
     </button>
-    <form class="style-form" [formGroup]="BibliothecaireForm">
+    <form
+      class="style-form"
+      (submit)="createBibliothecaire()"
+      [formGroup]="BibliothecaireForm"
+    >
       <div class="container-form-body">
         <h1>{{ title }}</h1>
         <hr />

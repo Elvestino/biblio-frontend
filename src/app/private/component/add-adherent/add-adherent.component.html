@@ -8,49 +8,52 @@
     >
       <i class="fa fa-times"></i>
     </button>
-    <form class="style-form" [formGroup]="AdherentForm">
+    <form
+      class="style-form"
+      (submit)="createadherent()"
+      [formGroup]="AdherentForm"
+    >
       <div class="container-form-body">
         <h1>Enregistrement</h1>
         <hr />
 
-        <div class="container-form nom_Adherent">
-          <input type="text" formControlName="nom_Adherent" required /><span
+        <div class="container-form nom_Adh">
+          <input type="text" formControlName="nom_Adh" required /><span
             >Nom*
           </span>
         </div>
-        @if (nom_Adherent?.touched && nom_Adherent?.errors?.["required"]) {
+        @if (nom_Adh?.touched && nom_Adh?.errors?.["required"]) {
         <p class="error-text">Nom, s'il vous plait.</p>
         }
-        <div class="container-form prenom_Adherent">
-          <input type="text" formControlName="prenom_Adherent" required />
+        <div class="container-form prenom_Adh">
+          <input type="text" formControlName="prenom_Adh" required />
           <span>Prenom* </span>
         </div>
-        @if (prenom_Adherent?.touched && prenom_Adherent?.errors?.["required"])
-        {
+        @if (prenom_Adh?.touched && prenom_Adh?.errors?.["required"]) {
         <p class="error-text">Prenom, s'il vous plait.</p>
         }
-        <div class="container-form adrs_Adherent">
-          <input type="text" formControlName="adrs_Adherent" required />
+        <div class="container-form adrs_Adh">
+          <input type="text" formControlName="adrs_Adh" required />
           <span>Adresse* </span>
         </div>
-        @if (adrs_Adherent?.touched && adrs_Adherent?.errors?.["required"]) {
+        @if (adrs_Adh?.touched && adrs_Adh?.errors?.["required"]) {
         <p class="error-text">Adresse, s'il vous plait.</p>
         }
-        <div class="container-form tel_Adherent">
-          <input type="text" formControlName="tel_Adherent" required />
+        <div class="container-form tel_Adh">
+          <input type="text" formControlName="tel_Adh" required />
           <span>Contact* </span>
         </div>
-        @if (tel_Adherent?.touched && tel_Adherent?.errors?.["required"]) {
+        @if (tel_Adh?.touched && tel_Adh?.errors?.["required"]) {
         <p class="error-text">Contact, s'il vous plait.</p>
         }
 
-        <div class="date_Adherent">
+        <div class="dt_adhesion">
           <span>Date d'adhesion* </span>
-          <input type="date" required />
+          <input type="date" formControlName="dt_adhesion" required />
         </div>
 
-        <div class="categorie_Adherent">
-          <select name="categorie_Adherent" id="categorie_Adherent" required>
+        <div class="categorie">
+          <select formControlName="categorie" id="categorie" required>
             <option value="choix">Choisiser la categorie</option>
             @for (i of categorie; track $index) {
 
@@ -60,7 +63,18 @@
         </div>
 
         <div class="btn-add">
-          <button class="btn btn-primary" type="submit">Valider</button>
+          @if (AdherentForm.valid) {
+          <button
+            class="{{
+              isRegisterSuccess
+                ? 'btn btn-success transition'
+                : 'btn btn-primary transition'
+            }}"
+            type="submit"
+          >
+            @if(!isSubmitting && !isRegisterSuccess) { {{ formHeader }} }
+          </button>
+          }
         </div>
       </div>
     </form>

@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { QRCodeModule } from 'angularx-qrcode';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { BibliothecaireService } from '../../service/bibliothecaire.service';
 
 @Component({
   selector: 'app-qrcode-bibliothecaire',
@@ -13,10 +14,25 @@ import jsPDF from 'jspdf';
   styleUrl: './qrcode-bibliothecaire.component.scss',
 })
 export class QrcodeBibliothecaireComponent {
+  constructor(private bibliothecaireService: BibliothecaireService) {}
+  bibliothecaires: any[] = [];
   @Output() close = new EventEmitter();
   closeForm(): void {
     this.close.emit();
   }
+  ////////////////////////////GET ID////////////////////////
+
+  ngOnInit(): void {
+    const id = 'example_id'; // Remplacez 'example_id' par l'ID réel que vous souhaitez récupérer
+    this.getBibliothecaire(id);
+  }
+
+  getBibliothecaire(id: string): void {
+    this.bibliothecaireService.getBibliothecaire(id).subscribe((data) => {
+      this.bibliothecaires = data;
+    });
+  }
+  //////////////////////////PDF TELECHARGER////////////////////////
   @ViewChild('content', { static: false }) content: any;
   Qr() {
     const content = this.content.nativeElement;

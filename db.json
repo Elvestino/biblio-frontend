@@ -1,13 +1,80 @@
 {
-  "posts": [
-    { "id": "1", "title": "a title", "views": 100 },
-    { "id": "2", "title": "another title", "views": 200 }
+  "bibliothecaire": [
+    {
+      "id": "a86c",
+      "nom_biblio": "TSIANOY",
+      "prenom_biblio": "Karl",
+      "date_naissance": "2003-03-19",
+      "lieu_naissance": "TANA",
+      "cin_biblio": "216456545555",
+      "tel_biblio": "0345651731"
+    },
+    {
+      "id": "9d8f",
+      "nom_biblio": "RABEHEVITRA",
+      "prenom_biblio": "Nalahatra",
+      "date_naissance": "2000-03-25",
+      "lieu_naissance": "IHOSY",
+      "cin_biblio": "26456899988",
+      "tel_biblio": "0386545622"
+    },
+    {
+      "id": "b9dcfbc7-af54-432e-a6e5-72962a1dad32",
+      "nom_biblio": "RASOLOFONIAINA",
+      "prenom_biblio": "Sedra",
+      "date_naissance": "2005-05-28",
+      "lieu_naissance": "Ihorombe",
+      "cin_biblio": "03245689744",
+      "tel_biblio": "0385644455"
+    },
+    {
+      "id": "344e6c73-f1b0-4919-b2f1-a843c4382416",
+      "nom_biblio": "ANDRIANJANAHARY",
+      "prenom_biblio": "Jean",
+      "date_naissance": "2024-05-01",
+      "lieu_naissance": "Fianarantsoa",
+      "cin_biblio": "2034446655",
+      "tel_biblio": "0345674155"
+    }
   ],
-  "comments": [
-    { "id": "1", "text": "a comment about post 1", "postId": "1" },
-    { "id": "2", "text": "another comment about post 1", "postId": "1" }
+  "adherent": [
+    {
+      "id": "4845f4f8-4f0b-4b27-abe5-240e60d3a30b",
+      "nom_Adh": "TSIANOY",
+      "prenom_Adh": "Karl Elvestino Dorelin",
+      "adrs_Adh": "Antanifotsy V Sud",
+      "tel_Adh": "0345651731",
+      "dt_adhesion": "2017-06-07",
+      "categorie": "Eleve"
+    },
+    {
+      "id": "46e7f913-2a8e-400c-b81e-7a1bfdbcc0b8",
+      "nom_Adh": "hery ",
+      "prenom_Adh": "Jean Shubert",
+      "adrs_Adh": "Ivory",
+      "tel_Adh": "0342568455",
+      "dt_adhesion": "2023-04-29",
+      "categorie": "Eleve"
+    },
+    {
+      "id": "6807ec36-6f7b-4ae1-b2a1-572b22b07d35",
+      "nom_Adh": "ralaivao",
+      "prenom_Adh": "Toky Fitiavana",
+      "adrs_Adh": "Andrainjato",
+      "tel_Adh": "0345678944",
+      "dt_adhesion": "2005-04-03",
+      "categorie": "Professeur"
+    },
+    {
+      "id": "3aff9818-0c62-4b47-9906-71a6ba5ce57d",
+      "nom_Adh": "Zoutch",
+      "prenom_Adh": "Paul Fernard",
+      "adrs_Adh": "France",
+      "tel_Adh": "2456444666",
+      "dt_adhesion": "2023-08-25",
+      "categorie": "Externe"
+    }
   ],
-  "profile": {
-    "name": "typicode"
-  }
+  "livre": [],
+  "emprunter": []
 }

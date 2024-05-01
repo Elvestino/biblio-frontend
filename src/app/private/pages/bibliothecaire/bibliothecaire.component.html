@@ -23,32 +23,42 @@
           <tr class="heading">
             <th>Nom</th>
             <th>Prenom</th>
+            <th>Date de naissance</th>
+            <th>Lieu de naissance</th>
             <th>CIN</th>
             <th>Contact</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody class="table-body-bibliothecaire">
-          <!-- @for (item of items; track $index) { -->
+          @for (item of bibliothecaires; track $index) {
           <tr class="data">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>{{ item.nom_biblio }}</td>
+            <td>{{ item.prenom_biblio }}</td>
+            <td>{{ item.date_naissance }}</td>
+            <td>{{ item.lieu_naissance }}</td>
+            <td>{{ item.cin_biblio }}</td>
+            <td>{{ item.tel_biblio }}</td>
 
             <td class="data-control">
-              <button class="btn btn-success">
+              <button
+                class="btn btn-success"
+                (click)="updateBibliothecaire(item)"
+              >
                 <i class="fa-solid fa-pencil"></i>
               </button>
               <button class="btn btn-eye" (click)="QrcodeOpen()">
                 <i class="fa fa-qrcode"></i>
               </button>
-              <button class="btn btn-danger">
+              <button
+                class="btn btn-danger"
+                (click)="deleteBibliothecaire(item.id)"
+              >
                 <i class="fa-solid fa-trash"></i>
               </button>
             </td>
           </tr>
-          <!-- } -->
+          }
         </tbody>
       </table>
     </div>
