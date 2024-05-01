@@ -8,9 +8,17 @@
     >
       <i class="fa fa-times"></i>
     </button>
-    <form class="style-form" [formGroup]="LivreForm">
+    <form class="style-form" (submit)="createlivre()" [formGroup]="LivreForm">
       <div class="image">
-        <input type="file" name="image" formControlName="image" id="photo" />
+        <input
+          type="file"
+          name="image"
+          formControlName="image"
+          accept="image/*"
+          (change)="afficherImage($event)"
+          required
+        />
+        <img [src]="imageSrc" alt="Pas encore d'image" />
       </div>
       <div class="container-form-body">
         <h1>{{ title }}</h1>
@@ -39,9 +47,9 @@
         <p class="error-text">Edition, s'il vous plait.</p>
         }
         <div class="categorie">
-          <select name="categorie" id="categorie" required>
+          <select formControlName="categorie" id="categorie" required>
             <option value="choisir">Choisiser la categorie</option>
-            @for (item of categorieLivre; track $index) {
+            @for (item of categorie; track $index) {
 
             <option [value]="item">{{ item }}</option>
             }
@@ -51,7 +59,7 @@
         <div class="description">
           <textarea
             class="text"
-            name="description"
+            formControlName="description"
             id="description"
             cols="30"
             rows="10"
@@ -60,9 +68,18 @@
           <span>Description* </span>
         </div>
         <div class="btn-add">
-          <button class="btn btn-primary" type="submit">
-            {{ formHeader }}
+          @if (LivreForm.valid) {
+          <button
+            class="{{
+              isRegisterSuccess
+                ? 'btn btn-success transition'
+                : 'btn btn-primary transition'
+            }}"
+            type="submit"
+          >
+            @if(!isSubmitting && !isRegisterSuccess) { {{ formHeader }} }
           </button>
+          }
         </div>
       </div>
     </form>

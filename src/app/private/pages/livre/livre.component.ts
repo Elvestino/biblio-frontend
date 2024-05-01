@@ -22,7 +22,8 @@ export class LivreComponent {
   isVoirplus: boolean = false;
   isIssueBook: boolean = false;
   isEmprunterOpen: boolean = false;
-
+  issueBook: boolean = false;
+  ///////////////////////OPEN AND CLOSE CARD///////////////
   openLivre() {
     this.isAddLivre = true;
   }
@@ -40,7 +41,6 @@ export class LivreComponent {
     console.log('book opened');
     this.isIssueBook = true;
   }
-  issueBook: boolean = false;
 
   openissueBook() {
     this.issueBook = true;

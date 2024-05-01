@@ -84,6 +84,16 @@
       "categorie": "Externe"
     }
   ],
-  "livre": [],
+  "livre": [
+    {
+      "id": "91c2feee-5786-41a2-94fd-e1a6534fc0fa",
+      "image": "C:\\fakepath\\1fecf27d87b72f7a1d5c61dbbc22c2d8.jpg",
+      "titreLivre": "Para todos os garotos que ja amei ",
+      "auteurLivre": "JENNY HAN",
+      "editionLivre": "2002",
+      "categorie": "Science-fiction",
+      "description": "Tsy ahiko ny ao anatiny"
+    }
+  ],
   "emprunter": []
 }
