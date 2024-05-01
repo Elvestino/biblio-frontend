@@ -73,6 +73,15 @@
       "tel_Adh": "2456444666",
       "dt_adhesion": "2023-08-25",
       "categorie": "Externe"
+    },
+    {
+      "id": "7b670477-8a32-4645-b247-028b31957a13",
+      "nom_Adh": "elvestino",
+      "prenom_Adh": "Dorelin",
+      "adrs_Adh": "Andrainjato",
+      "tel_Adh": "0345678945",
+      "dt_adhesion": "2017-06-14",
+      "categorie": "Externe"
     }
   ],
   "livre": [],

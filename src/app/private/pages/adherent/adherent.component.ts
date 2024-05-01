@@ -27,7 +27,7 @@ export class AdherentComponent implements OnInit {
   qrcodeadherent: boolean = false;
   selectedData: any[] = [];
   adherent: Adherent[] = [];
-  categorieSelectionnee: string = 'tous';
+  categorieSelectionnee: string = 'Tous';
   closeCard() {
     this.isAdherentComponentOpen = false;
   }
@@ -108,5 +108,20 @@ export class AdherentComponent implements OnInit {
         (item) => item.categorie === this.categorieSelectionnee
       );
     }
+  }
+
+  /////////////////////////TOTAL///////////////////////////
+
+  getTotalEleves(): number {
+    return this.adherent.filter((item) => item.categorie === 'Eleve').length;
+  }
+
+  getTotalProfesseurs(): number {
+    return this.adherent.filter((item) => item.categorie === 'Professeur')
+      .length;
+  }
+
+  getTotalExternes(): number {
+    return this.adherent.filter((item) => item.categorie === 'Externe').length;
   }
 }
