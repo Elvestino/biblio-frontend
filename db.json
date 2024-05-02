@@ -37,13 +37,13 @@
       "tel_biblio": "0345674155"
     },
     {
-      "id": "4665f3d5-9048-4516-b5c4-bcd61d344d01",
       "nom_biblio": "tsianoy",
       "prenom_biblio": "Tinarimalala Huberta Tatiana",
       "date_naissance": "1994-05-28",
       "lieu_naissance": "Tananarivo",
-      "cin_biblio": "216564789666",
-      "tel_biblio": "0385678945"
+      "cin_biblio": "216569874563",
+      "tel_biblio": "0385678945",
+      "id": "4665f3d5-9048-4516-b5c4-bcd61d344d01"
     }
   ],
   "adherent": [
@@ -93,13 +93,13 @@
       "id": "7b670477-8a32-4645-b247-028b31957a13"
     },
     {
-      "id": "b06a527c-b2aa-4e1e-9995-92a977891cfd",
       "nom_Adh": "tinarimalala ",
       "prenom_Adh": "Huberta Tatiana",
       "adrs_Adh": "Antanifotsy V Sud",
       "tel_Adh": "0349603454",
       "dt_adhesion": "1994-05-28",
-      "categorie": "Eleve"
+      "categorie": "Professeur",
+      "id": "b06a527c-b2aa-4e1e-9995-92a977891cfd"
     }
   ],
   "livre": [

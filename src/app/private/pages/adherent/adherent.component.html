@@ -82,7 +82,7 @@
     </form>
   </div>
 </main>
-}@if (qrcodeadherent) {
+} @if (qrcodeadherent) {
 <main class="qrcode">
   <div class="form-container">
     <button
@@ -101,7 +101,7 @@
       <div class="container-form" #content>
         <div class="qrcodeImage">
           <qrcode
-            [qrdata]="genererDonneesQr()"
+            [qrdata]="(genererDonneesQr() || '').toString()"
             [allowEmptyString]="true"
             [ariaLabel]="'QR Code image with the following content...'"
             [cssClass]="'center'"
@@ -109,7 +109,6 @@
             [colorLight]="'#ffffffff'"
             [elementType]="'canvas'"
             [errorCorrectionLevel]="'M'"
-            [imageSrc]="'./assets/angular-logo.png'"
             [imageHeight]="75"
             [imageWidth]="75"
             [margin]="4"
@@ -127,7 +126,6 @@
     </div>
   </div>
 </main>
-
 }
 <section class="count-group">
   <div class="count">

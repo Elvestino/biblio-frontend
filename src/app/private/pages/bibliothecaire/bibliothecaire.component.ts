@@ -33,13 +33,22 @@ export class BibliothecaireComponent implements OnInit {
   ) {}
   isBibliothecaireComponentOpen: boolean = false;
   qrcodeBibliothecaire: boolean = false;
-  selectedData: any[] = [];
+  // selectedData: any[] = [];
   bibliothecaires: Bibliothecaire[] = [];
   isSubmitting: boolean = false;
   isRegisterSuccess: boolean = false;
+  isModifAction: boolean = false;
   title = 'Enregistrement';
 
-  selectedBibliothecaire: Bibliothecaire | null = null;
+  selectedBibliothecaire: Bibliothecaire = {
+    nom_biblio: '',
+    prenom_biblio: '',
+    id: '',
+    date_naissance: new Date(),
+    lieu_naissance: '',
+    cin_biblio: '',
+    tel_biblio: '',
+  };
   isEditing = false;
   formHeader = 'Valider';
 
@@ -48,12 +57,21 @@ export class BibliothecaireComponent implements OnInit {
   //   this.isBibliothecaireComponentOpen = false;
   // }
   openAddBibliothecaire() {
-    this.selectedData = [];
+    // this.selectedData = [];
     this.isBibliothecaireComponentOpen = true;
   }
   closeForm() {
     this.qrcodeBibliothecaire = false;
     this.isBibliothecaireComponentOpen = false;
+    this.isModifAction = false;
+    this.BibliothecaireForm.patchValue({
+      nom_biblio: '',
+      prenom_biblio: '',
+      date_naissance: new Date().toISOString().split('T')[0],
+      lieu_naissance: '',
+      cin_biblio: '',
+      tel_biblio: '',
+    });
   }
   QrcodeClose() {
     this.qrcodeBibliothecaire = false;
@@ -129,30 +147,6 @@ export class BibliothecaireComponent implements OnInit {
   }
 
   ////////////////////////////MODIF//////////////////////
-  updateBibliothecaire(item: Bibliothecaire) {
-    this.selectedBibliothecaire = item;
-    this.isBibliothecaireComponentOpen = true;
-
-    const dateNaissance = new Date(item.date_naissance);
-
-    if (!isNaN(dateNaissance.getTime())) {
-      this.BibliothecaireForm.patchValue({
-        nom_biblio: item.nom_biblio,
-        prenom_biblio: item.prenom_biblio,
-        date_naissance: dateNaissance.toISOString().split('T')[0],
-        lieu_naissance: item.lieu_naissance,
-        cin_biblio: item.cin_biblio,
-        tel_biblio: item.tel_biblio,
-      });
-
-      this.isEditing = true;
-    } else {
-      console.error(
-        "La date de naissance n'est pas valide :",
-        item.date_naissance
-      );
-    }
-  }
 
   ///////////////////////CREATE//////////////////////
 
@@ -182,59 +176,117 @@ export class BibliothecaireComponent implements OnInit {
   get tel_biblio() {
     return this.BibliothecaireForm.get('tel_biblio');
   }
-
-  createBibliothecaire() {
+  createbibliothecaire() {
     this.isSubmitting = true;
-    if (this.BibliothecaireForm.valid) {
-      console.log('modifier leka');
-      //this.updateBibliothecaire();
-    } else {
-      console.log('Enregister leka');
-      const nouvelId = uuidv4();
-      const bibliothecaireData = {
+    console.log('Données a modifier :', this.selectedBibliothecaire);
+    if (this.isModifAction == true) {
+      // requete send modif
+      console.log('Données avant modification :', this.selectedBibliothecaire);
+      const updatedbilbiothecaire = {
         ...this.BibliothecaireForm.value,
-        id: nouvelId,
+        id: this.selectedBibliothecaire.id,
       };
       this.bibliothecaireService
-        .createBibliothecaire(bibliothecaireData)
+        .updateBibliothecaire(
+          this.selectedBibliothecaire.id,
+          updatedbilbiothecaire
+        )
         .subscribe({
-          next: (result) => {
-            console.log('Données enregistrées :', result);
+          next: (res) => {
+            console.log('Données modifiées avec succès :', res);
             Swal.fire({
               position: 'center',
               icon: 'success',
-              title: 'Bibliothécaire enregistré',
+              title: 'Bibliothecaire modifier',
               showConfirmButton: false,
               timer: 1500,
             }).then(() => {
               this.loadBibliothecaires();
               this.BibliothecaireForm.reset();
               this.isSubmitting = false;
-              this.isRegisterSuccess = true;
+              this.isRegisterSuccess = false;
               this.closeForm();
             });
           },
-          error: () => {
+          error: (err) => {
             Swal.fire({
               position: 'center',
               icon: 'error',
-              title: "Erreur lors de l'enregistrement du bibliothécaire",
+              title: "Erreur lors de la modification de l'bilbiothecaire",
               showConfirmButton: false,
               timer: 1500,
             });
-            console.log(
-              "Erreur lors de l'enregistrement : ",
-              this.BibliothecaireForm.value
-            );
+            console.error('Erreur lors de la modification :', err);
             this.isSubmitting = false;
+            this.isRegisterSuccess = false;
           },
         });
+    } else {
+      //  requete send add
+      if (this.BibliothecaireForm.valid) {
+        const nouvelId = uuidv4();
+        const bilbiothecaireData = {
+          ...this.BibliothecaireForm.value,
+          id: nouvelId,
+        };
+        this.bibliothecaireService
+          .createBibliothecaire(bilbiothecaireData)
+          .subscribe({
+            next: (result) => {
+              console.log('Données enregistrées :', result);
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Adehrent enregistré',
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(() => {
+                this.loadBibliothecaires();
+                this.BibliothecaireForm.reset();
+                this.isSubmitting = false;
+                this.isRegisterSuccess = true;
+                this.closeForm();
+              });
+            },
+            error: () => {
+              Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: "Erreur lors de l'enregistrement du bilbiothecaire",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              console.log(
+                "Erreur lors de l'enregistrement : ",
+                this.BibliothecaireForm.value
+              );
+              this.isSubmitting = false;
+            },
+          });
+      }
     }
   }
-  adminQrLink: string = '';
-  private generateQRCode(qrContent: string): void {
-    QRCode.toDataURL(qrContent).then((qrLink: string) => {
-      this.adminQrLink = qrLink;
+
+  updatebiBibliothecaire(item: Bibliothecaire) {
+    console.log('Données a modifier :', item);
+    this.isModifAction = true;
+    const dateAdhesion = new Date(item.date_naissance);
+    this.BibliothecaireForm.patchValue({
+      nom_biblio: item.nom_biblio,
+      prenom_biblio: item.prenom_biblio,
+      date_naissance: dateAdhesion.toISOString().split('T')[0],
+      cin_biblio: item.cin_biblio,
+      lieu_naissance: item.lieu_naissance,
+      tel_biblio: item.tel_biblio,
     });
+
+    this.selectedBibliothecaire = item;
+    this.isBibliothecaireComponentOpen = true;
   }
+  // adminQrLink: string = '';
+  // private generateQRCode(qrContent: string): void {
+  //   QRCode.toDataURL(qrContent).then((qrLink: string) => {
+  //     this.adminQrLink = qrLink;
+  //   });
+  // }
 }

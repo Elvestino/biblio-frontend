@@ -1,9 +1,3 @@
-<!-- @if (isBibliothecaireComponentOpen) {
-<app-add-bibliothecaire (close)="closeCard()"></app-add-bibliothecaire>
-} -->
-<!-- @if (qrcodeBibliothecaire) {
-<app-qrcode-bibliothecaire (close)="QrcodeClose()"></app-qrcode-bibliothecaire>
-} -->
 <!-- ///////////////////////////////////QRCODE//////////////////////// -->
 @if(qrcodeBibliothecaire){
 <section class="qrcode">
@@ -24,7 +18,7 @@
       <div class="container-form" #content>
         <div class="qrcodeImage">
           <qrcode
-            [qrdata]="adminQrLink"
+            [qrdata]="'dfds'"
             [allowEmptyString]="true"
             [ariaLabel]="'QR Code image with the following content...'"
             [cssClass]="'center'"
@@ -66,11 +60,11 @@
     </button>
     <form
       class="style-form"
-      (submit)="createBibliothecaire()"
+      (submit)="createbibliothecaire()"
       [formGroup]="BibliothecaireForm"
     >
       <div class="container-form-body">
-        <h1>{{ title }}</h1>
+        <h1>{{ isModifAction ? "Modification" : "Enregistrement" }}</h1>
         <hr />
 
         <div class="container-form nom_biblio">
@@ -127,7 +121,8 @@
           }}"
           type="submit"
         >
-          @if(!isSubmitting && !isRegisterSuccess) { {{ formHeader }} }
+          @if(!isSubmitting && !isRegisterSuccess) {
+          {{ isModifAction ? "Modifier" : "Valider" }} }
         </button>
         }
       </div>
@@ -177,7 +172,7 @@
             <td class="data-control">
               <button
                 class="btn btn-success"
-                (click)="updateBibliothecaire(item)"
+                (click)="updatebiBibliothecaire(item)"
               >
                 <i class="fa-solid fa-pencil"></i>
               </button>

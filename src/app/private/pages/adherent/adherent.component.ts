@@ -15,6 +15,7 @@ import {
 import { QRCodeModule } from 'angularx-qrcode';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { catchError } from 'rxjs';
 
 @Component({
   selector: 'app-adherent',
@@ -114,6 +115,7 @@ export class AdherentComponent implements OnInit {
 
   createadherent() {
     this.isSubmitting = true;
+    console.log('Données a modifier :', this.selectedAdherent);
     if (this.isModifAction == true) {
       // requete send modif
       console.log('Données avant modification :', this.selectedAdherent);
@@ -129,7 +131,7 @@ export class AdherentComponent implements OnInit {
             Swal.fire({
               position: 'center',
               icon: 'success',
-              title: 'Adehrent modifier',
+              title: 'Adherent modifier',
               showConfirmButton: false,
               timer: 1500,
             }).then(() => {
@@ -297,21 +299,43 @@ export class AdherentComponent implements OnInit {
     });
     this.closeCard();
   }
-  genererDonneesQr() {
-    // Récupérer les données de l'adhérent sélectionné
-    const adherentSelectionne = this.selectedAdherent;
 
-    // Valider l'adhérent sélectionné
-    if (!adherentSelectionne || !adherentSelectionne.id) {
+  genererDonneesQr(): string {
+    if (!this.selectedAdherent || !this.selectedAdherent.id) {
       console.error(
         'Aucun adhérent sélectionné pour la génération du QR code !'
       );
-      return '';
+      return ''; // Retourne une chaîne vide si aucune donnée n'est disponible
     }
 
-    // Formater les données pour le code QR (envisager la stringification JSON)
-    const donneesQr = JSON.stringify(adherentSelectionne); // Exemple
+    this.adherentservice
+      .getadherent(this.selectedAdherent.id)
+      .pipe(
+        catchError((error) => {
+          console.error(
+            'Erreur lors de la récupération des données de l adhérent :',
+            error
+          );
+          return [];
+        })
+      )
+      .subscribe((adherentData) => {
+        this.selectedAdherent = adherentData;
+        this.genererDonneesQrAvecAdherent();
+      });
+    return '';
+  }
 
-    return donneesQr;
+  genererDonneesQrAvecAdherent(): void {
+    if (!this.selectedAdherent) {
+      console.error(
+        'Aucun adhérent sélectionné pour la génération du QR code !'
+      );
+      return;
+    }
+
+    const contenuQRCode = `${this.selectedAdherent.nom_Adh} ${this.selectedAdherent.prenom_Adh}\nAdresse: ${this.selectedAdherent.adrs_Adh}\nContact: ${this.selectedAdherent.tel_Adh}\nCategorie: ${this.selectedAdherent.categorie}`;
+
+    // Utilisez le contenuQRCode pour générer le QR code
   }
 }
