@@ -17,7 +17,6 @@ export class BibliothecaireService {
   }
 
   getBibliothecaire(id: string): Observable<any> {
-    console.log('QRCODE id: ', id);
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 

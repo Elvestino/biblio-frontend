@@ -1,5 +1,7 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { EmprunterComponent } from '../emprunter/emprunter.component';
+import { LivreService } from '../../service/livre.service';
+import { Livre } from '../../model/livre.model';
 
 @Component({
   selector: 'app-voir-plus-livre',
@@ -9,6 +11,8 @@ import { EmprunterComponent } from '../emprunter/emprunter.component';
   styleUrl: './voir-plus-livre.component.scss',
 })
 export class VoirPlusLivreComponent {
+  constructor(private livreService: LivreService) {}
+  livres: Livre[] = [];
   @Output() close = new EventEmitter();
   @Output() openIssuBook = new EventEmitter();
   @Output() openEmpreint = new EventEmitter();
@@ -16,12 +20,6 @@ export class VoirPlusLivreComponent {
     this.close.emit();
   }
 
-  ohatra() {
-    console.log('telecharger');
-  }
-  test() {
-    console.log('lire');
-  }
   openIssue(): void {
     // this.issueBook = true;
     this.openIssuBook.emit();
@@ -29,4 +27,13 @@ export class VoirPlusLivreComponent {
   openEmpreinteComponents(): void {
     this.openEmpreint.emit();
   }
+  // ngOnInit(): void {
+  //   this.loadlivres();
+  // }
+
+  // loadlivres() {
+  //   this.livreService.getlivre(this.livres.id).subscribe((data) => {
+  //     this.livres = data;
+  //   });
+  // }
 }

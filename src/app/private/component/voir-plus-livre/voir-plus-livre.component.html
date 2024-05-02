@@ -11,43 +11,39 @@
     <form class="style-form">
       <!-- <img src="../../../../assets/img/book2.jpg" alt="" srcset="" /> -->
       <div class="container-form-body">
+        @for( item of livres; track $index){
         <div class="container-form titreLivre">
           <label for="titreLivre">Titre </label>
-          <input type="text" formControlName="titreLivre" />
+          <p>{{ item.titreLivre }}</p>
         </div>
 
         <div class="container-form auteurLivre">
           <label for="auteurLivre">Auteur </label>
-          <input type="text" formControlName="auteurLivre" />
+          <p>{{ item.auteurLivre }}</p>
         </div>
 
         <div class="container-form editionLivre">
           <label for="editionLivre">Edition </label>
-          <input type="text" formControlName="editionLivre" />
         </div>
 
         <div class="container-form categorieLivre">
           <label for="categorieLivre">Categorie </label>
-          <input type="text" formControlName="categorieLivre" />
+          <p>{{ item.categorie }}</p>
         </div>
 
         <div class="description">
           <label for="description">Description </label>
-          <textarea
-            class="text"
-            formControlName="description"
-            cols="30"
-            rows="10"
-          ></textarea>
+          <p>{{ item.description }}</p>
         </div>
+        }
         <div class="btn-group">
           <div class="down">
-            <button type="button" (click)="ohatra()" class="btn download">
+            <button type="button" class="btn download">
               <i class="fa fa-download"></i> Telecharger
             </button>
           </div>
           <div class="down">
-            <button type="button" class="btn lire" (click)="test()">
+            <button type="button" class="btn lire">
               <i class="fas fa-microphone"></i>Lire
             </button>
           </div>

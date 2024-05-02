@@ -1,3 +1,6 @@
+// * {
+//   border: 1px solid red;
+// }
 .main-livre {
   width: 100%;
   margin: 0;
@@ -21,17 +24,20 @@
     }
     .search {
       position: relative;
+      width: 100%;
+      max-width: 900px;
       input {
         border: none;
+        width: 100%;
         outline: 0;
-        padding: 10px 30px;
-        border-bottom-left-radius: 8px;
-        border-top-left-radius: 8px;
+        padding: 10px 10px 10px 70px;
+
+        border-radius: 8px;
       }
       button {
         position: absolute;
         top: 2px;
-        right: 2px;
+        left: 2px;
         width: 50px;
         height: 40px;
         outline: 0;
@@ -58,52 +64,69 @@
       }
     }
   }
-  .voirplus {
-    display: flex;
-    justify-content: right;
-    color: var(--orange);
-    margin: 20px;
-    &:hover {
-      color: var(--blue);
-    }
-  }
+  // .voirplus {
+  //   display: flex;
+  //   justify-content: right;
+  //   color: var(--orange);
+  //   margin: 20px;
+  //   &:hover {
+  //     color: var(--blue);
+  //   }
+  // }
   .body {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 40px;
     margin: 20px;
     .book {
-      display: grid;
-      justify-content: center;
-      align-items: center;
       background-color: #eee;
       border-radius: 8px;
-      padding: 20px;
-      gap: 10px;
-      img {
-        width: 250px;
-        height: 250px;
+
+      // gap: 10px;
+      position: relative;
+      .deletebook {
+        position: absolute;
+        right: 0;
+        top: 0;
       }
-      button {
-        width: 100%;
-        outline: 0;
-        &:hover {
-          opacity: 1;
-          filter: brightness(1.2);
+      .list-book {
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+        gap: 10px;
+        img {
+          width: 350px;
+          height: 250px;
         }
-        &:active {
-          transform: scale(0.9);
+        span {
+          display: flex;
+          gap: 10px;
+          p {
+            text-transform: uppercase;
+          }
         }
-        i {
-          font-size: 20px;
-          color: var(--blue);
+        button {
+          width: 100%;
+          outline: 0;
           &:hover {
-            color: var(--primary);
             opacity: 1;
             filter: brightness(1.2);
           }
           &:active {
             transform: scale(0.9);
+          }
+          i {
+            font-size: 20px;
+            color: var(--primary);
+            &:hover {
+              color: var(--blue);
+              opacity: 1;
+              filter: brightness(1.2);
+            }
+            &:active {
+              transform: scale(0.9);
+            }
           }
         }
       }

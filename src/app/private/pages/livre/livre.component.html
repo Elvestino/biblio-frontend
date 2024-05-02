@@ -30,72 +30,39 @@
     ></a>
   </section> -->
   <section class="body">
+    @for( item of livres; track $index){
+
     <div class="book">
-      <img src="../../../../assets/img/book.jpg" alt="" />
+      <div class="deletebook">
+        <button class="btn btn-danger" (click)="deletelivre(item.id)">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+      <div class="list-book">
+        <img [src]="imageSrc" alt="Image du livre {{ item.image }}" />
 
-      <span class="title-book"> <i class="fa fa-book"></i> Titre :</span>
-      <span class="title-auteur"><i class="fa fa-user"></i> Auteur :</span>
+        <span class="title book">
+          <i class="fas fa-heading"></i> Titre :
+          <p>{{ item.titreLivre }}</p></span
+        >
+        <span class="title auteur"
+          ><i class="fa fa-user"></i> Auteur :
+          <p>{{ item.auteurLivre }}</p></span
+        >
 
-      <span class="title-edition">Edition :</span>
-      <span class="title-categorie">Categorie :</span>
-      <button class="btn btn-primary" (click)="openVoirPLus()">
-        Voir plus <i class="fa fa-arrow-right"></i>
-      </button>
+        <span class="title edition"
+          ><i class="fas fa-tag"></i> Edition :
+          <p>{{ item.editionLivre }}</p></span
+        >
+        <span class="title categorie"
+          ><i class="fas fa-book"></i> Categorie :
+          <p>{{ item.categorie }}</p></span
+        >
+        <button class="btn btn-primary" (click)="openVoirPLus()">
+          Voir plus <i class="fa fa-arrow-right"></i>
+        </button>
+      </div>
     </div>
-    <div class="book">
-      <img src="../../../../assets/img/book.jpg" alt="" />
-      <span class="title-book">Titre :</span>
-      <span class="title-auteur">Auteur :</span>
-
-      <span class="title-edition">Edition :</span>
-      <span class="title-categorie">Categorie :</span>
-      <button class="btn btn-primary" (click)="openVoirPLus()">
-        Voir plus <i class="fa fa-arrow-right"></i>
-      </button>
-    </div>
-    <div class="book">
-      <img src="../../../../assets/img/book.jpg" alt="" />
-      <span class="title-book">Titre :</span>
-      <span class="title-auteur">Auteur :</span>
-
-      <span class="title-edition">Edition :</span>
-      <span class="title-categorie">Categorie :</span>
-      <button class="btn btn-primary" (click)="openVoirPLus()">
-        Voir plus <i class="fa fa-arrow-right"></i>
-      </button>
-    </div>
-    <div class="book">
-      <img src="../../../../assets/img/book.jpg" alt="" />
-      <span class="title-book">Titre :</span>
-      <span class="title-auteur">Auteur :</span>
-
-      <span class="title-edition">Edition :</span>
-      <span class="title-categorie">Categorie :</span>
-      <button class="btn btn-primary" (click)="openVoirPLus()">
-        Voir plus <i class="fa fa-arrow-right"></i>
-      </button>
-    </div>
-    <div class="book">
-      <img src="../../../../assets/img/book.jpg" alt="" />
-      <span class="title-book">Titre :</span>
-      <span class="title-auteur">Auteur :</span>
-
-      <span class="title-edition">Edition :</span>
-      <span class="title-categorie">Categorie :</span>
-      <button class="btn btn-primary" (click)="openVoirPLus()">
-        Voir plus <i class="fa fa-arrow-right"></i>
-      </button>
-    </div>
-    <div class="book">
-      <img src="../../../../assets/img/book.jpg" alt="" />
-      <span class="title-book">Titre :</span>
-      <span class="title-auteur">Auteur :</span>
-
-      <span class="title-edition">Edition :</span>
-      <span class="title-categorie">Categorie :</span>
-      <button class="btn btn-primary" (click)="openVoirPLus()">
-        Voir plus <i class="fa fa-arrow-right"></i>
-      </button>
-    </div>
+    }
   </section>
 </main>

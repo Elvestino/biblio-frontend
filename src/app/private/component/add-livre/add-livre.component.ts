@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
   templateUrl: './add-livre.component.html',
   styleUrl: './add-livre.component.scss',
 })
-export class AddLivreComponent {
+export class AddLivreComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private livreService: LivreService
@@ -129,7 +129,7 @@ export class AddLivreComponent {
           Swal.fire({
             position: 'center',
             icon: 'success',
-            title: 'Bibliothécaire enregistré',
+            title: 'Livre enregistré',
             showConfirmButton: false,
             timer: 1500,
           }).then(() => {
@@ -144,7 +144,7 @@ export class AddLivreComponent {
           Swal.fire({
             position: 'center',
             icon: 'error',
-            title: "Erreur lors de l'enregistrement du bibliothécaire",
+            title: "Erreur lors de l'enregistrement du Livre",
             showConfirmButton: false,
             timer: 1500,
           });

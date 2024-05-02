@@ -1,13 +1,13 @@
 {
   "bibliothecaire": [
     {
-      "id": "a86c",
-      "nom_biblio": "TSIANOY",
-      "prenom_biblio": "Karl",
+      "nom_biblio": "Nomenjanahary",
+      "prenom_biblio": "Tahiry",
       "date_naissance": "2003-03-19",
       "lieu_naissance": "TANA",
       "cin_biblio": "216456545555",
-      "tel_biblio": "0345651731"
+      "tel_biblio": "0345651731",
+      "id": "a86c"
     },
     {
       "id": "9d8f",
@@ -35,64 +35,118 @@
       "lieu_naissance": "Fianarantsoa",
       "cin_biblio": "2034446655",
       "tel_biblio": "0345674155"
+    },
+    {
+      "id": "4665f3d5-9048-4516-b5c4-bcd61d344d01",
+      "nom_biblio": "tsianoy",
+      "prenom_biblio": "Tinarimalala Huberta Tatiana",
+      "date_naissance": "1994-05-28",
+      "lieu_naissance": "Tananarivo",
+      "cin_biblio": "216564789666",
+      "tel_biblio": "0385678945"
     }
   ],
   "adherent": [
     {
-      "id": "4845f4f8-4f0b-4b27-abe5-240e60d3a30b",
       "nom_Adh": "TSIANOY",
       "prenom_Adh": "Karl Elvestino Dorelin",
       "adrs_Adh": "Antanifotsy V Sud",
       "tel_Adh": "0345651731",
       "dt_adhesion": "2017-06-07",
-      "categorie": "Eleve"
+      "categorie": "Eleve",
+      "id": "4845f4f8-4f0b-4b27-abe5-240e60d3a30b"
     },
     {
-      "id": "46e7f913-2a8e-400c-b81e-7a1bfdbcc0b8",
       "nom_Adh": "hery ",
       "prenom_Adh": "Jean Shubert",
       "adrs_Adh": "Ivory",
       "tel_Adh": "0342568455",
       "dt_adhesion": "2023-04-29",
-      "categorie": "Eleve"
+      "categorie": "Eleve",
+      "id": "46e7f913-2a8e-400c-b81e-7a1bfdbcc0b8"
     },
     {
-      "id": "6807ec36-6f7b-4ae1-b2a1-572b22b07d35",
       "nom_Adh": "ralaivao",
       "prenom_Adh": "Toky Fitiavana",
       "adrs_Adh": "Andrainjato",
       "tel_Adh": "0345678944",
       "dt_adhesion": "2005-04-03",
-      "categorie": "Professeur"
+      "categorie": "Professeur",
+      "id": "6807ec36-6f7b-4ae1-b2a1-572b22b07d35"
     },
     {
-      "id": "3aff9818-0c62-4b47-9906-71a6ba5ce57d",
       "nom_Adh": "Zoutch",
       "prenom_Adh": "Paul Fernard",
       "adrs_Adh": "France",
       "tel_Adh": "2456444666",
       "dt_adhesion": "2023-08-25",
-      "categorie": "Externe"
+      "categorie": "Externe",
+      "id": "3aff9818-0c62-4b47-9906-71a6ba5ce57d"
     },
     {
-      "id": "7b670477-8a32-4645-b247-028b31957a13",
       "nom_Adh": "elvestino",
       "prenom_Adh": "Dorelin",
       "adrs_Adh": "Andrainjato",
       "tel_Adh": "0345678945",
       "dt_adhesion": "2017-06-14",
-      "categorie": "Externe"
+      "categorie": "Externe",
+      "id": "7b670477-8a32-4645-b247-028b31957a13"
+    },
+    {
+      "id": "b06a527c-b2aa-4e1e-9995-92a977891cfd",
+      "nom_Adh": "tinarimalala ",
+      "prenom_Adh": "Huberta Tatiana",
+      "adrs_Adh": "Antanifotsy V Sud",
+      "tel_Adh": "0349603454",
+      "dt_adhesion": "1994-05-28",
+      "categorie": "Eleve"
     }
   ],
   "livre": [
     {
-      "id": "91c2feee-5786-41a2-94fd-e1a6534fc0fa",
-      "image": "C:\\fakepath\\1fecf27d87b72f7a1d5c61dbbc22c2d8.jpg",
-      "titreLivre": "Para todos os garotos que ja amei ",
-      "auteurLivre": "JENNY HAN",
+      "id": "575b1f2e-4a11-420d-886f-8d27cac10ac1",
+      "image": "C:\\fakepath\\book1.jpg",
+      "titreLivre": "Les pirates de la marine",
+      "auteurLivre": "MOI",
+      "editionLivre": "2024",
+      "categorie": "Non-fiction",
+      "description": "Tantara momban'ny marine"
+    },
+    {
+      "id": "58d27ef4-23ac-4bee-9a9f-8f6a34a5b1da",
+      "image": "C:\\fakepath\\book2.jpg",
+      "titreLivre": "test",
+      "auteurLivre": "test",
       "editionLivre": "2002",
-      "categorie": "Science-fiction",
-      "description": "Tsy ahiko ny ao anatiny"
+      "categorie": "Horreur",
+      "description": "tesst"
+    },
+    {
+      "id": "2ef721d2-f284-4d89-a9c1-677ac422bf2f",
+      "image": "C:\\fakepath\\book3.jpg",
+      "titreLivre": "test1",
+      "auteurLivre": "test1",
+      "editionLivre": "2024",
+      "categorie": "Humour",
+      "description": "test1"
+    },
+    {
+      "id": "8854d8c3-75b4-4367-86d5-d9bfefdfe339",
+      "image": "C:\\fakepath\\book4.jpg",
+      "titreLivre": "test2",
+      "auteurLivre": "test2",
+      "editionLivre": "test2",
+      "categorie": "Autobiographie",
+      "description": "test2"
+    },
+    {
+      "id": "1a1823ce-aa05-4ff4-afd6-6e9a18d05429",
+      "image": "C:\\fakepath\\book1.jpg",
+      "titreLivre": "dgfdfg",
+      "auteurLivre": "dfgfdg",
+      "editionLivre": "24\\024",
+      "categorie": "Romance",
+      "description": "dasdsa"
     }
   ],
   "emprunter": []

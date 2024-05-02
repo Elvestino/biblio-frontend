@@ -1,7 +1,139 @@
-@if (isBibliothecaireComponentOpen) {
+<!-- @if (isBibliothecaireComponentOpen) {
 <app-add-bibliothecaire (close)="closeCard()"></app-add-bibliothecaire>
-}@if (qrcodeBibliothecaire) {
+} -->
+<!-- @if (qrcodeBibliothecaire) {
 <app-qrcode-bibliothecaire (close)="QrcodeClose()"></app-qrcode-bibliothecaire>
+} -->
+<!-- ///////////////////////////////////QRCODE//////////////////////// -->
+@if(qrcodeBibliothecaire){
+<section class="qrcode">
+  <div class="form-container">
+    <button
+      class="btn-close-form"
+      type="button"
+      aria-label="close buttton"
+      (click)="closeForm()"
+    >
+      <i class="fa fa-times"></i>
+    </button>
+
+    <div class="container-form-body">
+      <h1>Qrcode Bibliothecaire</h1>
+      <hr />
+
+      <div class="container-form" #content>
+        <div class="qrcodeImage">
+          <qrcode
+            [qrdata]="adminQrLink"
+            [allowEmptyString]="true"
+            [ariaLabel]="'QR Code image with the following content...'"
+            [cssClass]="'center'"
+            [colorDark]="'#000000ff'"
+            [colorLight]="'#ffffffff'"
+            [elementType]="'canvas'"
+            [errorCorrectionLevel]="'M'"
+            [imageSrc]="'./assets/angular-logo.png'"
+            [imageHeight]="75"
+            [imageWidth]="75"
+            [margin]="4"
+            [scale]="1"
+            [title]="'A custom title attribute'"
+            [width]="400"
+          ></qrcode>
+        </div>
+      </div>
+      <div class="btn-download">
+        <button class="download" (click)="Qr()">
+          <i class="fa fa-download"></i> Telecharger
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+}
+
+<!-- //////////////////////////////////////////////////AJOUT/////////////////////////////////// -->
+@if(isBibliothecaireComponentOpen){
+<section class="add-bibliothecaire">
+  <div class="form-container">
+    <button
+      class="btn-close-form"
+      type="button"
+      aria-label="close buttton"
+      (click)="closeForm()"
+    >
+      <i class="fa fa-times"></i>
+    </button>
+    <form
+      class="style-form"
+      (submit)="createBibliothecaire()"
+      [formGroup]="BibliothecaireForm"
+    >
+      <div class="container-form-body">
+        <h1>{{ title }}</h1>
+        <hr />
+
+        <div class="container-form nom_biblio">
+          <input type="text" formControlName="nom_biblio" required /><span
+            >Nom*
+          </span>
+        </div>
+        @if (nom_biblio?.touched && nom_biblio?.errors?.["required"]) {
+        <p class="error-text">Nom, s'il vous plait.</p>
+        }
+        <div class="container-form prenom_biblio">
+          <input type="text" formControlName="prenom_biblio" required />
+          <span>Prenom* </span>
+        </div>
+        @if (prenom_biblio?.touched && prenom_biblio?.errors?.["required"]) {
+        <p class="error-text">Prenom, s'il vous plait.</p>
+        }
+        <div class="container-form date_naissance">
+          <input type="date" formControlName="date_naissance" required />
+          <span>Date de naissance </span>
+        </div>
+        @if (date_naissance?.touched && date_naissance?.errors?.["required"]) {
+        <p class="error-text">Date de naissance , s'il vous plait.</p>
+        }
+        <div class="container-form lieu_naissance">
+          <input type="text" formControlName="lieu_naissance" required />
+          <span>Lieu de naissance </span>
+        </div>
+        @if (lieu_naissance?.touched && lieu_naissance?.errors?.["required"]) {
+        <p class="error-text">Lieu de naissance, s'il vous plait.</p>
+        }
+        <div class="container-form cin_biblio">
+          <input type="text" formControlName="cin_biblio" required />
+          <span>Carte d'Indentite Nationale (CIN)* </span>
+        </div>
+        @if (cin_biblio?.touched && cin_biblio?.errors?.["required"]) {
+        <p class="error-text">CIN, s'il vous plait.</p>
+        }
+        <div class="container-form tel_biblio">
+          <input type="text" formControlName="tel_biblio" required />
+          <span>Contact* </span>
+        </div>
+        @if (tel_biblio?.touched && tel_biblio?.errors?.["required"]) {
+        <p class="error-text">Numero de telephone, s'il vous plait.</p>
+        }
+      </div>
+      <div class="btn-add">
+        @if (BibliothecaireForm.valid) {
+        <button
+          class="{{
+            isRegisterSuccess
+              ? 'btn btn-success transition'
+              : 'btn btn-primary transition'
+          }}"
+          type="submit"
+        >
+          @if(!isSubmitting && !isRegisterSuccess) { {{ formHeader }} }
+        </button>
+        }
+      </div>
+    </form>
+  </div>
+</section>
 }
 <main class="main-bibliothecaire">
   <div class="bibliothecaire">
@@ -9,6 +141,7 @@
     <div class="table">
       <div class="add">
         <h1 class="title">Ajouter</h1>
+
         <button
           type="button"
           class="btn btn-primary"
@@ -18,6 +151,7 @@
         </button>
       </div>
 
+      <!-- ///////////////////////////////////TABLE/////////////////////////////////// -->
       <table class="section-table-bibliothecaire">
         <thead class="table-heading-bibliothecaire">
           <tr class="heading">
