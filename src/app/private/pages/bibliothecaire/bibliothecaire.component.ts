@@ -108,19 +108,23 @@ export class BibliothecaireComponent implements OnInit {
   ///////////////////OHTER CODE////////////////////////
   ngOnInit(): void {
     this.loadBibliothecaires();
+
     if (isPlatformBrowser(this.platformId)) {
       this.route.params
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((params) => {
-          this.bibliothecaireService.getBibliothecaire(params['id']).subscribe({
-            next: (res) => {
-              this.selectedBibliothecaire = res.selectedBibliothecaire;
-              this.generateQRCode(
-                `A-${this.selectedBibliothecaire.id.toString()}`
-              );
-              this.loading = false;
-            },
-          });
+          const id = params['id'];
+          if (id) {
+            this.bibliothecaireService.getBibliothecaire(id).subscribe({
+              next: (res) => {
+                this.selectedBibliothecaire = res.selectedBibliothecaire;
+                this.generateQRCode(
+                  `A-${this.selectedBibliothecaire.id.toString()}`
+                );
+                this.loading = false;
+              },
+            });
+          }
         });
     }
   }

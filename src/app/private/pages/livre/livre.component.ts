@@ -43,12 +43,13 @@ export class LivreComponent implements OnInit {
   ) {}
   isAddLivre: boolean = false;
   isVoirplus: boolean = false;
-
+  synth = window.speechSynthesis ? window.speechSynthesis : null;
   isEmprunterOpen: boolean = false;
   issueBook: boolean = false;
   livres: Livre[] = [];
   isModifAction: boolean = false;
   data: any[] = [];
+  isSynthPlaying: boolean = false;
   ///////////////////////OPEN AND CLOSE CARD///////////////
   categorie: string[] = [
     'Fiction',
@@ -340,7 +341,7 @@ export class LivreComponent implements OnInit {
             Swal.fire({
               position: 'center',
               icon: 'success',
-              title: 'Adehrent enregistré',
+              title: 'Livre enregistré',
               showConfirmButton: false,
               timer: 1500,
             }).then(() => {
@@ -355,7 +356,7 @@ export class LivreComponent implements OnInit {
             Swal.fire({
               position: 'center',
               icon: 'error',
-              title: "Erreur lors de l'enregistrement de l'livre",
+              title: "Erreur lors de l'enregistrement du livre",
               showConfirmButton: false,
               timer: 1500,
             });
@@ -479,5 +480,34 @@ export class LivreComponent implements OnInit {
     }
   }
 
-  /////////////////////////////RECHERCHE//////////////////////////
+  /////////////////////////////VOIR PLUS//////////////////////////
+  // speak(text: string): void {
+  //   const utterance = new SpeechSynthesisUtterance(text);
+  //   this.synth.speak(utterance);
+  // }
+  selectedBook: any;
+
+  speakText() {
+    this.isSynthPlaying = true;
+    this.speak(this.selectedlivre.description);
+  }
+  // cancel(): void {
+  //   this.isSynthPlaying = false;
+  //   this.synth.cancel();
+  // }
+  speak(text: string): void {
+    const utterance = new SpeechSynthesisUtterance(text);
+    if (this.synth) {
+      this.synth.speak(utterance);
+    } else {
+      console.error('SpeechSynthesisUtterance is not available.');
+    }
+  }
+
+  cancel(): void {
+    this.isSynthPlaying = false;
+    if (this.synth) {
+      this.synth.cancel();
+    }
+  }
 }
