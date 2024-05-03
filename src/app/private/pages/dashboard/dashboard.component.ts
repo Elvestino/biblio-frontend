@@ -2,10 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { ChartConfiguration, ChartOptions, ChartType } from 'chart.js';
 import { AdherentService } from '../../service/adherent.service';
 import { BibliothecaireService } from '../../service/bibliothecaire.service';
+import {
+  Color,
+  LegendPosition,
+  NgxChartsModule,
+  ScaleType,
+} from '@swimlane/ngx-charts';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [],
+  imports: [NgxChartsModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
@@ -15,26 +21,50 @@ export class DashboardComponent implements OnInit {
     private bibliothecaire: BibliothecaireService
   ) {}
 
-  // title = 'ng2-charts-demo';
-
-  // public lineChartData: ChartConfiguration<'line'>['data'] = {
-  //   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-  //   datasets: [
-  //     {
-  //       data: [65, 59, 80, 81, 56, 55, 40],
-  //       label: 'Series A',
-  //       fill: true,
-  //       tension: 0.5,
-  //       borderColor: 'black',
-  //       backgroundColor: 'rgba(255,0,0,0.3)',
-  //     },
-  //   ],
-  // };
-  // public lineChartOptions: ChartOptions<'line'> = {
-  //   responsive: false,
-  // };
-  // public lineChartLegend = true;
-
+  venteView: [number, number] = [400, 200];
+  gradient: boolean = false;
+  showLabels: boolean = true;
+  colorScheme: Color = {
+    name: 'Armes à feu',
+    selectable: false,
+    group: ScaleType.Linear,
+    domain: [
+      '#007bff',
+      '#28a745',
+      '#ffc107',
+      '#17a2b8',
+      '#dc3545',
+      '#6610f2',
+      '#fd7e14',
+      '#6c757d',
+    ],
+  };
+  vente = [
+    {
+      name: 'Lundi',
+      value: 4,
+    },
+    {
+      name: 'Mardi',
+      value: 5,
+    },
+    {
+      name: 'Mercredi',
+      value: 6,
+    },
+    {
+      name: 'Jeudi',
+      value: 7,
+    },
+    {
+      name: 'Vendredi',
+      value: 7,
+    },
+    {
+      name: 'Samedi',
+      value: 3,
+    },
+  ];
   ngOnInit() {
     this.getadherent();
     this.getbibliothecaire();

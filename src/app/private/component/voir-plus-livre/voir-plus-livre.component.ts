@@ -21,19 +21,9 @@ export class VoirPlusLivreComponent {
   }
 
   openIssue(): void {
-    // this.issueBook = true;
     this.openIssuBook.emit();
   }
   openEmpreinteComponents(): void {
     this.openEmpreint.emit();
   }
-  // ngOnInit(): void {
-  //   this.loadlivres();
-  // }
-
-  // loadlivres() {
-  //   this.livreService.getlivre(this.livres.id).subscribe((data) => {
-  //     this.livres = data;
-  //   });
-  // }
 }

@@ -47,30 +47,27 @@
       <div class="chart-first">
         <div class="header-chart-first">
           <h1>Historique d'Emprunt</h1>
-          <!-- </div>
-        <div class="troispoint"> -->
+          <ngx-charts-bar-vertical
+            class="graphe"
+            [view]="venteView"
+            [scheme]="colorScheme"
+            [results]="vente"
+            [gradient]="gradient"
+            [showGridLines]="showLabels"
+            [legend]="gradient"
+            [xAxis]="showLabels"
+            [yAxis]="showLabels"
+            [rotateXAxisTicks]="gradient"
+          >
+          </ngx-charts-bar-vertical>
           <button class="btn"><i class="fa fa-ellipsis-h"></i></button>
         </div>
-
-        <!-- <div lass="ngx-chart" style="display: block">
-          <canvas
-            baseChart
-            width="400"
-            height="400"
-            [type]="'line'"
-            [data]="lineChartData"
-            [options]="lineChartOptions"
-            [legend]="lineChartLegend"
-          >
-          </canvas>
-        </div> -->
       </div>
       <div class="chart-second">
         <div class="chart-second-first">
           <div class="header-chart-second">
             <h1>Livre Populaire</h1>
-          </div>
-          <div class="troispoint">
+
             <button class="btn"><i class="fa fa-ellipsis-h"></i></button>
           </div>
         </div>

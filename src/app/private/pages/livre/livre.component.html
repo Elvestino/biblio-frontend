@@ -1,21 +1,245 @@
 @if(isEmprunterOpen) {
-<app-emprunter (close)="closeEmpreinte()"> </app-emprunter>
-} @if(isAddLivre){
-<app-add-livre (close)="closeCard()"></app-add-livre>
+<main class="add-emprunter">
+  <div class="form-container">
+    <button
+      class="btn-close-form"
+      type="button"
+      aria-label="close buttton"
+      (click)="closeEmpreinte()"
+    >
+      <i class="fa fa-times"></i>
+    </button>
+    <form
+      class="style-form"
+      (submit)="createEmprunter()"
+      [formGroup]="EmprunterLivre"
+    >
+      <div class="container-form-body">
+        <h1>{{ titleEmprunter }}</h1>
+        <hr />
+
+        <div class="container-form titreLivre">
+          <span>Titre du livre</span>
+          <select formControlName="titreLivre" id="titreLivre" required>
+            @for(i of livres; track $index){
+            <option value="{{ i.titreLivre }}">{{ i.titreLivre }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="container-form nameAdhrent">
+          <span>Le nom de l'Adherent</span>
+          <select formControlName="nameAdhrent" id="nameAdhrent" required>
+            @for(i of allAdherent; track $index){
+            <option value="{{ i.nom_Adh }}">{{ i.nom_Adh }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="container-form dateEmprunt">
+          <span>Date d'emprunt du livre</span>
+          <input type="date" formControlName="dateEmprunt" required />
+        </div>
+
+        <div class="container-form dateRetour">
+          <span>Date de retour du livre</span>
+          <input type="date" formControlName="dateRetour" required />
+        </div>
+
+        <div class="container-form statusLivre">
+          <span>Le status du Livre</span>
+          <select formControlName="status" id="status" required>
+            @for (item of status; track $index) {
+
+            <option value="{{ item }}">{{ item }}</option>
+            }
+          </select>
+        </div>
+        <div class="btn-add">
+          @if (EmprunterLivre.valid) {
+          <button
+            class="{{
+              isRegisterSuccess
+                ? 'btn btn-success transition'
+                : 'btn btn-primary transition'
+            }}"
+            type="submit"
+          >
+            @if(!isSubmitting && !isRegisterSuccess) {
+            {{ formHeaderEmprunter }} }
+          </button>
+          }
+        </div>
+      </div>
+    </form>
+  </div>
+</main>
+
 } @if(isVoirplus){
-<app-voir-plus-livre
-  (close)="closeVoirPLus()"
-  (openIssuBook)="handleIsIssuBookOpen()"
-  (openEmpreint)="openEmpreinte()"
-></app-voir-plus-livre>
-} @if(issueBook){
-<app-emprunter></app-emprunter>
+<main class="add-voir-plus">
+  <div class="form-container">
+    <button
+      class="btn-close-form"
+      type="button"
+      aria-label="close buttton"
+      (click)="closeVoirPLus()"
+    >
+      <i class="fa fa-times"></i>
+    </button>
+    <form class="style-form">
+      <h1 class="title-voir-plus">En savoir plus...</h1>
+      <hr />
+      <div class="container-form-body">
+        @if( selectedlivre){
+        <div class="container-form titreLivre">
+          <label for="titreLivre">Titre </label>
+          <p>{{ selectedlivre.titreLivre }}</p>
+        </div>
+
+        <div class="container-form auteurLivre">
+          <label for="auteurLivre">Auteur </label>
+          <p>{{ selectedlivre.auteurLivre }}</p>
+        </div>
+
+        <div class="container-form editionLivre">
+          <label for="editionLivre">Edition </label>
+          <p>{{ selectedlivre.editionLivre }}</p>
+        </div>
+
+        <div class="container-form categorieLivre">
+          <label for="categorieLivre">Categorie </label>
+          <p>{{ selectedlivre.categorie }}</p>
+        </div>
+
+        <div class="description">
+          <label for="description">Description </label>
+          <p>{{ selectedlivre.description }}</p>
+        </div>
+        }
+        <div class="btn-group">
+          <div class="down">
+            <button type="button" class="btn download">
+              <i class="fa fa-download"></i> Telecharger
+            </button>
+          </div>
+          <div class="down">
+            <button type="button" class="btn lire">
+              <i class="fas fa-microphone"></i>Lire
+            </button>
+          </div>
+          <div class="issuebook">
+            <button class="btn link" (click)="openEmpreinte()" type="button">
+              <i class="fas fa-hand-holding-usd"></i> Emprunter
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</main>
+
+} @if(isAddLivre){
+<main class="add-livre">
+  <div class="form-container">
+    <button
+      class="btn-close-form"
+      type="button"
+      aria-label="close buttton"
+      (click)="closeCard()"
+    >
+      <i class="fa fa-times"></i>
+    </button>
+    <form class="style-form" (submit)="createlivre()" [formGroup]="LivreForm">
+      <div class="image">
+        <input
+          type="file"
+          name="image"
+          formControlName="image"
+          accept="image/*"
+          (change)="afficherEtConvertirImage($event)"
+          required
+        />
+        <img [src]="imageSrc" alt="Pas encore d'image" />
+      </div>
+      <div class="container-form-body">
+        <h1>{{ isModifAction ? "Modification" : "Enregistrement" }}</h1>
+        <hr />
+
+        <div class="container-form titreLivre">
+          <input type="text" formControlName="titreLivre" required /><span
+            >Titre*
+          </span>
+        </div>
+        @if (titreLivre?.touched && titreLivre?.errors?.["required"]) {
+        <p class="error-text">Titre, s'il vous plait.</p>
+        }
+        <div class="container-form auteurLivre">
+          <input type="text" formControlName="auteurLivre" required />
+          <span>Auteur* </span>
+        </div>
+        @if (auteurLivre?.touched && auteurLivre?.errors?.["required"]) {
+        <p class="error-text">Auteur, s'il vous plait.</p>
+        }
+        <div class="container-form editionLivre">
+          <input type="text" formControlName="editionLivre" required />
+          <span>Edition* </span>
+        </div>
+        @if (editionLivre?.touched && editionLivre?.errors?.["required"]) {
+        <p class="error-text">Edition, s'il vous plait.</p>
+        }
+        <div class="categorie">
+          <select formControlName="categorie" id="categorie" required>
+            <option value="choisir">Choisiser la categorie</option>
+            @for (item of categorie; track $index) {
+
+            <option [value]="item">{{ item }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="description">
+          <textarea
+            class="text"
+            formControlName="description"
+            id="description"
+            cols="30"
+            rows="10"
+            required
+          ></textarea>
+          <span>Description* </span>
+        </div>
+        <div class="btn-add">
+          @if (LivreForm.valid) {
+          <button
+            class="{{
+              isRegisterSuccess
+                ? 'btn btn-success transition'
+                : 'btn btn-primary transition'
+            }}"
+            type="submit"
+          >
+            @if(!isSubmitting && !isRegisterSuccess) {
+            {{ isModifAction ? "Modifier" : "Valider" }} }
+          </button>
+          }
+        </div>
+      </div>
+    </form>
+  </div>
+</main>
+
 }
 <main class="main-livre">
   <section class="heading">
     <h1 class="title">Les livres disponibles</h1>
     <div class="search">
-      <input type="search" placeholder="Search" name="search" id="search" />
+      <input
+        type="search"
+        placeholder="Search"
+        name="search"
+        id="search"
+        [formControl]="search"
+      />
       <button><i class="fa fa-search"></i></button>
     </div>
     <div class="btn-add">
@@ -24,22 +248,21 @@
       </button>
     </div>
   </section>
-  <!-- <section class="voirplus">
-    <a routerLink="voirplus" routerLinkActive="active" class="nav-link"
-      >Voir plus <i class="fa fa-arrow-right"></i
-    ></a>
-  </section> -->
+
   <section class="body">
     @for( item of livres; track $index){
 
     <div class="book">
       <div class="deletebook">
+        <button class="btn btn-success" (click)="updatelivre(item)">
+          <i class="fas fa-pencil"></i>
+        </button>
         <button class="btn btn-danger" (click)="deletelivre(item.id)">
           <i class="fa-solid fa-trash"></i>
         </button>
       </div>
       <div class="list-book">
-        <img [src]="imageSrc" alt="Image du livre {{ item.image }}" />
+        <img [src]="item.image" alt="Image du livre {{ item.titreLivre }}" />
 
         <span class="title book">
           <i class="fas fa-heading"></i> Titre :
@@ -58,7 +281,7 @@
           ><i class="fas fa-book"></i> Categorie :
           <p>{{ item.categorie }}</p></span
         >
-        <button class="btn btn-primary" (click)="openVoirPLus()">
+        <button class="btn btn-primary" (click)="openVoirPLus(item)">
           Voir plus <i class="fa fa-arrow-right"></i>
         </button>
       </div>

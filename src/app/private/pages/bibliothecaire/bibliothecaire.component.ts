@@ -1,5 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import {
+  Component,
+  Inject,
+  OnInit,
+  PLATFORM_ID,
+  ViewChild,
+} from '@angular/core';
+import { ActivatedRoute, RouterLink, RouterLinkActive } from '@angular/router';
 import { QrcodeBibliothecaireComponent } from '../../component/qrcode-bibliothecaire/qrcode-bibliothecaire.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BibliothecaireService } from '../../service/bibliothecaire.service';
@@ -11,13 +17,14 @@ import { QRCodeModule } from 'angularx-qrcode';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as QRCode from 'qrcode';
+import { isPlatformBrowser } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-bibliothecaire',
   standalone: true,
   imports: [
     RouterLink,
     RouterLinkActive,
-
     QrcodeBibliothecaireComponent,
     HttpClientModule,
     ReactiveFormsModule,
@@ -27,7 +34,10 @@ import * as QRCode from 'qrcode';
   styleUrl: './bibliothecaire.component.scss',
 })
 export class BibliothecaireComponent implements OnInit {
+  private readonly unsubscribe$: Subject<void> = new Subject<void>();
   constructor(
+    @Inject(PLATFORM_ID) private platformId: object,
+    private route: ActivatedRoute,
     private bibliothecaireService: BibliothecaireService,
     private formBuilder: FormBuilder
   ) {}
@@ -51,6 +61,7 @@ export class BibliothecaireComponent implements OnInit {
   };
   isEditing = false;
   formHeader = 'Valider';
+  loading: boolean = true;
 
   //////////////////OPEN AND CLOSE CARD///////////////////////////
   // closeCard() {
@@ -97,6 +108,21 @@ export class BibliothecaireComponent implements OnInit {
   ///////////////////OHTER CODE////////////////////////
   ngOnInit(): void {
     this.loadBibliothecaires();
+    if (isPlatformBrowser(this.platformId)) {
+      this.route.params
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((params) => {
+          this.bibliothecaireService.getBibliothecaire(params['id']).subscribe({
+            next: (res) => {
+              this.selectedBibliothecaire = res.selectedBibliothecaire;
+              this.generateQRCode(
+                `A-${this.selectedBibliothecaire.id.toString()}`
+              );
+              this.loading = false;
+            },
+          });
+        });
+    }
   }
   loadBibliothecaires() {
     this.bibliothecaireService.getAllBibliothecaires().subscribe((data) => {
@@ -283,10 +309,11 @@ export class BibliothecaireComponent implements OnInit {
     this.selectedBibliothecaire = item;
     this.isBibliothecaireComponentOpen = true;
   }
-  // adminQrLink: string = '';
-  // private generateQRCode(qrContent: string): void {
-  //   QRCode.toDataURL(qrContent).then((qrLink: string) => {
-  //     this.adminQrLink = qrLink;
-  //   });
-  // }
+
+  adminQrLink: string = '';
+  private generateQRCode(qrContent: string): void {
+    QRCode.toDataURL(qrContent).then((qrLink: string) => {
+      this.adminQrLink = qrLink;
+    });
+  }
 }

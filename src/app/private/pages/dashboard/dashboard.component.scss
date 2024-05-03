@@ -1,3 +1,6 @@
+// * {
+//   border: 1px solid red;
+// }
 .dashboard {
   .barre {
     display: flex;
@@ -24,9 +27,6 @@
         padding: 10px 10px 10px 70px;
 
         border-radius: 8px;
-        &::placeholder {
-          // padding-left: 10px;
-        }
       }
       button {
         position: absolute;
@@ -115,13 +115,16 @@
               text-transform: uppercase;
               font-weight: bold;
             }
-          }
+            .graphe {
+              width: 100%;
+            }
 
-          .btn {
-            display: flex;
-            top: 0;
-            outline: 0;
-            border: none;
+            .btn {
+              display: flex;
+              top: 0;
+              outline: 0;
+              border: none;
+            }
           }
         }
         .chart-second {
@@ -141,14 +144,26 @@
             background-color: #eee;
             border: 1px solid var(--blue);
             .header-chart-second {
+              display: flex;
+              width: 100%;
+              position: relative;
+              justify-content: space-between;
+              align-items: center;
               h1 {
                 font-size: 18px;
                 text-transform: uppercase;
                 font-weight: bold;
               }
-            }
-            .troispoint {
+              .graphe {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              }
+
               .btn {
+                position: absolute;
+                top: 0;
+                right: 0;
                 outline: 0;
                 border: none;
               }

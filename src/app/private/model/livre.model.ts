@@ -3,7 +3,7 @@ export class Livre {
   image: string;
   titreLivre: string;
   auteurLivre: string;
-  editionLivre: number;
+  editionLivre: string;
   description: string;
   categorie: string;
 
@@ -12,7 +12,7 @@ export class Livre {
     image: string,
     titreLivre: string,
     auteurLivre: string,
-    editionLivre: number,
+    editionLivre: string,
     description: string,
     categorie: string
   ) {
