@@ -17,11 +17,13 @@
 
       <div class="container-form" #content>
         <div class="qrcodeImage">
-          @if (adminQrLink !== "") {
           <div class="qr-container">
-            <img src="{{ adminQrLink }}" alt="nicolas profile" />
+            <img
+              src="{{ adminQrLink }}"
+              alt="nicolas profile"
+              style="width: 100%; object-fit: cover"
+            />
           </div>
-          }
         </div>
       </div>
       <div class="btn-download">

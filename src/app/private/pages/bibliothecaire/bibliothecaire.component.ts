@@ -43,7 +43,7 @@ export class BibliothecaireComponent implements OnInit {
   ) {}
   isBibliothecaireComponentOpen: boolean = false;
   qrcodeBibliothecaire: boolean = false;
-  // selectedData: any[] = [];
+  selectedData: any[] = [];
   bibliothecaires: Bibliothecaire[] = [];
   isSubmitting: boolean = false;
   isRegisterSuccess: boolean = false;
@@ -89,7 +89,51 @@ export class BibliothecaireComponent implements OnInit {
   }
   QrcodeOpen() {
     this.qrcodeBibliothecaire = !this.qrcodeBibliothecaire;
+    console.log(this.selectedBibliothecaire.id);
+    if (isPlatformBrowser(this.platformId)) {
+      this.route.params
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((params) => {
+          const bibliothecaireId = params['id'];
+          if (bibliothecaireId) {
+            this.bibliothecaireService
+              .getBibliothecaire(bibliothecaireId)
+              .subscribe({
+                next: (res) => {
+                  this.selectedBibliothecaire = res.data;
+                  if (
+                    this.selectedBibliothecaire &&
+                    this.selectedBibliothecaire.id
+                  ) {
+                    const qrValue = `A-${this.selectedBibliothecaire.id.toString()}`;
+                    console.log(`Valeur passée à generateQRCode: ${qrValue}`);
+                    // Assurez-vous que la méthode generateQRCode est définie
+                    if (this.generateQRCode) {
+                      this.generateQRCode(qrValue);
+                    } else {
+                      console.error('La méthode generateQRCode est indéfinie.');
+                    }
+                  } else {
+                    console.error(
+                      "selectedBibliothecaire n'est pas défini ou manque l'ID"
+                    );
+                  }
+                  this.loading = false;
+                },
+                error: (err) => {
+                  console.error(
+                    'Erreur lors de la récupération des données du bibliothécaire:',
+                    err
+                  );
+                },
+              });
+          } else {
+            console.error("L'ID du bibliothécaire est undefined.");
+          }
+        });
+    }
   }
+
   //////////////////////////////QRCODE //////////////////
   @ViewChild('content', { static: false }) content: any;
   Qr() {
@@ -108,25 +152,48 @@ export class BibliothecaireComponent implements OnInit {
   ///////////////////OHTER CODE////////////////////////
   ngOnInit(): void {
     this.loadBibliothecaires();
+    // if (isPlatformBrowser(this.platformId)) {
+    //   this.route.params
+    //     .pipe(takeUntil(this.unsubscribe$))
+    //     .subscribe((params) => {
+    //       console.log(this.selectedBibliothecaire.id);
+    //       const bibliothecaireId = params['id'];
+    //       if (bibliothecaireId) {
+    //         this.bibliothecaireService
+    //           .getBibliothecaire(bibliothecaireId)
+    //           .subscribe({
+    //             next: (res) => {
+    //               this.selectedBibliothecaire = res.data;
+    //               if (
+    //                 this.selectedBibliothecaire &&
+    //                 this.selectedBibliothecaire.id
+    //               ) {
+    //                 const qrValue = `A-${this.selectedBibliothecaire.id.toString()}`;
+    //                 console.log(`Valeur passée à generateQRCode: ${qrValue}`);
+    //                 this.generateQRCode(qrValue);
+    //               } else {
+    //                 console.error(
+    //                   "selectedBibliothecaire n'est pas défini ou manque l'ID"
+    //                 );
+    //               }
+    //               this.loading = false;
+    //             },
+    //             error: (err) => {
+    //               console.error(
+    //                 'Erreur lors de la récupération des données du bibliothécaire:',
+    //                 err
+    //               );
+    //             },
+    //           });
+    //       } else {
+    //         console.error("L'ID du bibliothécaire est undefined.");
+    //       }
+    //     });
+    // }
 
-    if (isPlatformBrowser(this.platformId)) {
-      this.route.params
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe((params) => {
-          const id = params['id'];
-          if (id) {
-            this.bibliothecaireService.getBibliothecaire(id).subscribe({
-              next: (res) => {
-                this.selectedBibliothecaire = res.selectedBibliothecaire;
-                this.generateQRCode(
-                  `A-${this.selectedBibliothecaire.id.toString()}`
-                );
-                this.loading = false;
-              },
-            });
-          }
-        });
-    }
+    // if (isPlatformBrowser(this.platformId)) {
+
+    // }
   }
   loadBibliothecaires() {
     this.bibliothecaireService.getAllBibliothecaires().subscribe((data) => {
@@ -314,7 +381,7 @@ export class BibliothecaireComponent implements OnInit {
     this.isBibliothecaireComponentOpen = true;
   }
 
-  adminQrLink: string = '';
+  protected adminQrLink: string = '';
   private generateQRCode(qrContent: string): void {
     QRCode.toDataURL(qrContent).then((qrLink: string) => {
       this.adminQrLink = qrLink;
