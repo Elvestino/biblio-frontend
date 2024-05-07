@@ -9,4 +9,9 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
-export class RegisterComponent {}
+export class RegisterComponent {
+  showPassword: boolean = false;
+  VisiblePassword() {
+    this.showPassword = !this.showPassword;
+  }
+}

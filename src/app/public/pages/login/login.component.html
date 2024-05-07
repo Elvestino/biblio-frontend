@@ -16,33 +16,37 @@
       <form class="form-container">
         <h1><i class="fa fa-lock-open"></i> Se Connecter</h1>
         <hr />
-        <div class="form-container-text">
+        <div class="login-form">
           <i class="fa fa-user"></i>
 
-          <input type="text" required />
+          <div class="form-container-text">
+            <input type="text" required />
 
-          <span>Nom Utilisateur</span>
+            <span>Nom Utilisateur</span>
+          </div>
         </div>
-        <div class="form-container-text password-form">
+        <div class="login-form">
           <i class="fa fa-key"></i>
-          <input
-            type="{{ showPassword ? 'text' : 'password' }}"
-            name="password"
-            required
-          />
-          <span>Mot de passe</span>
+          <div class="form-container-text password-form">
+            <input
+              type="{{ showPassword ? 'text' : 'password' }}"
+              name="password"
+              required
+            />
+            <span>Mot de passe</span>
 
-          <button
-            class="btn-show-password transition"
-            (click)="PassordVisible()"
-            type="button"
-          >
-            @if (!showPassword) {
-            <i class="fa fa-eye"></i>
-            } @else {
-            <i class="fa fa-eye-slash"></i>
-            }
-          </button>
+            <button
+              class="btn-show-password transition"
+              (click)="PassordVisible()"
+              type="button"
+            >
+              @if (!showPassword) {
+              <i class="fa fa-eye"></i>
+              } @else {
+              <i class="fa fa-eye-slash"></i>
+              }
+            </button>
+          </div>
         </div>
 
         <div class="btn-submit">

@@ -32,7 +32,7 @@
           background-color: var(--orange);
           padding: 4px 90px;
           opacity: 0.9;
-          // border: 0;
+
           outline: 0;
           font-weight: bold;
           text-transform: uppercase;
@@ -70,75 +70,86 @@
             border: 1px solid var(--orange);
             margin-bottom: 25px;
           }
-          .form-container-text {
-            border-bottom: 2px solid var(--orange);
-            flex-direction: column;
-            margin: 20px 0px;
-
-            position: relative;
-            span {
-              position: absolute;
-              left: 0;
-              padding: 20px 10px 10px;
-              pointer-events: none;
-              color: #8f8f8f;
-              font-size: 1em;
-              letter-spacing: 0.05em;
-              transition: 0.5s;
-            }
+          .login-form {
+            display: flex;
+            gap: 10px;
             i {
+              display: flex;
+              justify-content: center;
+              align-items: center;
               font-size: 20px;
             }
-            input {
-              border: none;
-              color: white;
-              padding: 20px 10px 10px;
-              font-size: 1em;
-              letter-spacing: 0.05em;
-              transition: 0.5s;
-
-              z-index: 10;
+            .form-container-text {
               width: 100%;
-              outline: 0;
-              margin: 5px 0 12px 0;
-              box-shadow: none;
-              border-radius: 4px;
-              background: transparent;
+              border-bottom: 2px solid var(--orange);
+              flex-direction: column;
+              margin: 20px 10px;
 
-              &:focus ~ span {
-                color: var(--orange);
-                font-size: 0.75em;
-                transform: translateY(-20px);
-                border: none;
-              }
-              &:valid ~ span {
-                color: var(--orange);
-                border: none;
-                font-size: 0.75em;
-                transform: translateY(-20px);
-              }
-              &:focus ~ p {
-                height: 60px;
-              }
-              &:valid ~ p {
-                height: 60px;
-              }
-            }
-            &.password-form {
               position: relative;
-              button {
-                cursor: pointer;
+              span {
                 position: absolute;
-                bottom: 15px;
-                right: 7px;
-                width: 40px;
-                height: 42px;
-                background: 0;
+                left: 0;
+                padding: 20px 10px 10px;
+                pointer-events: none;
+                color: #8f8f8f;
+                font-size: 1em;
+                letter-spacing: 0.05em;
+                transition: 0.5s;
+              }
+              i {
+                font-size: 20px;
+              }
+              input {
+                border: none;
+                color: white;
+                padding: 20px 10px 10px;
+                font-size: 1em;
+                letter-spacing: 0.05em;
+                transition: 0.5s;
+
+                z-index: 10;
+                width: 100%;
                 outline: 0;
-                border: 0;
-                color: var(--orange);
-                &:hover {
-                  color: var(--primary);
+                margin: 5px 0 12px 0;
+                box-shadow: none;
+                border-radius: 4px;
+                background: transparent;
+
+                &:focus ~ span {
+                  color: var(--orange);
+                  font-size: 0.75em;
+                  transform: translateY(-20px);
+                  border: none;
+                }
+                &:valid ~ span {
+                  color: var(--orange);
+                  border: none;
+                  font-size: 0.75em;
+                  transform: translateY(-20px);
+                }
+                &:focus ~ p {
+                  height: 60px;
+                }
+                &:valid ~ p {
+                  height: 60px;
+                }
+              }
+              &.password-form {
+                position: relative;
+                button {
+                  cursor: pointer;
+                  position: absolute;
+                  bottom: 15px;
+                  right: 7px;
+                  width: 40px;
+                  height: 42px;
+                  background: 0;
+                  outline: 0;
+                  border: 0;
+                  color: var(--orange);
+                  &:hover {
+                    color: var(--primary);
+                  }
                 }
               }
             }

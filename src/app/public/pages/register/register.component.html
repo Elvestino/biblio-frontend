@@ -8,12 +8,17 @@
         <div class="form-container-text">
           <input type="text" required />
           <!-- <p></p> -->
-          <span>Nom*</span>
+          <span>Nom Complet*</span>
         </div>
         <div class="form-container-text">
           <input type="text" required />
           <!-- <p></p> -->
-          <span> Prenom*</span>
+          <span>Adresse*</span>
+        </div>
+        <div class="form-container-text">
+          <input type="text" required />
+          <!-- <p></p> -->
+          <span>CE ou CIN</span>
         </div>
         <div class="form-container-text">
           <input type="text" required />
@@ -25,15 +30,27 @@
           <!-- <p></p> -->
           <span>Nom utilisateur*</span>
         </div>
-        <div class="form-container-text">
-          <input type="text" required />
+
+        <div class="form-container-text password">
+          <input type="{{ showPassword ? 'text' : 'password' }}" required />
           <!-- <p></p> -->
-          <span>CE ou CIN</span>
+          <span>Mot de passe*</span>
+          <button
+            class="btn-show-password transition"
+            (click)="VisiblePassword()"
+            type="button"
+          >
+            @if (!showPassword) {
+            <i class="fa fa-eye"></i>
+            } @else {
+            <i class="fa fa-eye-slash"></i>
+            }
+          </button>
         </div>
         <div class="form-container-text">
-          <input type="text" required />
+          <input type="password" required />
           <!-- <p></p> -->
-          <span>Adresse*</span>
+          <span>Confirmation mot de passe*</span>
         </div>
         <div class="btn-submit">
           <button class="btn btn-primary">S'inscrire</button>

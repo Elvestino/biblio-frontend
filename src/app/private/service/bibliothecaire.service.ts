@@ -8,21 +8,20 @@ import { environment } from '../../../environments/environment.development';
   providedIn: 'root',
 })
 export class BibliothecaireService {
-  apiUrl = environment.apiBaseURL;
+  apiUrl = 'http://localhost:3000/bibliothecaire';
 
   constructor(private http: HttpClient) {}
 
   getAllBibliothecaires(): Observable<any[]> {
-    return this.http.get<any>(`${this.apiUrl}/bibliotecaire`);
+    return this.http.get<any[]>(this.apiUrl);
   }
 
   getBibliothecaire(id: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/bibliotecaire:${id}`);
+    return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
   createBibliothecaire(bibliothecaire: any): Observable<any> {
-    console.log('handefa donnee:', bibliothecaire);
-    return this.http.post<any>(`${this.apiUrl}/bibliotecaire`, bibliothecaire);
+    return this.http.post<any>(this.apiUrl, bibliothecaire);
   }
 
   updateBibliothecaire(id: string, bibliothecaire: any): Observable<any> {

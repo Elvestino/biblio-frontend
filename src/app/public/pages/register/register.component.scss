@@ -110,6 +110,24 @@
               height: 60px;
             }
           }
+          &.password {
+            position: relative;
+            button {
+              cursor: pointer;
+              position: absolute;
+              bottom: 15px;
+              right: 7px;
+              width: 40px;
+              height: 42px;
+              background: 0;
+              outline: 0;
+              border: 0;
+              color: var(--orange);
+              &:hover {
+                color: var(--primary);
+              }
+            }
+          }
         }
 
         .btn-submit {
