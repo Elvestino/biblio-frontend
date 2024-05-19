@@ -115,10 +115,9 @@ export class AdherentComponent implements OnInit {
 
   createadherent() {
     this.isSubmitting = true;
-    console.log('Données a modifier :', this.selectedAdherent);
+
     if (this.isModifAction == true) {
       // requete send modif
-      console.log('Données avant modification :', this.selectedAdherent);
       const updatedAdherent = {
         ...this.AdherentForm.value,
         id: this.selectedAdherent.id,
@@ -127,7 +126,6 @@ export class AdherentComponent implements OnInit {
         .updateadherent(this.selectedAdherent.id, updatedAdherent)
         .subscribe({
           next: (res) => {
-            console.log('Données modifiées avec succès :', res);
             Swal.fire({
               position: 'center',
               icon: 'success',
@@ -158,18 +156,14 @@ export class AdherentComponent implements OnInit {
     } else {
       //  requete send add
       if (this.AdherentForm.valid) {
-        const nouvelId = uuidv4();
-        const AdherentData = {
-          ...this.AdherentForm.value,
-          id: nouvelId,
-        };
+        // const nouvelId = uuidv4();
+        const AdherentData = this.AdherentForm.value;
         this.adherentservice.createadherent(AdherentData).subscribe({
           next: (result) => {
-            console.log('Données enregistrées :', result);
             Swal.fire({
               position: 'center',
               icon: 'success',
-              title: 'Adehrent enregistré',
+              title: 'Adherent enregistré',
               showConfirmButton: false,
               timer: 1500,
             }).then(() => {
@@ -243,7 +237,6 @@ export class AdherentComponent implements OnInit {
 
   ////////////////////////////MODIF//////////////////////
   updateadherent(item: Adherent) {
-    console.log('Données a modifier :', item);
     this.isModifAction = true;
     const dateAdhesion = new Date(item.dt_adhesion);
     this.AdherentForm.patchValue({

@@ -89,7 +89,7 @@ export class BibliothecaireComponent implements OnInit {
   }
   QrcodeOpen() {
     this.qrcodeBibliothecaire = !this.qrcodeBibliothecaire;
-    console.log('tyle id :', this.selectedBibliothecaire.nom_biblio);
+    console.log('ty le id :', this.selectedBibliothecaire.nom_biblio);
     // if (isPlatformBrowser(this.platformId)) {
     //   this.route.params
     //     .pipe(takeUntil(this.unsubscribe$))
@@ -233,10 +233,10 @@ export class BibliothecaireComponent implements OnInit {
   }
   createbibliothecaire() {
     this.isSubmitting = true;
-    console.log('Données a modifier :', this.selectedBibliothecaire);
+
     if (this.isModifAction == true) {
       // requete send modif
-      console.log('Données avant modification :', this.selectedBibliothecaire);
+
       const updatedbilbiothecaire = {
         ...this.BibliothecaireForm.value,
         id: this.selectedBibliothecaire.id,
@@ -248,7 +248,6 @@ export class BibliothecaireComponent implements OnInit {
         )
         .subscribe({
           next: (res) => {
-            console.log('Données modifiées avec succès :', res);
             Swal.fire({
               position: 'center',
               icon: 'success',
@@ -279,16 +278,12 @@ export class BibliothecaireComponent implements OnInit {
     } else {
       //  requete send add
       if (this.BibliothecaireForm.valid) {
-        const nouvelId = uuidv4();
-        const bilbiothecaireData = {
-          ...this.BibliothecaireForm.value,
-          id: nouvelId,
-        };
+        const bilbiothecaireData = this.BibliothecaireForm.value;
+
         this.bibliothecaireService
           .createBibliothecaire(bilbiothecaireData)
           .subscribe({
             next: (result) => {
-              console.log('Données enregistrées :', result);
               Swal.fire({
                 position: 'center',
                 icon: 'success',

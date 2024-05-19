@@ -1,21 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LivreService {
-  apiUrl = 'http://localhost:3000/livre';
+  apiUrl = environment.apiBaseURL;
 
   constructor(private http: HttpClient) {}
 
   getAlllivres(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+    return this.http.get<any[]>(`${this.apiUrl}/livre`);
   }
 
   getlivre(id: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+    return this.http.get<any>(`${this.apiUrl}/livre/${id}`);
   }
   getLivreWithImage(id: string): Observable<any> {
     // Faites une requête HTTP pour récupérer les données du livre avec les données d'image associées
@@ -23,15 +24,15 @@ export class LivreService {
   }
 
   createlivre(livre: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, livre);
+    return this.http.post<any>(`${this.apiUrl}/livre/save`, livre);
   }
 
   updatelivre(id: string, livre: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, livre);
+    return this.http.put<any>(`${this.apiUrl}/livre/${id}`, livre);
   }
 
   deletelivre(id: string): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/${id}`);
+    return this.http.delete<any>(`${this.apiUrl}/livre/${id}`);
   }
   filterlivre(searchterm: string) {
     return this.http.get<any[]>(`${this.apiUrl}`).pipe(

@@ -267,7 +267,6 @@ export class LivreComponent implements OnInit {
 
   ////////////////////////////MODIF//////////////////////
   updatelivre(item: Livre) {
-    console.log('Données a modifier :', item);
     this.isModifAction = true;
 
     this.LivreForm.patchValue({
@@ -287,10 +286,10 @@ export class LivreComponent implements OnInit {
 
   createlivre() {
     this.isSubmitting = true;
-    console.log('Données a modifier :', this.selectedlivre);
+
     if (this.isModifAction == true) {
       // requete send modif
-      console.log('Données avant modification :', this.selectedlivre);
+
       const updatedlivre = {
         ...this.LivreForm.value,
         id: this.selectedlivre.id,
@@ -299,7 +298,6 @@ export class LivreComponent implements OnInit {
         .updatelivre(this.selectedlivre.id, updatedlivre)
         .subscribe({
           next: (res) => {
-            console.log('Données modifiées avec succès :', res);
             Swal.fire({
               position: 'center',
               icon: 'success',
@@ -330,14 +328,9 @@ export class LivreComponent implements OnInit {
     } else {
       //  requete send add
       if (this.LivreForm.valid) {
-        const nouvelId = uuidv4();
-        const livredata = {
-          ...this.LivreForm.value,
-          id: nouvelId,
-        };
+        const livredata = this.LivreForm.value;
         this.livreService.createlivre(livredata).subscribe({
           next: (result) => {
-            console.log('Données enregistrées :', result);
             Swal.fire({
               position: 'center',
               icon: 'success',
@@ -396,10 +389,10 @@ export class LivreComponent implements OnInit {
   };
   createEmprunter() {
     this.isSubmitting = true;
-    console.log('Données a modifier :', this.selectedEmprunter);
+
     if (this.isModifAction == true) {
       // requete send modif
-      console.log('Données avant modification :', this.selectedEmprunter);
+
       const updatedEmprunter = {
         ...this.EmprunterLivre.value,
         id: this.selectedEmprunter.id,
@@ -408,7 +401,6 @@ export class LivreComponent implements OnInit {
         .updateemprunter(this.selectedEmprunter.id, updatedEmprunter)
         .subscribe({
           next: (res) => {
-            console.log('Données modifiées avec succès :', res);
             Swal.fire({
               position: 'center',
               icon: 'success',
@@ -446,7 +438,6 @@ export class LivreComponent implements OnInit {
         };
         this.emprunterservice.createemprunter(EmprunterData).subscribe({
           next: (result) => {
-            console.log('Données enregistrées :', result);
             Swal.fire({
               position: 'center',
               icon: 'success',
