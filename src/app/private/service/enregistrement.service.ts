@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -30,5 +30,26 @@ export class EnregistrementService {
 
   deleteUser(id: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`);
+  }
+
+  /////////////////////////TY NO MANDEFA ANY BACK decommenteo avy eo///////////////
+  // authenticate(nomUtilisateur: string, motdepasse: string): Observable<boolean> {
+  //   return this.http.post<boolean>(`${this.apiUrl}/authenticate`, {
+  //     nomUtilisateur,
+  //     motdepasse,
+  //   });
+  // }
+  authenticate(nomUtilisateur: string, motdepasse: string): Observable<any> {
+    return this.http
+      .get<any[]>(`${this.apiUrl}`)
+      .pipe(
+        map((users) =>
+          users.find(
+            (user) =>
+              user.nomUtilisateur === nomUtilisateur &&
+              user.motdepasse === motdepasse
+          )
+        )
+      );
   }
 }

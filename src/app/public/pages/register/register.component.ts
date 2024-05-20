@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import {
   AbstractControl,
@@ -41,7 +41,8 @@ export class RegisterComponent implements OnInit {
   UsersForm: FormGroup;
   constructor(
     private formbuilder: FormBuilder,
-    private usersService: EnregistrementService
+    private usersService: EnregistrementService,
+    private router: Router
   ) {
     // Définition de passwordMatchValidator ici
 
@@ -167,6 +168,7 @@ export class RegisterComponent implements OnInit {
           timer: 1500,
         }).then(() => {
           this.UsersForm.reset();
+          this.router.navigate(['/login']);
         });
       },
       error: () => {
