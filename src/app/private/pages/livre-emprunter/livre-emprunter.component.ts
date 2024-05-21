@@ -42,7 +42,7 @@ export class LivreEmprunterComponent implements OnInit {
   }
   AllEmprunter: Emprunter[] = [];
   getAllEmprunter() {
-    this.emprunterservice.getAllemprunters().subscribe((getAllEmprunter) => {
+    this.emprunterservice.getAllEmprunts().subscribe((getAllEmprunter) => {
       this.AllEmprunter = getAllEmprunter;
     });
   }
@@ -73,7 +73,7 @@ export class LivreEmprunterComponent implements OnInit {
             showConfirmButton: false,
             timer: 1500,
           });
-          this.emprunterservice.deleteemprunter(id).subscribe(() => {
+          this.emprunterservice.deleteEmprunt(id).subscribe(() => {
             this.getAllEmprunter();
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {

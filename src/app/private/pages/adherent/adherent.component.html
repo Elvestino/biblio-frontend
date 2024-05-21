@@ -171,8 +171,12 @@
           <i class="fa fa-add"></i>
         </button>
       </div>
-
-      <table class="section-table-adherent">
+      <div class="exportExcel">
+        <button class="btn btn-primary" (click)="exportexcel()">
+          Exporter en Excel
+        </button>
+      </div>
+      <table class="section-table-adherent" id="dataExport">
         <thead class="table-heading-adherent">
           <tr class="heading">
             <th>Nom</th>

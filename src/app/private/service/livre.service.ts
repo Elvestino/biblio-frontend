@@ -18,10 +18,6 @@ export class LivreService {
   getlivre(id: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/livre/${id}`);
   }
-  getLivreWithImage(id: string): Observable<any> {
-    // Faites une requête HTTP pour récupérer les données du livre avec les données d'image associées
-    return this.http.get<any>(`${this.apiUrl}/${id}?_expand=image`);
-  }
 
   createlivre(livre: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/livre/save`, livre);
@@ -34,7 +30,8 @@ export class LivreService {
   deletelivre(id: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/livre/${id}`);
   }
-  filterlivre(searchterm: string) {
+
+  filterlivre(searchterm: string): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}`).pipe(
       map((data) => {
         return data.filter((item) => {

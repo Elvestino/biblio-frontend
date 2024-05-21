@@ -5,8 +5,8 @@ export class Enregistrement {
   email: string;
   contact: string;
   nomUtilisateur: string;
-  motdepasse: string;
-  Confirmationmotdepasse: string;
+  motDePasse: string;
+  ConfirmationmotDePasse: string;
   constructor(
     id: string,
     nomComplet: string,
@@ -14,8 +14,8 @@ export class Enregistrement {
     email: string,
     contact: string,
     nomUtilisateur: string,
-    motdepasse: string,
-    Confirmationmotdepasse: string
+    motDePasse: string,
+    ConfirmationmotDePasse: string
   ) {
     this.id = id;
     this.nomComplet = nomComplet;
@@ -23,7 +23,7 @@ export class Enregistrement {
     this.email = email;
     this.contact = contact;
     this.nomUtilisateur = nomUtilisateur;
-    this.motdepasse = motdepasse;
-    this.Confirmationmotdepasse = Confirmationmotdepasse;
+    this.motDePasse = motDePasse;
+    this.ConfirmationmotDePasse = ConfirmationmotDePasse;
   }
 }

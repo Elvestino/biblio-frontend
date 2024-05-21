@@ -12,13 +12,15 @@ import { BibliothecaireService } from '../../service/bibliothecaire.service';
 import { Bibliothecaire } from '../../model/bibliothecaire.model';
 import Swal from 'sweetalert2';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { v4 as uuidv4 } from 'uuid';
+
 import { QRCodeModule } from 'angularx-qrcode';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import * as QRCode from 'qrcode';
-import { isPlatformBrowser } from '@angular/common';
-import { Subject, takeUntil } from 'rxjs';
+
+import { Subject } from 'rxjs';
+
+import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-bibliothecaire',
   standalone: true,
@@ -339,5 +341,18 @@ export class BibliothecaireComponent implements OnInit {
     QRCode.toDataURL(qrContent).then((qrLink: string) => {
       this.adminQrLink = qrLink;
     });
+  }
+
+  ////////////////EXCEL EXPORT //////////////////////
+
+  fileName = 'BibliothecaireExcel.xlsx';
+  exportexcel() {
+    let data = document.getElementById('dataExport');
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(data);
+
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    XLSX.writeFile(wb, this.fileName);
   }
 }

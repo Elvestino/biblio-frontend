@@ -36,14 +36,13 @@
           </select>
         </div>
 
-        <div class="container-form dateEmprunt">
-          <span>Date d'emprunt du livre</span>
-          <input type="date" formControlName="dateEmprunt" required />
-        </div>
-
-        <div class="container-form dateRetour">
-          <span>Date de retour du livre</span>
-          <input type="date" formControlName="dateRetour" required />
+        <div class="container-form">
+          <span>Nombre de jours d'emprunt</span>
+          <input
+            id="joursEmprunt"
+            formControlName="joursEmprunt"
+            type="number"
+          />
         </div>
 
         <div class="container-form statusLivre">
@@ -177,17 +176,6 @@
       <i class="fa fa-times"></i>
     </button>
     <form class="style-form" (submit)="createlivre()" [formGroup]="LivreForm">
-      <div class="image">
-        <input
-          type="file"
-          name="image"
-          formControlName="image"
-          accept="image/*"
-          (change)="afficherEtConvertirImage($event)"
-          required
-        />
-        <img [src]="imageSrc" alt="Pas encore d'image" />
-      </div>
       <div class="container-form-body">
         <h1>{{ isModifAction ? "Modification" : "Enregistrement" }}</h1>
         <hr />
@@ -289,8 +277,6 @@
         </button>
       </div>
       <div class="list-book">
-        <img [src]="item.image" alt="Image du livre {{ item.titreLivre }}" />
-
         <span class="title book">
           <i class="fas fa-heading"></i> Titre :
           <p>{{ item.titreLivre }}</p></span

@@ -41,7 +41,7 @@
         <div class="form-container-text password">
           <input
             type="{{ showPassword ? 'text' : 'password' }}"
-            formControlName="motdepasse"
+            formControlName="motDePasse"
             required
           />
 
@@ -61,13 +61,13 @@
         <div class="form-container-text">
           <input
             type="password"
-            formControlName="Confirmationmotdepasse"
+            formControlName="ConfirmationmotDePasse"
             required
           />
           <!-- <p></p> -->
           <span>Confirmation mot de passe*</span>
-          @if (Confirmationmotdepasse?.touched &&
-          Confirmationmotdepasse?.errors?.["required"]) {
+          @if (ConfirmationmotDePasse?.touched &&
+          ConfirmationmotDePasse?.errors?.["required"]) {
           <p class="error-text">Confirmation mot de passe incorrect</p>
           }
         </div>

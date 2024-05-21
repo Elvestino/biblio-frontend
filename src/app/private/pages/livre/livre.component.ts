@@ -13,7 +13,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { v4 as uuidv4 } from 'uuid';
+
 import { AdherentService } from '../../service/adherent.service';
 import { Adherent } from '../../model/adherent.model';
 import { EmprunterService } from '../../service/emprunter.service';
@@ -104,7 +104,6 @@ export class LivreComponent implements OnInit {
   ];
   title = 'Enregistrement';
   LivreForm = this.formBuilder.group({
-    image: ['', [Validators.required]],
     titreLivre: ['', [Validators.required]],
     auteurLivre: ['', [Validators.required]],
     editionLivre: ['', [Validators.required]],
@@ -132,7 +131,6 @@ export class LivreComponent implements OnInit {
     auteurLivre: '',
     categorie: '',
     description: '',
-    image: '',
     editionLivre: '',
   };
   isEditing = false;
@@ -157,7 +155,6 @@ export class LivreComponent implements OnInit {
       description: item.description,
       categorie: item.categorie,
       editionLivre: item.editionLivre,
-      image: item.image,
     });
     this.selectedlivre = item;
   }
@@ -192,35 +189,11 @@ export class LivreComponent implements OnInit {
         this.livres = filteredItems;
       });
   }
-  images: any[] = [];
+
   loadlivres() {
     this.livreService.getAlllivres().subscribe((data) => {
       this.livres = data;
     });
-  }
-  /////////////////////////UPLOAD IMAGE////////////////////
-  imageSrc: string | ArrayBuffer | null = null;
-
-  afficherEtConvertirImage(event: any) {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      const base64String = reader.result as string;
-
-      this.imageSrc = base64String;
-
-      if (typeof this.imageSrc === 'string') {
-        // L'image est convertie en chaîne de caractères (base64)
-        console.log('Image convertie en string :', this.imageSrc);
-      } else {
-        console.log("L'image n'est pas encore convertie en string.");
-      }
-
-      this.LivreForm.patchValue({
-        image: base64String,
-      });
-    };
-    reader.readAsDataURL(file);
   }
 
   /////////////////////DELETE///////////////////////////
@@ -275,7 +248,6 @@ export class LivreComponent implements OnInit {
       description: item.description,
       categorie: item.categorie,
       editionLivre: item.editionLivre,
-      image: item.image,
     });
 
     this.selectedlivre = item;
@@ -365,8 +337,7 @@ export class LivreComponent implements OnInit {
   }
 
   ///////////////////////////////////////EMPRUNTER/////////////////////
-  // dateEmprunt: Date = new Date();
-  // dateRetour: Date = new Date();
+
   status: string[] = ['Emprunter', 'Retourner'];
   titleEmprunter = 'Emprunter un livre';
 
@@ -374,8 +345,7 @@ export class LivreComponent implements OnInit {
   EmprunterLivre = this.formBuilder.group({
     titreLivre: ['', [Validators.required]],
     nameAdhrent: ['', [Validators.required]],
-    dateEmprunt: ['', [Validators.required]],
-    dateRetour: ['', [Validators.required]],
+    joursEmprunt: ['', [Validators.required, Validators.min(1)]],
     status: ['', [Validators.required]],
   });
 
@@ -391,20 +361,21 @@ export class LivreComponent implements OnInit {
     this.isSubmitting = true;
 
     if (this.isModifAction == true) {
-      // requete send modif
+      // Requête de modification
 
       const updatedEmprunter = {
         ...this.EmprunterLivre.value,
         id: this.selectedEmprunter.id,
       };
+
       this.emprunterservice
-        .updateemprunter(this.selectedEmprunter.id, updatedEmprunter)
+        .updateEmprunt(this.selectedEmprunter.id, updatedEmprunter)
         .subscribe({
           next: (res) => {
             Swal.fire({
               position: 'center',
               icon: 'success',
-              title: 'Emprunt Livre modifier',
+              title: 'Emprunt Livre modifié',
               showConfirmButton: false,
               timer: 1500,
             }).then(() => {
@@ -429,15 +400,27 @@ export class LivreComponent implements OnInit {
           },
         });
     } else {
-      //  requete send add
+      // Requête d'ajout
       if (this.EmprunterLivre.valid) {
-        const nouvelId = uuidv4();
-        const EmprunterData = {
-          ...this.EmprunterLivre.value,
-          id: nouvelId,
-        };
-        this.emprunterservice.createemprunter(EmprunterData).subscribe({
+        const EmprunterData: any = this.EmprunterLivre.value; // Définir le type de EmprunterData comme any
+
+        const joursEmprunt = Number(EmprunterData.joursEmprunt);
+
+        if (isNaN(joursEmprunt)) {
+          console.error("Le nombre de jours d'emprunt n'est pas valide.");
+          return;
+        }
+
+        const dateEmprunt = new Date();
+        const dateRetour = new Date(dateEmprunt);
+        dateRetour.setDate(dateEmprunt.getDate() + joursEmprunt);
+
+        EmprunterData.dateEmprunt = dateEmprunt;
+        EmprunterData.dateRetour = dateRetour;
+
+        this.emprunterservice.createEmprunt(EmprunterData).subscribe({
           next: (result) => {
+            console.log('data emprunter :', result);
             Swal.fire({
               position: 'center',
               icon: 'success',
@@ -445,7 +428,6 @@ export class LivreComponent implements OnInit {
               showConfirmButton: false,
               timer: 1500,
             }).then(() => {
-              // this.loadBibliothecaires();
               this.EmprunterLivre.reset();
               this.isSubmitting = false;
               this.isRegisterSuccess = true;

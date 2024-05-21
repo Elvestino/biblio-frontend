@@ -319,7 +319,7 @@
   animation: fade 0.2s 0.1s ease-in-out forwards;
   .form-container {
     width: 100%;
-    max-width: 1250px;
+    max-width: 550px;
     min-height: 250px;
     border-radius: 9px;
     background: var(--blue);
@@ -347,8 +347,6 @@
     }
   }
   .style-form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
     background: #eee;
     border-radius: 18px;
     margin: 25px;
@@ -359,12 +357,6 @@
       align-items: center;
       gap: 40px;
       flex-direction: column;
-      img {
-        width: 100%;
-        height: 100vh;
-        max-width: 500px;
-        max-height: 500px;
-      }
     }
     .container-form-body {
       display: grid;

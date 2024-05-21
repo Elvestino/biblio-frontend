@@ -34,8 +34,8 @@ export class RegisterComponent implements OnInit {
     id: '',
     contact: '',
     nomUtilisateur: '',
-    motdepasse: '',
-    Confirmationmotdepasse: '',
+    motDePasse: '',
+    ConfirmationmotDePasse: '',
   };
 
   UsersForm: FormGroup;
@@ -46,88 +46,45 @@ export class RegisterComponent implements OnInit {
   ) {
     // Définition de passwordMatchValidator ici
 
-    this.UsersForm = this.formbuilder.group({
-      nomComplet: ['', Validators.required],
-      adresse: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      contact: ['', Validators.required],
-      nomUtilisateur: ['', Validators.required],
-      motdepasse: ['', [Validators.required, Validators.minLength(6)]],
-      Confirmationmotdepasse: ['', Validators.required],
-    });
+    this.UsersForm = this.formbuilder.group(
+      {
+        nomComplet: ['', Validators.required],
+        adresse: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        contact: ['', Validators.required],
+        nomUtilisateur: ['', Validators.required],
+        motDePasse: ['', [Validators.required, Validators.minLength(6)]],
+        ConfirmationmotDePasse: ['', Validators.required],
+      },
+      { validator: this.passwordMatchValidator }
+    );
+  }
+  passwordMatchValidator(form: FormGroup) {
+    return form.get('motDePasse')?.value ===
+      form.get('confirmationMotDePasse')?.value
+      ? null
+      : { mismatch: true };
   }
 
-  // passwordMatchValidator(formGroup: FormGroup) {
-  //   const motdepasse = formGroup.get('motdepasse')?.value;
-  //   const Confirmationmotdepasse = formGroup.get(
-  //     'Confirmationmotdepasse'
-  //   )?.value;
-
-  //   if (motdepasse !== undefined && Confirmationmotdepasse !== undefined) {
-  //     return motdepasse === Confirmationmotdepasse ? null : { mismatch: true };
-  //   } else {
-  //     return { missingValue: true };
-  //   }
-  // }
   ngOnInit(): void {}
 
-  get motdepasse() {
-    return this.UsersForm.get('motdepasse');
+  get motDePasse() {
+    return this.UsersForm.get('motDePasse');
   }
   get email() {
     return this.UsersForm.get('email');
   }
-  get Confirmationmotdepasse() {
-    return this.UsersForm.get('Confirmationmotdepasse');
+  get ConfirmationmotDePasse() {
+    return this.UsersForm.get('ConfirmationmotDePasse');
   }
 
   // //////////////////CREATE //////////////////////
-  // createUsers() {
-  //   if (
-  //     this.UsersForm.value.motdepasse !==
-  //     this.UsersForm.value.Confirmationmotdepasse
-  //   ) {
-  //     Swal.fire(
-  //       'Erreur',
-  //       'Les mots de passe et la confirmation du mot de passe sont incorrectes.',
-  //       'error'
-  //     );
-  //   } else {
-  //     const UsersData = this.UsersForm.value;
-  //     this.usersService.createUser(UsersData).subscribe({
-  //       next: (result) => {
-  //         console.log('data :', result);
-  //         Swal.fire({
-  //           position: 'center',
-  //           icon: 'success',
-  //           title: 'Utilisateur enregistré',
-  //           showConfirmButton: false,
-  //           timer: 1500,
-  //         }).then(() => {
-  //           this.UsersForm.reset();
-  //         });
-  //       },
-  //       error: () => {
-  //         Swal.fire({
-  //           position: 'center',
-  //           icon: 'error',
-  //           title: "Erreur lors de l'enregistrement ",
-  //           showConfirmButton: false,
-  //           timer: 1500,
-  //         });
-  //         console.log(
-  //           "Erreur lors de l'enregistrement : ",
-  //           this.UsersForm.value
-  //         );
-  //       },
-  //     });
-  //   }
-  // }
+
   createUsers() {
     // Vérification des mots de passe
     if (
-      this.UsersForm.value.motdepasse !==
-      this.UsersForm.value.Confirmationmotdepasse
+      this.UsersForm.value.motDePasse !==
+      this.UsersForm.value.ConfirmationmotDePasse
     ) {
       Swal.fire(
         'Erreur',
@@ -153,34 +110,37 @@ export class RegisterComponent implements OnInit {
         'error'
       );
       return; // Arrête l'exécution de la fonction après avoir affiché l'alerte
+    } else {
+      // Création de l'utilisateur si les vérifications passent
+      const UsersData = this.UsersForm.value;
+      this.usersService.createUser(UsersData).subscribe({
+        next: (result) => {
+          console.log('data :', result);
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Utilisateur enregistré',
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            this.UsersForm.reset();
+            this.router.navigate(['/login']);
+          });
+        },
+        error: () => {
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: "Erreur lors de l'enregistrement",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          console.log(
+            "Erreur lors de l'enregistrement :",
+            this.UsersForm.value
+          );
+        },
+      });
     }
-
-    // Création de l'utilisateur si les vérifications passent
-    const UsersData = this.UsersForm.value;
-    this.usersService.createUser(UsersData).subscribe({
-      next: (result) => {
-        console.log('data :', result);
-        Swal.fire({
-          position: 'center',
-          icon: 'success',
-          title: 'Utilisateur enregistré',
-          showConfirmButton: false,
-          timer: 1500,
-        }).then(() => {
-          this.UsersForm.reset();
-          this.router.navigate(['/login']);
-        });
-      },
-      error: () => {
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: "Erreur lors de l'enregistrement",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        console.log("Erreur lors de l'enregistrement :", this.UsersForm.value);
-      },
-    });
   }
 }

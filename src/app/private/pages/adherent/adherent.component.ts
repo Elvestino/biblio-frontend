@@ -17,6 +17,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { catchError } from 'rxjs';
 
+import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-adherent',
   standalone: true,
@@ -330,5 +331,18 @@ export class AdherentComponent implements OnInit {
     const contenuQRCode = `${this.selectedAdherent.nom_Adh} ${this.selectedAdherent.prenom_Adh}\nAdresse: ${this.selectedAdherent.adrs_Adh}\nContact: ${this.selectedAdherent.tel_Adh}\nCategorie: ${this.selectedAdherent.categorie}`;
 
     // Utilisez le contenuQRCode pour générer le QR code
+  }
+
+  ////////////////EXCEL EXPORT //////////////////////
+
+  fileName = 'AdherentExcel.xlsx';
+  exportexcel() {
+    let data = document.getElementById('dataExport');
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(data);
+
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    XLSX.writeFile(wb, this.fileName);
   }
 }

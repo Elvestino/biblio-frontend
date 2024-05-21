@@ -1,6 +1,6 @@
 export class Livre {
   id: string;
-  image: string;
+
   titreLivre: string;
   auteurLivre: string;
   editionLivre: string;
@@ -9,7 +9,7 @@ export class Livre {
 
   constructor(
     id: string,
-    image: string,
+
     titreLivre: string,
     auteurLivre: string,
     editionLivre: string,
@@ -17,7 +17,7 @@ export class Livre {
     categorie: string
   ) {
     this.id = id;
-    this.image = image;
+
     this.titreLivre = titreLivre;
     this.auteurLivre = auteurLivre;
     this.editionLivre = editionLivre;

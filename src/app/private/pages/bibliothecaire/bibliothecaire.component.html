@@ -136,8 +136,13 @@
         </button>
       </div>
 
+      <div class="exportExcel">
+        <button class="btn btn-primary" (click)="exportexcel()">
+          Exporter en Excel
+        </button>
+      </div>
       <!-- ///////////////////////////////////TABLE/////////////////////////////////// -->
-      <table class="section-table-bibliothecaire">
+      <table class="section-table-bibliothecaire" id="dataExport">
         <thead class="table-heading-bibliothecaire">
           <tr class="heading">
             <th>Nom</th>
