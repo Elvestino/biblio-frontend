@@ -343,15 +343,14 @@ export class LivreComponent implements OnInit {
 
   formHeaderEmprunter = 'Emprunter';
   EmprunterLivre = this.formBuilder.group({
-    titreLivre: ['', [Validators.required]],
-    nameAdhrent: ['', [Validators.required]],
+    livreTitre: ['', [Validators.required]],
+    adherentNom: ['', [Validators.required]],
     joursEmprunt: ['', [Validators.required, Validators.min(1)]],
-    status: ['', [Validators.required]],
   });
 
   selectedEmprunter: Emprunter = {
     titreLivre: '',
-    nameAdhrent: '',
+    nom_Adh: '',
     id: '',
     dateEmprunt: new Date(),
     dateRetour: new Date(),
@@ -360,67 +359,52 @@ export class LivreComponent implements OnInit {
   createEmprunter() {
     this.isSubmitting = true;
 
-    if (this.isModifAction == true) {
-      // Requête de modification
+    if (this.EmprunterLivre.valid) {
+      const formValue = this.EmprunterLivre.value;
+      const livre = this.livres.find(
+        (l) => l.titreLivre === formValue.livreTitre
+      );
+      const adherent = this.allAdherent.find(
+        (a) => a.nom_Adh === formValue.adherentNom
+      );
 
-      const updatedEmprunter = {
-        ...this.EmprunterLivre.value,
-        id: this.selectedEmprunter.id,
-      };
+      if (!livre || !adherent) {
+        console.error('Livre ou adhérent non trouvé.');
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Livre ou adhérent non trouvé',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        this.isSubmitting = false;
+        return;
+      }
+
+      const livreId = Number(livre.id);
+      const adherentId = Number(adherent.id);
+      const joursEmprunt = Number(formValue.joursEmprunt);
+
+      if (isNaN(livreId) || isNaN(adherentId) || isNaN(joursEmprunt)) {
+        console.error(
+          'Les identifiants et le nombre de jours doivent être des nombres valides.'
+        );
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title:
+            'Les identifiants et le nombre de jours doivent être des nombres valides',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        this.isSubmitting = false;
+        return;
+      }
 
       this.emprunterservice
-        .updateEmprunt(this.selectedEmprunter.id, updatedEmprunter)
+        .emprunterLivre(adherentId, livreId, joursEmprunt)
         .subscribe({
-          next: (res) => {
-            Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'Emprunt Livre modifié',
-              showConfirmButton: false,
-              timer: 1500,
-            }).then(() => {
-              this.getAllAdherent();
-              this.EmprunterLivre.reset();
-              this.isSubmitting = false;
-              this.isRegisterSuccess = false;
-              this.closeEmpreinte();
-            });
-          },
-          error: (err) => {
-            Swal.fire({
-              position: 'center',
-              icon: 'error',
-              title: "Erreur lors de la modification de l'Emprunter du livre",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            console.error('Erreur lors de la modification :', err);
-            this.isSubmitting = false;
-            this.isRegisterSuccess = false;
-          },
-        });
-    } else {
-      // Requête d'ajout
-      if (this.EmprunterLivre.valid) {
-        const EmprunterData: any = this.EmprunterLivre.value; // Définir le type de EmprunterData comme any
-
-        const joursEmprunt = Number(EmprunterData.joursEmprunt);
-
-        if (isNaN(joursEmprunt)) {
-          console.error("Le nombre de jours d'emprunt n'est pas valide.");
-          return;
-        }
-
-        const dateEmprunt = new Date();
-        const dateRetour = new Date(dateEmprunt);
-        dateRetour.setDate(dateEmprunt.getDate() + joursEmprunt);
-
-        EmprunterData.dateEmprunt = dateEmprunt;
-        EmprunterData.dateRetour = dateRetour;
-
-        this.emprunterservice.createEmprunt(EmprunterData).subscribe({
           next: (result) => {
-            console.log('data emprunter :', result);
             Swal.fire({
               position: 'center',
               icon: 'success',
@@ -428,46 +412,38 @@ export class LivreComponent implements OnInit {
               showConfirmButton: false,
               timer: 1500,
             }).then(() => {
+              this.closeEmpreinte();
               this.EmprunterLivre.reset();
               this.isSubmitting = false;
               this.isRegisterSuccess = true;
-              this.closeEmpreinte();
             });
           },
-          error: () => {
+          error: (err) => {
             Swal.fire({
               position: 'center',
               icon: 'error',
-              title: "Erreur lors de l'enregistrement d'Emprunt du livre",
+              title: "Erreur lors de l'enregistrement de l'emprunt du livre",
               showConfirmButton: false,
               timer: 1500,
             });
-            console.log(
-              "Erreur lors de l'enregistrement : ",
-              this.EmprunterLivre.value
-            );
+            console.error("Erreur lors de l'enregistrement :", err);
             this.isSubmitting = false;
           },
         });
-      }
+    } else {
+      this.isSubmitting = false;
     }
   }
 
   /////////////////////////////VOIR PLUS//////////////////////////
-  // speak(text: string): void {
-  //   const utterance = new SpeechSynthesisUtterance(text);
-  //   this.synth.speak(utterance);
-  // }
+
   selectedBook: any;
 
   speakText() {
     this.isSynthPlaying = true;
     this.speak(this.selectedlivre.description);
   }
-  // cancel(): void {
-  //   this.isSynthPlaying = false;
-  //   this.synth.cancel();
-  // }
+
   speak(text: string): void {
     const utterance = new SpeechSynthesisUtterance(text);
     if (this.synth) {

@@ -15,21 +15,21 @@
       [formGroup]="EmprunterLivre"
     >
       <div class="container-form-body">
-        <h1>{{ titleEmprunter }}</h1>
+        <h1>Emprunter un livre</h1>
         <hr />
 
-        <div class="container-form titreLivre">
+        <div class="container-form">
           <span>Titre du livre</span>
-          <select formControlName="titreLivre" id="titreLivre" required>
+          <select formControlName="livreTitre" id="titreLivre" required>
             @for(i of livres; track $index){
             <option value="{{ i.titreLivre }}">{{ i.titreLivre }}</option>
             }
           </select>
         </div>
 
-        <div class="container-form nameAdhrent">
+        <div class="container-form">
           <span>Le nom de l'Adherent</span>
-          <select formControlName="nameAdhrent" id="nameAdhrent" required>
+          <select formControlName="adherentNom" id="nomAdherent" required>
             @for(i of allAdherent; track $index){
             <option value="{{ i.nom_Adh }}">{{ i.nom_Adh }}</option>
             }
@@ -45,17 +45,7 @@
           />
         </div>
 
-        <div class="container-form statusLivre">
-          <span>Le status du Livre</span>
-          <select formControlName="status" id="status" required>
-            @for (item of status; track $index) {
-
-            <option value="{{ item }}">{{ item }}</option>
-            }
-          </select>
-        </div>
         <div class="btn-add">
-          @if (EmprunterLivre.valid) {
           <button
             class="{{
               isRegisterSuccess
@@ -63,11 +53,10 @@
                 : 'btn btn-primary transition'
             }}"
             type="submit"
+            [disabled]="isSubmitting"
           >
-            @if(!isSubmitting && !isRegisterSuccess) {
-            {{ formHeaderEmprunter }} }
+            {{ isSubmitting ? "En cours..." : "Emprunter" }}
           </button>
-          }
         </div>
       </div>
     </form>

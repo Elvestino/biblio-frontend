@@ -6,7 +6,6 @@
       <th>Date de l'emprunt</th>
       <th>Date de Retour</th>
       <th>Status</th>
-
       <th>Action</th>
     </tr>
   </thead>
@@ -14,15 +13,17 @@
     @for (item of AllEmprunter; track $index) {
     <tr class="data">
       <td>{{ item.titreLivre }}</td>
-      <td>{{ item.nameAdhrent }}</td>
+      <td>{{ item.nom_Adh }}</td>
       <td>{{ item.dateEmprunt }}</td>
       <td>{{ item.dateRetour }}</td>
-      <td>{{ item.status }}</td>
-      <td class="data-control">
-        <button class="btn btn-success">
-          <i class="fa-solid fa-pencil"></i>
-        </button>
+      <td>
+        <button class="btn btn-primary" (click)="retournerLivre(+item.id)">
+          <i class="fa fa-check"></i>
 
+          {{ item.status }}
+        </button>
+      </td>
+      <td class="data-control">
         <button class="btn btn-danger" (click)="deleteEmprunter(item.id)">
           <i class="fa-solid fa-trash"></i>
         </button>

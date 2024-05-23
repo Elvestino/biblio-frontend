@@ -1,6 +1,7 @@
+@if(scannerQrcode){
 <div class="app-qr-scanner">
   <div class="scanner-card">
-    <!-- close button -->
+    close button
     <button type="button" (click)="closeForm()" class="btn-close">
       <i class="fa fa-times"></i>
     </button>
@@ -13,4 +14,36 @@
       ></zxing-scanner>
     </div>
   </div>
+</div>
+} @if(scannerImage){
+<input type="file" (change)="onFileChange($event)" accept="image/*" />
+<img
+  ngIf="imageSrc"
+  [src]="imageSrc"
+  alt="Uploaded Image"
+  style="max-width: 100%"
+/>
+<br />
+<button (click)="submitImage()" class="btn btn-primary">Submit</button>
+
+}
+<br />
+<br />
+<button type="button" class="btn btn-primary" (click)="openScannImage()">
+  Scanner Image
+</button>
+<button type="button" class="btn btn-primary">Scanner QrCode</button>
+
+<!-- /////////////////////TABLEAU///////////////////////// -->
+
+<div ngIf="scannedData">
+  <h2>Liste des données scannées</h2>
+  <ul>
+    @for(item of scannedData; track $index){
+    <li>{{ item }}</li>
+    }
+  </ul>
+  <button (click)="deleteAllScannedData()" class="btn btn-danger">
+    Supprimer toutes les données
+  </button>
 </div>

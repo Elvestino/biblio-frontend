@@ -24,11 +24,11 @@ export class QrcodeBibliothecaireComponent {
 
   ngOnInit(): void {
     const id = 'example_id'; // Remplacez 'example_id' par l'ID réel que vous souhaitez récupérer
-    this.getBibliothecaire(id);
+    this.getBibliothecaireById(id);
   }
 
-  getBibliothecaire(id: string): void {
-    this.bibliothecaireService.getBibliothecaire(id).subscribe((data) => {
+  getBibliothecaireById(id: string): void {
+    this.bibliothecaireService.getBibliothecaireById(id).subscribe((data) => {
       this.bibliothecaires = data;
     });
   }

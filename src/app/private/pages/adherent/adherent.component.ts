@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { QrcodeAdherentComponent } from '../../component/qrcode-adherent/qrcode-adherent.component';
 
@@ -15,7 +15,7 @@ import {
 import { QRCodeModule } from 'angularx-qrcode';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { catchError } from 'rxjs';
+import { catchError, of } from 'rxjs';
 
 import * as XLSX from 'xlsx';
 @Component({
@@ -34,7 +34,8 @@ import * as XLSX from 'xlsx';
 export class AdherentComponent implements OnInit {
   constructor(
     private adherentservice: AdherentService,
-    private formbuilder: FormBuilder
+    private formbuilder: FormBuilder,
+    private cdr: ChangeDetectorRef
   ) {}
   isModifAction: boolean = false;
   filter: string[] = ['Tous', 'Eleve', 'Professeur', 'Externe'];
@@ -293,32 +294,7 @@ export class AdherentComponent implements OnInit {
     });
     this.closeCard();
   }
-
-  genererDonneesQr(): string {
-    if (!this.selectedAdherent || !this.selectedAdherent.id) {
-      console.error(
-        'Aucun adhérent sélectionné pour la génération du QR code !'
-      );
-      return ''; // Retourne une chaîne vide si aucune donnée n'est disponible
-    }
-
-    this.adherentservice
-      .getadherent(this.selectedAdherent.id)
-      .pipe(
-        catchError((error) => {
-          console.error(
-            'Erreur lors de la récupération des données de l adhérent :',
-            error
-          );
-          return [];
-        })
-      )
-      .subscribe((adherentData) => {
-        this.selectedAdherent = adherentData;
-        this.genererDonneesQrAvecAdherent();
-      });
-    return '';
-  }
+  qrData: string = '';
 
   genererDonneesQrAvecAdherent(): void {
     if (!this.selectedAdherent) {
@@ -328,9 +304,35 @@ export class AdherentComponent implements OnInit {
       return;
     }
 
-    const contenuQRCode = `${this.selectedAdherent.nom_Adh} ${this.selectedAdherent.prenom_Adh}\nAdresse: ${this.selectedAdherent.adrs_Adh}\nContact: ${this.selectedAdherent.tel_Adh}\nCategorie: ${this.selectedAdherent.categorie}`;
+    this.qrData = `${this.selectedAdherent.nom_Adh} ${this.selectedAdherent.prenom_Adh}\nAdresse: ${this.selectedAdherent.adrs_Adh}\nContact: ${this.selectedAdherent.tel_Adh}\nCategorie: ${this.selectedAdherent.categorie}`;
+    this.cdr.detectChanges(); // Assurez-vous que les changements sont détectés
+  }
 
-    // Utilisez le contenuQRCode pour générer le QR code
+  genererDonneesQr(): void {
+    if (!this.selectedAdherent || !this.selectedAdherent.id) {
+      console.error(
+        'Aucun adhérent sélectionné pour la génération du QR code !'
+      );
+      return;
+    }
+
+    this.adherentservice
+      .getadherent(this.selectedAdherent.id)
+      .pipe(
+        catchError((error) => {
+          console.error(
+            "Erreur lors de la récupération des données de l'adhérent :",
+            error
+          );
+          return of(null); // Utilisez 'of(null)' pour retourner un observable avec une valeur 'null'
+        })
+      )
+      .subscribe((adherentData) => {
+        if (adherentData) {
+          this.selectedAdherent = adherentData;
+          this.genererDonneesQrAvecAdherent();
+        }
+      });
   }
 
   ////////////////EXCEL EXPORT //////////////////////

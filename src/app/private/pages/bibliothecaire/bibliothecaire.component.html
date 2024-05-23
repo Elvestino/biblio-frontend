@@ -5,7 +5,7 @@
     <button
       class="btn-close-form"
       type="button"
-      aria-label="close buttton"
+      aria-label="close button"
       (click)="closeForm()"
     >
       <i class="fa fa-times"></i>
@@ -19,8 +19,8 @@
         <div class="qrcodeImage">
           <div class="qr-container">
             <img
-              src="{{ adminQrLink }}"
-              alt="nicolas profile"
+              [src]="adminQrLink"
+              alt="QR Code"
               style="width: 100%; object-fit: cover"
             />
           </div>
@@ -28,12 +28,13 @@
       </div>
       <div class="btn-download">
         <button class="download" (click)="Qr()">
-          <i class="fa fa-download"></i> Telecharger
+          <i class="fa fa-download"></i> Télécharger
         </button>
       </div>
     </div>
   </div>
 </section>
+
 }
 
 <!-- //////////////////////////////////////////////////AJOUT/////////////////////////////////// -->

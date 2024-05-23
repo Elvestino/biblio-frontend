@@ -27,6 +27,8 @@ export class LivreEmprunterComponent implements OnInit {
     this.getAllEmprunter();
     this.getAlllivre();
   }
+  livre: any;
+  adherent: any;
 
   allAdherent: Adherent[] = [];
   getAllAdherent() {
@@ -86,5 +88,18 @@ export class LivreEmprunterComponent implements OnInit {
           });
         }
       });
+  }
+
+  retournerLivre(empruntId: number): void {
+    this.emprunterservice.retournerLivre(empruntId).subscribe(
+      () => {
+        console.log('Livre retourné avec succès.');
+        // Rafraîchir la liste des emprunts après avoir retourné le livre
+        this.getAllEmprunter();
+      },
+      (error) => {
+        console.error('Erreur lors du retour du livre : ', error);
+      }
+    );
   }
 }

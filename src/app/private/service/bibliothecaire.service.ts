@@ -16,8 +16,7 @@ export class BibliothecaireService {
     return this.http.get<any[]>(`${this.apiUrl}/bibliothecaire`);
   }
 
-  getBibliothecaire(id: string): Observable<any> {
-    console.log('id : ty no tokom ho raisiny', id);
+  getBibliothecaireById(id: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/bibliothecaire/${id}`);
   }
 

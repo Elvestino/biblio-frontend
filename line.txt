@@ -78,3 +78,86 @@ import { NgChartsModule } from 'ng2-charts';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+
+
+
+
+
+
+
+
+<main class="add-emprunter">
+  <div class="form-container">
+    <button
+      class="btn-close-form"
+      type="button"
+      aria-label="close buttton"
+      (click)="closeEmpreinte()"
+    >
+      <i class="fa fa-times"></i>
+    </button>
+    <form
+      class="style-form"
+      (submit)="createEmprunter()"
+      [formGroup]="EmprunterLivre"
+    >
+      <div class="container-form-body">
+        <h1>{{ titleEmprunter }}</h1>
+        <hr />
+
+        <div class="container-form titreLivre">
+          <span>Titre du livre</span>
+          <select formControlName="titreLivre" id="titreLivre" required>
+            @for(i of livres; track $index){
+            <option value="{{ i.titreLivre }}">{{ i.titreLivre }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="container-form nameAdhrent">
+          <span>Le nom de l'Adherent</span>
+          <select formControlName="nom_Adh" id="nameAdhrent" required>
+            @for(i of allAdherent; track $index){
+            <option value="{{ i.nom_Adh }}">{{ i.nom_Adh }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="container-form">
+          <span>Nombre de jours d'emprunt</span>
+          <input
+            id="joursEmprunt"
+            formControlName="joursEmprunt"
+            type="number"
+          />
+        </div>
+
+        <div class="container-form statusLivre">
+          <span>Le status du Livre</span>
+          <select formControlName="status" id="status" required>
+            @for (item of status; track $index) {
+
+            <option value="{{ item }}">{{ item }}</option>
+            }
+          </select>
+        </div>
+        <div class="btn-add">
+          @if (EmprunterLivre.valid) {
+          <button
+            class="{{
+              isRegisterSuccess
+                ? 'btn btn-success transition'
+                : 'btn btn-primary transition'
+            }}"
+            type="submit"
+          >
+            @if(!isSubmitting && !isRegisterSuccess) {
+            {{ formHeaderEmprunter }} }
+          </button>
+          }
+        </div>
+      </div>
+    </form>
+  </div>
+</main>

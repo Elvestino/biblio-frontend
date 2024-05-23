@@ -1,7 +1,7 @@
 export class Emprunter {
   id: string;
   titreLivre: string;
-  nameAdhrent: string;
+  nom_Adh: string;
   dateEmprunt: Date;
   dateRetour: Date;
   status: string;
@@ -9,14 +9,14 @@ export class Emprunter {
   constructor(
     id: string,
     titreLivre: string,
-    nameAdhrent: string,
+    nom_Adh: string,
     dateEmprunt: Date,
     joursEmprunt: number,
     status: string
   ) {
     this.id = id;
     this.titreLivre = titreLivre;
-    this.nameAdhrent = nameAdhrent;
+    this.nom_Adh = nom_Adh;
     this.dateEmprunt = dateEmprunt;
 
     this.dateRetour = new Date(dateEmprunt);
