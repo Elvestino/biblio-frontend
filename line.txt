@@ -1,57 +1,57 @@
-// verifierDisponibiliteLivre(livreId: string): void {
-  //   this.emprunterservice.verifierDisponibiliteLivre(livreId).subscribe({
-  //     next: (disponible: boolean) => {
-  //       this.livreDisponible = disponible;
-  //     },
-  //     error: (error) => {
-  //       Swal.fire(
-  //         'Erreur',
-  //         'Erreur lors de la vérification de la disponibilité du livre.',
-  //         'error'
-  //       );
-  //       console.error(
-  //         'Erreur lors de la vérification de la disponibilité du livre :',
-  //         error
-  //       );
-  //     },
-  //   });
-  // }
-  // EmprunterLivreID(livreId: string | null | undefined): void {
-  //   if (!livreId) {
-  //     Swal.fire('Erreur', "L'ID du livre est invalide.", 'error');
-  //     return;
-  //   }
 
-  //   if (!this.livreDisponible) {
-  //     Swal.fire('Indisponible', "Le livre n'est pas disponible.", 'info');
-  //     return;
-  //   }
-
-  //   const adherentId = 1; // Remplacez par l'ID de l'adhérent actuel
-  //   const joursEmpruntString = this.EmprunterLivre.get('joursEmprunt')?.value;
-  //   const joursEmprunt = joursEmpruntString
-  //     ? parseInt(joursEmpruntString, 10)
-  //     : 0;
-
-  //   if (isNaN(joursEmprunt)) {
-  //     Swal.fire(
-  //       'Erreur',
-  //       "Le nombre de jours d'emprunt est invalide.",
-  //       'error'
-  //     );
-  //     return;
-  //   }
-
-  //   this.emprunterservice
-  //     .emprunterLivre(adherentId, parseInt(livreId), joursEmprunt)
-  //     .subscribe({
-  //       next: () => {
-  //         Swal.fire('Succès', 'Livre emprunté avec succès.', 'success');
-  //         // this.verifierDisponibiliteLivre(livreId);
-  //       },
-  //       error: (error) => {
-  //         Swal.fire('Erreur', "Erreur lors de l'emprunt du livre.", 'error');
-  //         console.error("Erreur lors de l'emprunt du livre :", error);
-  //       },
-  //     });
-  // }
+0
+id	"08799b27-8e0b-4fc0-b4a6-15a1bf1fd3ba"
+image	"data:image/jpeg;base64,/…Atj6N/oNRmEGz1nM0T//2Q=="
+titreLivre	"la mystere de la file"
+auteurLivre	"Elvestino Dorelin"
+editionLivre	"2200"
+categorie	"Humour"
+description	"tatara Fotsiny e"
+1
+image	"data:image/png;base64,iV…jHZMZ80AAAAASUVORK5CYII="
+titreLivre	"Twisted Tales "
+auteurLivre	" Liz Braswell "
+editionLivre	"2002"
+categorie	"Romance"
+description	"Et si Aladdin n'avait jamais trouvé la lampe ?\n\nQuand Jafar vole la lampe du Génie, il utilise ses deux premiers voeux pour devenir sultan et le plus grand sorcier du monde. Agrabah vit dans la peur, en attendant son troisième et ultime voeu. Pour stopper le dictateur, Aladdin et la princesse Jasmine doivent unir le peuple d'Agrabah et organiser une rébellion. Mais très vite, leur combat pour la liberté menace de créer une guerre civile... Ce rêve bleu explore une version sombre et audacieuse du classique d'animation Disney, Aladdin."
+id	"05c930a9-c10a-4009-95ee-77dcc3b75fcf"
+2
+id	"4ff152ed-f563-40f0-b62c-7906bcde7561"
+image	"data:image/png;base64,iV…AzQJkG8YAAAAAElFTkSuQmCC"
+titreLivre	"Le détail et le tout "
+auteurLivre	"Jean-Claude Seguin"
+editionLivre	"2003"
+categorie	"Voyage"
+description	`L'œuvre inconique est constituée d'une somme d'informations qui construisent une unité de sens. Le tout, narration construite, tend à gommer l'effet "détail"; alors qu'il est fondamentalement un agglomérat de situations, d'épisodes, de traits, de couleurs, de figures... qui ont également leur propre "existence" que le tout efface en partie. S'il n'est pas toujours aisé de définir le détail (Où commence-t-il ? Où s'achève-t-il ?), il est inévitablement présent dans l'œuvre. Il en constitue, selon Daniel Arasse, sa brillance, sa différence et sa puissance de fissure, de séparation de l'œuvre. Le détail, lorsqu'il atteint une certaine autonomie expressive et significative, construit un rapport dialectique avec le tout. La tension entre le détail et le tout est productrice d'un incontestable dynamisme où les différents fragments de l'œuvre tout en possédant leur propre autonomie sont susceptibles de confluer pour produire le sens total. L'étude de structures élémentaires (la couleur, la figure ou la texture) oriente une réflexion sur la fragmentation et la renarrativisation dont le "texte" post-moderne est une des meilleures actualisations. L'effet "détail" peut également être présent dans l'intervention sociale ou politique visant à détourner l'œuvre de sa destination première. Ainsi la censure, dans la micro ou macro chirurgie qu'elle opère sur l'œuvre, est susceptible de déconstruire le sens initial pour en proposer un nouveau. La dialectique du tout et du détail peut également rendre compte du rapport qui s'établit entre l'œuvre et la création générale de l'artiste. Le tableau, le film, la bande dessinée, la gravure... peuvent ainsi devenir à leur tour fragment d'une production plus étendue de l'artiste. Le questionnement du tout et du détail peut également ouvrir une réflexion sur le problème de la "fidélité" de l'œuvre dans les transformations qui s'opèrent dans les cas de transcription numérique. La numérisation en effet est conduite à repenser le problème du détail en relation avec la perception globale du tout.`
+3
+id	"117e3475-a8ac-4fdc-9a45-7bf1e58f5a4a"
+image	"data:image/png;base64,iV…M01dNaAAAAAASUVORK5CYII="
+titreLivre	"Les oeuvres d'art dans le cinéma de fiction"
+auteurLivre	"Gilles Mouëllic, Pierre-…Frangne et Antony Fiant"
+editionLivre	"2014"
+categorie	"Art"
+description	"Comment penser un film de fiction à partir des oeuvres d'art qui s'y trouvent sous la forme d'objet, de représentation, de projet. de performance ou d'événement? A l'inverse. comment penser les oeuvres et les arts non filmiques à partir du cinéma qui les met en .scène, en images et en récit? C'est à ces deux questions reliées circulairement qu'est consacré cet ouvrage collectif où dialoguent historiens. théoriciens, critiques et esthéticiens du cinéma. Dans ce dialogue ouvert et pluridisciplinaire. le lecteur cernera d'abord les principales opérations, fonctions, modalités et portées de ce jeu baroque - souvent fascinant - d'emboîtements et de citations par lequel le film de fiction se laisse nourrir, creuser. perturber, altérer, hanter par d'autres oeuvres d'art que les oeuvres cinématographiques elles-mêmes. Il verra ensuite, et en retour, comment les oeuvres littéraires. plastiques, musicales. chorégraphiques, architecturales. théâtrales que les fictions filmiques utilisent, se laissent éclairer par la lumière propre du cinéma."
+4
+id	"6a239a1f-16c6-441e-91a1-92ae79f02307"
+image	"data:image/png;base64,iV…kdAB3gAAAABJRU5ErkJggg=="
+titreLivre	"Écrits et entretiens sur…l'animation (1926-1981)"
+auteurLivre	" Alexandre Alexeïeff"
+editionLivre	"2016"
+categorie	"Art"
+description	"Cette première édition critique des textes et entretiens d'Alexandre Alexeïeff (1901-1982), inédits ou devenus inaccessibles, rassemble l'essentiel de ses réflexions et contributions théoriques. Elle révèle à quel point l'aventure singulière de cet artiste, décorateur, illustrateur, graveur, cinéaste inventeur de techniques nouvelles, s'est fondée sur une pensée originale du cinéma, de l'animation et des arts comme la gravure, la musique, la poésie, la pantomime, la danse. Pendant plus de cinquante ans, des avant-gardes des années 1920 aux débuts du numérique, Alexeïeff n'a cessé d'innover dans le domaine de l'image, du livre au film, réalisant plusieurs chefs-d'oeuvre animés sur l'écran d'épingles de son invention, ou travaillant pour la publicité."
+5
+id	"f83263e6-35b1-4e97-97d2-4057edc1f8d3"
+image	"data:image/png;base64,iV…RngbIgAAAABJRU5ErkJggg=="
+titreLivre	" Le Zapping du cinéma"
+auteurLivre	"Jean Sebastien"
+editionLivre	"2021"
+categorie	"Histoire"
+description	"Des gros plans sur le cinéma asiatique aux éclairages sur les stars du fantastique, le Zapping dévoile une myriade d’anecdotes, redécouvre les légendes du cinéma et nous emmène sur les traces de Charlie Chaplin, de Louis de Funès, des frères Coen, de Sofia Coppola, James Gray, Xavier Dolan, Céline Sciamma, Quentin Tarantino… Les plus grands chef-d’œuvre français et internationaux, classiques ou récents, sont décryptés, avec verve et humour ! L’essentiel de ce qu’il faut savoir sur le cinéma aujourd’hui."
+6
+id	"795d374e-b30a-4e71-9847-350b94f6c579"
+image	"data:image/png;base64,iV…GPE6h/dCAAAAAElFTkSuQmCC"
+titreLivre	"Georges Sadoul, un intellectuel en cinéma"
+auteurLivre	"Valérie Vignaux"
+editionLivre	"2023"
+categorie	"Histoire"
+description	"Georges Sadoul (1904-1967), principalement connu comme l’un des plus importants historiens français du cinéma, puisqu’il publia une vingtaine d’ouvrages traduits en une dizaine de langue, fut aussi membre du groupe surréaliste et critique cinématographique des Lettres françaises, la revue littéraire dirigée par Louis Aragon. A partir d’une présentation chronologique de ses engagements et de ses écrits, l’ouvrage restitue le rôle joué par le cinéma au sein d’une histoire culturelle française au cours du premier XXe siècle."

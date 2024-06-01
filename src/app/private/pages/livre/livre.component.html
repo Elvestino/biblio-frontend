@@ -44,7 +44,7 @@
           <span>Le nom&prenom de l'Adherent</span>
           <select formControlName="nom_Adh" id="nomAdherent" required>
             @for(i of allAdherent; track $index){
-            <option value="{{ i.nom_Adh }}{{ i.prenom_Adh }}">
+            <option value="{{ i.nom_Adh }}">
               {{ i.nom_Adh }} {{ i.prenom_Adh }}
             </option>
             }

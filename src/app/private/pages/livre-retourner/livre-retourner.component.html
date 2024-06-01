@@ -1,0 +1,32 @@
+<table class="section-table-bibliothecaire">
+  <thead class="table-heading-bibliothecaire">
+    <tr class="heading">
+      <th>Titre du livre</th>
+      <th>Nom&Prenom de l'Adherent</th>
+      <th>Date de l'emprunt</th>
+      <th>Date de Retour</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody class="table-body-bibliothecaire">
+    @for (item of data; track $index) {
+    <tr class="data">
+      <td>{{ item.livre.titreLivre }}</td>
+      <td>{{ item.adherent.nom_Adh }} {{ item.adherent.prenom_Adh }}</td>
+      <td>{{ item.dateEmprunt }}</td>
+      <td>{{ item.dateRetour }}</td>
+      <td>
+        <i class="fa fa-check"></i>
+        <i class="fa fa-check"></i>
+        Deja Retourner
+      </td>
+      <td>
+        <button class="btn btn-danger" (click)="removeItemById(+item.id)">
+          Supprimer
+        </button>
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>

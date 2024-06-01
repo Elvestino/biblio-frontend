@@ -198,7 +198,7 @@ export class LivreComponent implements OnInit {
         } else {
           console.error('Données reçues ne sont pas un tableau :', emprunt);
         }
-        console.log('Emprunt après affectation :', this.AllEmprunter);
+        // console.log('Emprunt après affectation :', this.AllEmprunter);
         // console.log('Données livre après traitement :', this.donneelivre);
       },
       (error) => {

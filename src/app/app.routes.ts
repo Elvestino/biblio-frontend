@@ -13,6 +13,7 @@ import { LivreComponent } from './private/pages/livre/livre.component';
 import { ParametreComponent } from './private/pages/parametre/parametre.component';
 import { ScannerComponent } from './private/pages/scanner/scanner.component';
 import { LivreEmprunterComponent } from './private/pages/livre-emprunter/livre-emprunter.component';
+import { LivreRetournerComponent } from './private/pages/livre-retourner/livre-retourner.component';
 
 export const routes: Routes = [
   // public routes;
@@ -41,6 +42,7 @@ export const routes: Routes = [
 
       { path: 'livre', component: LivreComponent },
       { path: 'livre-emprunter', component: LivreEmprunterComponent },
+      { path: 'livre-retourner', component: LivreRetournerComponent },
       { path: 'scanner', component: ScannerComponent },
       { path: 'parametre', component: ParametreComponent },
     ],

@@ -28,17 +28,26 @@
     <div class="count adherent">
       <img src="../../../../assets/img/next.jpg" />
       <div class="test">
+        <span>Nombre de livre</span>
+        <hr />
+        <p>{{ livretotal() }}</p>
+      </div>
+    </div>
+    <div class="count adherent">
+      <img src="../../../../assets/img/next.jpg" />
+      <div class="test">
         <span>Livre Emprunter</span>
         <hr />
         <p>{{ emprunttotal() }}</p>
       </div>
     </div>
+
     <div class="count adherent">
       <img src="../../../../assets/img/return.jpg" />
       <div class="test">
         <span>Livre Retourner</span>
         <hr />
-        <p>3</p>
+        <p>{{ calculateTotalDataCount() }}</p>
       </div>
     </div>
   </section>
@@ -46,37 +55,20 @@
     <div class="chart first">
       <div class="chart-first">
         <div class="header-chart-first">
-          <h1>Historique d'Emprunt</h1>
-          <ngx-charts-bar-vertical
-            class="graphe"
-            [view]="venteView"
-            [scheme]="colorScheme"
-            [results]="vente"
-            [gradient]="gradient"
-            [showGridLines]="showLabels"
-            [legend]="gradient"
-            [xAxis]="showLabels"
-            [yAxis]="showLabels"
-            [rotateXAxisTicks]="gradient"
-          >
-          </ngx-charts-bar-vertical>
-          <button class="btn"><i class="fa fa-ellipsis-h"></i></button>
+          <h1>Livre par Categories</h1>
+
+          <canvas id="bar_chart"></canvas>
         </div>
       </div>
       <div class="chart-second">
         <div class="chart-second-first">
           <div class="header-chart-second">
-            <h1>Livre Populaire</h1>
-
-            <button class="btn"><i class="fa fa-ellipsis-h"></i></button>
+            <h1>Categorie le plus emprunte</h1>
           </div>
         </div>
         <div class="chart-second-second">
           <div class="header-second-second">
-            <h1>Livres recement emprunter</h1>
-          </div>
-          <div class="troispoint">
-            <button class="btn"><i class="fa fa-ellipsis-h"></i></button>
+            <h1>Nombre d'adhesion par mois</h1>
           </div>
         </div>
       </div>
@@ -84,11 +76,9 @@
     <div class="chart second">
       <div class="chart-last-section">
         <div class="last-section-header">
-          <h1>Meilleur Autheur</h1>
+          <h1>Historiques d'empruntes et de retour</h1>
         </div>
-        <div class="troispoint">
-          <button class="btn"><i class="fa fa-ellipsis-h"></i></button>
-        </div>
+        <canvas id="emprunter_chart" width="100px" height="100px"></canvas>
       </div>
     </div>
   </section>

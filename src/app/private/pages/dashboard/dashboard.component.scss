@@ -105,9 +105,7 @@
           background-color: #eee;
           padding: 10px;
           border-radius: 8px;
-          // max-height: 280px;
           .header-chart-first {
-            width: 100%;
             display: flex;
             justify-content: space-between;
             h1 {
@@ -115,15 +113,9 @@
               text-transform: uppercase;
               font-weight: bold;
             }
-            .graphe {
-              width: 100%;
-            }
-
-            .btn {
-              display: flex;
-              top: 0;
-              outline: 0;
-              border: none;
+            canvas {
+              width: 50px;
+              height: 50px;
             }
           }
         }
