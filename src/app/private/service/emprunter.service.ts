@@ -38,13 +38,38 @@ export class EmprunterService {
       );
   }
 
-  // Méthode pour mettre à jour l'état du livre
-  private updateLivreDisponibilite(
+  // // Méthode pour mettre à jour l'état du livre
+  // updateLivreDisponibilite(livreId: number, disponibilite: boolean): void {
+  //   // Faites un appel HTTP pour mettre à jour l'état du livre dans le backend
+  //   this.http
+  //     .put(`${environment.apiBaseURL}/api/livre/${livreId}/disponibilite`, {
+  //       disponible: disponibilite,
+  //     })
+  //     .subscribe(
+  //       (response) =>
+  //         console.log(
+  //           `Livre ${livreId} disponibilité mise à jour: ${disponibilite}`
+  //         ),
+  //       (error) =>
+  //         console.error(
+  //           'Erreur lors de la mise à jour de la disponibilité du livre:',
+  //           error
+  //         )
+  //     );
+  // }
+  public updateLivreDisponibilite(
     livreId: number,
     disponibilite: boolean
-  ): void {
-    // Faites un appel HTTP ou une mise à jour locale pour mettre à jour l'état du livre
+  ): Observable<any> {
+    // Retourner l'observable résultant de la requête HTTP pour mettre à jour la disponibilité du livre dans le backend
+    return this.http.put(
+      `${environment.apiBaseURL}/api/livre/${livreId}/disponibilite`,
+      {
+        disponible: disponibilite,
+      }
+    );
   }
+
   retournerLivre(empruntId: number): Observable<any> {
     const empruntIdString: string = empruntId.toString(); // Convertir empruntId en chaîne de caractères
     return this.http.post(`${this.apiUrl}/return/${empruntIdString}`, {}).pipe(

@@ -8,6 +8,7 @@ import {
   NgxChartsModule,
   ScaleType,
 } from '@swimlane/ngx-charts';
+import { EmprunterService } from '../../service/emprunter.service';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -18,7 +19,8 @@ import {
 export class DashboardComponent implements OnInit {
   constructor(
     private adherent: AdherentService,
-    private bibliothecaire: BibliothecaireService
+    private bibliothecaire: BibliothecaireService,
+    private emprunt: EmprunterService
   ) {}
 
   venteView: [number, number] = [400, 200];
@@ -68,6 +70,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.getadherent();
     this.getbibliothecaire();
+    this.getemprunt();
   }
 
   // --------------adherent------------------
@@ -100,5 +103,19 @@ export class DashboardComponent implements OnInit {
   }
   bibliothecairetotal(): number {
     return this.bibliothecairedata.length;
+  }
+  empruntdata: any[] = [];
+  getemprunt() {
+    this.emprunt.getAllEmprunts().subscribe({
+      next: (res) => {
+        this.empruntdata = res;
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
+  emprunttotal(): number {
+    return this.empruntdata.length;
   }
 }

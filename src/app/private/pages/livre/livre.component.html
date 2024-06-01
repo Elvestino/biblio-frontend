@@ -20,18 +20,33 @@
 
         <div class="container-form">
           <span>Titre du livre</span>
-          <select formControlName="livreTitre" id="titreLivre" required>
-            @for(i of livres; track $index){
-            <option value="{{ i.titreLivre }}">{{ i.titreLivre }}</option>
-            }
-          </select>
+          @if( selectedlivre){
+          <div class="container-form titreLivre">
+            <input
+              type="text"
+              formControlName="titreLivre"
+              [(ngModel)]="selectedlivre.titreLivre"
+              id="titreLivre"
+              style="
+                border: 1px solid #c0c0c0;
+                padding: 10px;
+                letter-spacing: 1px;
+                font-weight: bold;
+                cursor: not-allowed;
+              "
+              [disabled]="true"
+            />
+          </div>
+          }
         </div>
 
         <div class="container-form">
-          <span>Le nom de l'Adherent</span>
-          <select formControlName="adherentNom" id="nomAdherent" required>
+          <span>Le nom&prenom de l'Adherent</span>
+          <select formControlName="nom_Adh" id="nomAdherent" required>
             @for(i of allAdherent; track $index){
-            <option value="{{ i.nom_Adh }}">{{ i.nom_Adh }}</option>
+            <option value="{{ i.nom_Adh }}{{ i.prenom_Adh }}">
+              {{ i.nom_Adh }} {{ i.prenom_Adh }}
+            </option>
             }
           </select>
         </div>
@@ -47,15 +62,15 @@
 
         <div class="btn-add">
           <button
-            class="{{
-              isRegisterSuccess
-                ? 'btn btn-success transition'
-                : 'btn btn-primary transition'
-            }}"
+            class="btn"
             type="submit"
-            [disabled]="isSubmitting"
+            [disabled]="isButtonDisabled()"
+            [ngClass]="{
+              'btn-primary': !isButtonDisabled(),
+              'btn-secondary': isButtonDisabled()
+            }"
           >
-            {{ isSubmitting ? "En cours..." : "Emprunter" }}
+            {{ verification }}
           </button>
         </div>
       </div>
@@ -110,11 +125,7 @@
               <i class="fa fa-download"></i> Telecharger
             </button>
           </div>
-          <!-- <div class="down">
-            <button type="button" class="btn lire">
-              <i class="fas fa-microphone"></i>Lire
-            </button>
-          </div> -->
+
           @if (isSynthPlaying) {
           <button
             type="button"
@@ -143,8 +154,9 @@
           </button>
           }
           <div class="issuebook">
-            <button class="btn link" (click)="openEmpreinte()" type="button">
-              <i class="fas fa-hand-holding-usd"></i> Emprunter
+            <button type="button" class="btn link" (click)="openEmpreinte()">
+              <i class="fas fa-hand-holding-usd"></i>
+              Emprunter
             </button>
           </div>
         </div>
@@ -168,7 +180,6 @@
       <div class="container-form-body">
         <h1>{{ isModifAction ? "Modification" : "Enregistrement" }}</h1>
         <hr />
-
         <div class="container-form titreLivre">
           <input type="text" formControlName="titreLivre" required /><span
             >Titre*
@@ -237,13 +248,7 @@
   <section class="heading">
     <h1 class="title">Les livres disponibles</h1>
     <div class="search">
-      <input
-        type="search"
-        placeholder="Search"
-        name="search"
-        id="search"
-        [formControl]="search"
-      />
+      <input type="search" placeholder="Search" name="search" id="search" />
       <button><i class="fa fa-search"></i></button>
     </div>
     <div class="btn-add">

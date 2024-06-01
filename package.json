@@ -30,6 +30,7 @@
     "@zxing/ngx-scanner": "^17.0.3",
     "angularx-qrcode": "^17.0.1",
     "bootstrap": "^5.3.3",
+    "chart.js": "^4.4.3",
     "chartjs": "^0.3.24",
     "express": "^4.18.2",
     "html2canvas": "^1.4.1",

@@ -42,11 +42,6 @@
       padding: 8px 20px;
       border: 1px solid #eee;
 
-      &:last-child {
-        display: flex;
-        justify-content: space-between;
-        border: none;
-      }
       &.data-control {
         gap: 20px;
         .btn-eye {

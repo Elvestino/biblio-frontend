@@ -1,54 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { LivreService } from '../../service/livre.service';
-import { AdherentService } from '../../service/adherent.service';
 import { EmprunterService } from '../../service/emprunter.service';
 import { Emprunter } from '../../model/emprunter.model';
-import { Adherent } from '../../model/adherent.model';
-import { Livre } from '../../model/livre.model';
 import Swal from 'sweetalert2';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-livre-emprunter',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, ReactiveFormsModule],
+  imports: [RouterLink, RouterLinkActive, ReactiveFormsModule, CommonModule],
   templateUrl: './livre-emprunter.component.html',
   styleUrl: './livre-emprunter.component.scss',
 })
 export class LivreEmprunterComponent implements OnInit {
-  constructor(
-    private livreService: LivreService,
-    private adherentservice: AdherentService,
-    private emprunterservice: EmprunterService
-  ) {}
+  constructor(private emprunterservice: EmprunterService) {}
   ngOnInit(): void {
-    this.getAllAdherent();
     this.getAllEmprunter();
-    this.getAlllivre();
-  }
-  livre: any;
-  adherent: any;
-
-  allAdherent: Adherent[] = [];
-  getAllAdherent() {
-    this.adherentservice.getAlladherents().subscribe((getAllAdherent) => {
-      this.allAdherent = getAllAdherent;
-    });
-  }
-  alllivre: Livre[] = [];
-  getAlllivre() {
-    this.livreService.getAlllivres().subscribe((getAlllivre) => {
-      this.alllivre = getAlllivre;
-    });
   }
   AllEmprunter: Emprunter[] = [];
   getAllEmprunter() {
-    this.emprunterservice.getAllEmprunts().subscribe((getAllEmprunter) => {
-      this.AllEmprunter = getAllEmprunter;
+    this.emprunterservice.getAllEmprunts().subscribe((emprunt) => {
+      this.AllEmprunter = emprunt;
     });
   }
-
   deleteEmprunter(id: string) {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -90,16 +65,37 @@ export class LivreEmprunterComponent implements OnInit {
       });
   }
 
-  retournerLivre(empruntId: number): void {
-    this.emprunterservice.retournerLivre(empruntId).subscribe(
-      () => {
-        console.log('Livre retourné avec succès.');
-        // Rafraîchir la liste des emprunts après avoir retourné le livre
-        this.getAllEmprunter();
+  retournerLivre(empruntId: number, id: string): void {
+    this.emprunterservice.retournerLivre(empruntId).subscribe({
+      next: (result) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Livre retourné avec succès.',
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          this.emprunterservice.deleteEmprunt(id).subscribe(() => {
+            this.getAllEmprunter();
+          });
+          console.log('Livre retourné avec succès.');
+          // Rafraîchir la liste des emprunts après avoir retourné le livre
+          this.getAllEmprunter();
+        });
       },
-      (error) => {
+      error: (error) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Erreur lors de la modification du livre',
+          showConfirmButton: false,
+          timer: 1500,
+        });
         console.error('Erreur lors du retour du livre : ', error);
-      }
-    );
+      },
+    });
+  }
+  trackByFn(index: number, item: any): number {
+    return item.id; // ou tout autre identifiant unique
   }
 }

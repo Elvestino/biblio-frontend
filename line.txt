@@ -1,163 +1,57 @@
-html
+// verifierDisponibiliteLivre(livreId: string): void {
+  //   this.emprunterservice.verifierDisponibiliteLivre(livreId).subscribe({
+  //     next: (disponible: boolean) => {
+  //       this.livreDisponible = disponible;
+  //     },
+  //     error: (error) => {
+  //       Swal.fire(
+  //         'Erreur',
+  //         'Erreur lors de la vérification de la disponibilité du livre.',
+  //         'error'
+  //       );
+  //       console.error(
+  //         'Erreur lors de la vérification de la disponibilité du livre :',
+  //         error
+  //       );
+  //     },
+  //   });
+  // }
+  // EmprunterLivreID(livreId: string | null | undefined): void {
+  //   if (!livreId) {
+  //     Swal.fire('Erreur', "L'ID du livre est invalide.", 'error');
+  //     return;
+  //   }
 
-<div style="display: block;">
-  <canvas baseChart width="400" height="400"
-    [type]="'line'"
-    [data]="lineChartData"
-    [options]="lineChartOptions"
-    [legend]="lineChartLegend">
-  </canvas>
-</div>
+  //   if (!this.livreDisponible) {
+  //     Swal.fire('Indisponible', "Le livre n'est pas disponible.", 'info');
+  //     return;
+  //   }
 
+  //   const adherentId = 1; // Remplacez par l'ID de l'adhérent actuel
+  //   const joursEmpruntString = this.EmprunterLivre.get('joursEmprunt')?.value;
+  //   const joursEmprunt = joursEmpruntString
+  //     ? parseInt(joursEmpruntString, 10)
+  //     : 0;
 
-ts
+  //   if (isNaN(joursEmprunt)) {
+  //     Swal.fire(
+  //       'Erreur',
+  //       "Le nombre de jours d'emprunt est invalide.",
+  //       'error'
+  //     );
+  //     return;
+  //   }
 
-import { Component } from '@angular/core';
-import { ChartConfiguration, ChartOptions, ChartType } from "chart.js";
-
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: [ './app.component.css' ]
-})
-export class AppComponent {
-  title = 'ng2-charts-demo';
-
-  public lineChartData: ChartConfiguration<'line'>['data'] = {
-    labels: [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July'
-    ],
-    datasets: [
-      {
-        data: [ 65, 59, 80, 81, 56, 55, 40 ],
-        label: 'Series A',
-        fill: true,
-        tension: 0.5,
-        borderColor: 'black',
-        backgroundColor: 'rgba(255,0,0,0.3)'
-      }
-    ]
-  };
-  public lineChartOptions: ChartOptions<'line'> = {
-    responsive: false
-  };
-  public lineChartLegend = true;
-
-  constructor() {
-  }
-
-  ngOnInit() {
-  }
-
-}
-
-
-module
-
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
-import { AppComponent } from './app.component';
-import { NgChartsModule } from 'ng2-charts';
-
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    NgChartsModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
-
-
-
-
-
-
-
-
-
-<main class="add-emprunter">
-  <div class="form-container">
-    <button
-      class="btn-close-form"
-      type="button"
-      aria-label="close buttton"
-      (click)="closeEmpreinte()"
-    >
-      <i class="fa fa-times"></i>
-    </button>
-    <form
-      class="style-form"
-      (submit)="createEmprunter()"
-      [formGroup]="EmprunterLivre"
-    >
-      <div class="container-form-body">
-        <h1>{{ titleEmprunter }}</h1>
-        <hr />
-
-        <div class="container-form titreLivre">
-          <span>Titre du livre</span>
-          <select formControlName="titreLivre" id="titreLivre" required>
-            @for(i of livres; track $index){
-            <option value="{{ i.titreLivre }}">{{ i.titreLivre }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="container-form nameAdhrent">
-          <span>Le nom de l'Adherent</span>
-          <select formControlName="nom_Adh" id="nameAdhrent" required>
-            @for(i of allAdherent; track $index){
-            <option value="{{ i.nom_Adh }}">{{ i.nom_Adh }}</option>
-            }
-          </select>
-        </div>
-
-        <div class="container-form">
-          <span>Nombre de jours d'emprunt</span>
-          <input
-            id="joursEmprunt"
-            formControlName="joursEmprunt"
-            type="number"
-          />
-        </div>
-
-        <div class="container-form statusLivre">
-          <span>Le status du Livre</span>
-          <select formControlName="status" id="status" required>
-            @for (item of status; track $index) {
-
-            <option value="{{ item }}">{{ item }}</option>
-            }
-          </select>
-        </div>
-        <div class="btn-add">
-          @if (EmprunterLivre.valid) {
-          <button
-            class="{{
-              isRegisterSuccess
-                ? 'btn btn-success transition'
-                : 'btn btn-primary transition'
-            }}"
-            type="submit"
-          >
-            @if(!isSubmitting && !isRegisterSuccess) {
-            {{ formHeaderEmprunter }} }
-          </button>
-          }
-        </div>
-      </div>
-    </form>
-  </div>
-</main>
+  //   this.emprunterservice
+  //     .emprunterLivre(adherentId, parseInt(livreId), joursEmprunt)
+  //     .subscribe({
+  //       next: () => {
+  //         Swal.fire('Succès', 'Livre emprunté avec succès.', 'success');
+  //         // this.verifierDisponibiliteLivre(livreId);
+  //       },
+  //       error: (error) => {
+  //         Swal.fire('Erreur', "Erreur lors de l'emprunt du livre.", 'error');
+  //         console.error("Erreur lors de l'emprunt du livre :", error);
+  //       },
+  //     });
+  // }

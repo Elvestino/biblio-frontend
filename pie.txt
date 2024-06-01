@@ -1,61 +1,409 @@
-html
-
-<canvas baseChart
-  [type]="'pie'"
-  [datasets]="pieChartDatasets"
-  [labels]="pieChartLabels"
-  [options]="pieChartOptions"
-  [plugins]="pieChartPlugins"
-  [legend]="pieChartLegend">
-</canvas>
-
-ts
-
-import { Component } from '@angular/core';
-import { ChartOptions } from 'chart.js';
+import { Component, OnInit } from '@angular/core';
+import { VoirPlusLivreComponent } from '../../component/voir-plus-livre/voir-plus-livre.component';
+import { AddLivreComponent } from '../../component/add-livre/add-livre.component';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { EmprunterComponent } from '../../component/emprunter/emprunter.component';
+import { Livre } from '../../model/livre.model';
+import { LivreService } from '../../service/livre.service';
+import Swal from 'sweetalert2';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AdherentService } from '../../service/adherent.service';
+import { Adherent } from '../../model/adherent.model';
+import { EmprunterService } from '../../service/emprunter.service';
+import { Emprunter } from '../../model/emprunter.model';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: [ './app.component.css' ]
+  selector: 'app-livre',
+  standalone: true,
+  imports: [
+    RouterLink,
+    RouterLinkActive,
+    VoirPlusLivreComponent,
+    AddLivreComponent,
+    EmprunterComponent,
+    ReactiveFormsModule,
+    FormsModule,
+  ],
+  templateUrl: './livre.component.html',
+  styleUrl: './livre.component.scss',
 })
-export class AppComponent {
-  title = 'ng2-charts-demo';
+export class LivreComponent implements OnInit {
+  constructor(
+    private livreService: LivreService,
+    private adherentservice: AdherentService,
+    private emprunterservice: EmprunterService,
+    private formBuilder: FormBuilder
+  ) {}
 
-  // Pie
-  public pieChartOptions: ChartOptions<'pie'> = {
-    responsive: false,
-  };
-  public pieChartLabels = [ [ 'Download', 'Sales' ], [ 'In', 'Store', 'Sales' ], 'Mail Sales' ];
-  public pieChartDatasets = [ {
-    data: [ 300, 500, 100 ]
-  } ];
-  public pieChartLegend = true;
-  public pieChartPlugins = [];
+  isAddLivre: boolean = false;
+  isVoirplus: boolean = false;
+  synth = window.speechSynthesis ? window.speechSynthesis : null;
+  isEmprunterOpen: boolean = false;
+  issueBook: boolean = false;
+  livres: Livre[] = [];
+  isModifAction: boolean = false;
+  data: any[] = [];
+  isSynthPlaying: boolean = false;
+  emprunts: Emprunter[] = [];
+  selectedEmprunter: Emprunter | null = null;
 
-  constructor() {
+  categorie: string[] = [
+    'Fiction',
+    'Non-fiction',
+    'Romance',
+    'Mystère et thriller',
+    'Science-fiction',
+    'Fantasy',
+    'Horreur',
+    'Biographie',
+    'Histoire',
+    'Autobiographie',
+    'Poésie',
+    'Théâtre',
+    'Philosophie',
+    'Religion',
+    'Science',
+    'Informatique',
+    'Art',
+    'Musique',
+    'Cuisine',
+    'Voyage',
+    'Éducation',
+    'Santé et bien-être',
+    'Psychologie',
+    'Développement personnel',
+    'Affaires et finance',
+    'Auto-assistance',
+    'Humour',
+    'Livres pour enfants',
+    'Livres pour adolescents',
+    'Livres audio',
+    'Bandes dessinées et romans graphiques',
+    'Essais',
+    'Journaux et mémoires',
+    'Littérature classique',
+    'Littérature contemporaine',
+    'Linguistique',
+    'Droit',
+    'Économie',
+    'Environnement et écologie',
+    'Famille et relations',
+    'Jeux et passe-temps',
+    'Politique et gouvernement',
+    'Psychologie sociale',
+    'Sciences sociales',
+    'Sports et loisirs',
+    'Technologie',
+    'Transport',
+    'Vie quotidienne',
+    'Autres',
+  ];
+
+  title = 'Enregistrement';
+  LivreForm = this.formBuilder.group({
+    titreLivre: ['', [Validators.required]],
+    auteurLivre: ['', [Validators.required]],
+    editionLivre: ['', [Validators.required]],
+    categorie: ['', [Validators.required]],
+    description: ['', [Validators.required]],
+  });
+
+  get titreLivre() {
+    return this.LivreForm.get('titreLivre');
+  }
+  get auteurLivre() {
+    return this.LivreForm.get('auteurLivre');
+  }
+  get editionLivre() {
+    return this.LivreForm.get('editionLivre');
   }
 
+  isSubmitting: boolean = false;
+  isRegisterSuccess: boolean = false;
+  modifdata: any[] = [];
+  formHeader = 'Valider';
+  search = new FormControl();
+  selectedlivre: Livre = {
+    id: '',
+    titreLivre: '',
+    auteurLivre: '',
+    categorie: '',
+    description: '',
+    editionLivre: '',
+    disponible: true,
+  };
+  isEditing = false;
+  allAdherent: Adherent[] = [];
+
+  getAllAdherent() {
+    this.adherentservice.getAlladherents().subscribe((getAllAdherent) => {
+      this.allAdherent = getAllAdherent;
+    });
+  }
+
+  openLivre() {
+    this.isAddLivre = true;
+  }
+
+  closeCard() {
+    this.isAddLivre = false;
+  }
+
+  openVoirPLus(item: Livre) {
+    this.isVoirplus = true;
+    this.LivreForm.patchValue({
+      titreLivre: item.titreLivre,
+      auteurLivre: item.auteurLivre,
+      description: item.description,
+      categorie: item.categorie,
+      editionLivre: item.editionLivre,
+    });
+    this.selectedlivre = item;
+  }
+
+  closeVoirPLus() {
+    this.isVoirplus = false;
+  }
+
+  openissueBook() {
+    this.issueBook = true;
+  }
+
+  closeissueBook() {
+    this.issueBook = false;
+  }
+
+  openEmpreinte() {
+    this.isVoirplus = false;
+    this.isEmprunterOpen = true;
+  }
+
+  closeEmpreinte() {
+    this.isEmprunterOpen = false;
+  }
+
+  ngOnInit(): void {
+    this.loadlivres();
+    this.getAllAdherent();
+    this.loadEmprunts();
+
+    this.search.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((searchterm) => this.livreService.filterlivre(searchterm))
+      )
+      .subscribe((filteredItems) => {
+        this.livres = filteredItems;
+      });
+  }
+
+  loadlivres() {
+    this.livreService.getAlllivres().subscribe((data) => {
+      this.livres = data;
+    });
+  }
+
+  loadEmprunts() {
+    this.emprunterservice.getAllEmprunts().subscribe((data) => {
+      this.emprunts = data;
+    });
+  }
+
+  addlivre() {
+    this.isSubmitting = true;
+    if (this.LivreForm.invalid) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Champs invalides',
+        text: 'Veuillez remplir tous les champs correctement',
+        confirmButtonText: 'OK',
+      });
+      return;
+    }
+
+    const newLivre: Livre = {
+      id: this.generateId(), // Générer un ID unique ici
+      titreLivre: this.LivreForm.value.titreLivre!,
+      auteurLivre: this.LivreForm.value.auteurLivre!,
+      editionLivre: this.LivreForm.value.editionLivre!,
+      categorie: this.LivreForm.value.categorie!,
+      description: this.LivreForm.value.description!,
+      disponible: true, // Assurez-vous que le nouveau livre est disponible par défaut
+    };
+
+    this.livreService.addlivre(newLivre).subscribe(
+      (data) => {
+        console.log('Livre ajouté:', data);
+        this.isSubmitting = false;
+        this.isRegisterSuccess = true;
+        Swal.fire({
+          icon: 'success',
+          title: 'Enregistré',
+          text: 'Livre enregistré avec succès',
+          confirmButtonText: 'OK',
+        });
+        this.loadlivres();
+        this.LivreForm.reset();
+      },
+      (error) => {
+        console.error('Erreur lors de l\'ajout du livre:', error);
+        this.isSubmitting = false;
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Une erreur est survenue lors de l\'enregistrement du livre',
+          confirmButtonText: 'OK',
+        });
+      }
+    );
+  }
+
+  generateId(): string {
+    // Générer un ID unique pour le livre
+    return Math.random().toString(36).substr(2, 9);
+  }
+
+  isButtonDisabled(): boolean {
+    if (!this.selectedlivre || !this.emprunts) {
+      return true;
+    }
+
+    const empruntEnCours = this.emprunts.find(
+      (emprunt) => emprunt.livre.id === this.selectedlivre.id && emprunt.status === 'Emprunté'
+    );
+
+    if (empruntEnCours) {
+      this.verification = 'Indisponible';
+      return true;
+    } else {
+      this.verification = 'Disponible';
+      return false;
+    }
+  }
+
+  get verification(): string {
+    if (!this.selectedlivre || !this.emprunts) {
+      return 'Inconnu';
+    }
+
+    const empruntEnCours = this.emprunts.find(
+      (emprunt) => emprunt.livre.id === this.selectedlivre.id && emprunt.status === 'Emprunté'
+    );
+
+    return empruntEnCours ? 'Indisponible' : 'Disponible';
+  }
+
+  set verification(value: string) {
+    // Setter nécessaire pour éviter des erreurs dans le template si la propriété est utilisée en écriture
+  }
+
+  get isFormValid(): boolean {
+    return this.LivreForm.valid;
+  }
+
+  editlivre(livre: Livre) {
+    this.selectedlivre = livre;
+    this.isEditing = true;
+    this.LivreForm.patchValue({
+      titreLivre: livre.titreLivre,
+      auteurLivre: livre.auteurLivre,
+      description: livre.description,
+      categorie: livre.categorie,
+      editionLivre: livre.editionLivre,
+    });
+  }
+
+  updatelivre() {
+    if (this.LivreForm.invalid) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Champs invalides',
+        text: 'Veuillez remplir tous les champs correctement',
+        confirmButtonText: 'OK',
+      });
+      return;
+    }
+
+    const updatedLivre: Livre = {
+      id: this.selectedlivre.id,
+      titreLivre: this.LivreForm.value.titreLivre!,
+      auteurLivre: this.LivreForm.value.auteurLivre!,
+      editionLivre: this.LivreForm.value.editionLivre!,
+      categorie: this.LivreForm.value.categorie!,
+      description: this.LivreForm.value.description!,
+      disponible: this.selectedlivre.disponible,
+    };
+
+    this.livreService.updatelivre(updatedLivre).subscribe(
+      (data) => {
+        console.log('Livre mis à jour:', data);
+        this.isEditing = false;
+        Swal.fire({
+          icon: 'success',
+          title: 'Mis à jour',
+          text: 'Livre mis à jour avec succès',
+          confirmButtonText: 'OK',
+        });
+        this.loadlivres();
+        this.LivreForm.reset();
+      },
+      (error) => {
+        console.error('Erreur lors de la mise à jour du livre:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Erreur',
+          text: 'Une erreur est survenue lors de la mise à jour du livre',
+          confirmButtonText: 'OK',
+        });
+      }
+    );
+  }
+
+  deletelivre(livre: Livre) {
+    Swal.fire({
+      title: 'Confirmer la suppression',
+      text: 'Voulez-vous vraiment supprimer ce livre ?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Oui, supprimer',
+      cancelButtonText: 'Annuler',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.livreService.deletelivre(livre.id).subscribe(
+          (data) => {
+            console.log('Livre supprimé:', data);
+            Swal.fire({
+              icon: 'success',
+              title: 'Supprimé',
+              text: 'Livre supprimé avec succès',
+              confirmButtonText: 'OK',
+            });
+            this.loadlivres();
+          },
+          (error) => {
+            console.error('Erreur lors de la suppression du livre:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur',
+              text: 'Une erreur est survenue lors de la suppression du livre',
+              confirmButtonText: 'OK',
+            });
+          }
+        );
+      }
+    });
+  }
+
+  // Ajoutez cette méthode pour gérer les erreurs du synthétiseur vocal
+  handleSynthError(error: any) {
+    console.error('Synthèse vocale erreur:', error);
+    Swal.fire({
+      icon: 'error',
+      title: 'Erreur de synthèse vocale',
+      text: 'Une erreur est survenue lors de la synthèse vocale',
+      confirmButtonText: 'OK',
+    });
+  }
 }
-
-
-module
-
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-
-import { AppComponent } from './app.component';
-import { NgChartsModule } from 'ng2-charts';
-
-@NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    NgChartsModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
