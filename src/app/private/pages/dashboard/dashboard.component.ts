@@ -6,6 +6,8 @@ import { Chart } from 'chart.js/auto';
 import { LivreService } from '../../service/livre.service';
 import { Livre } from '../../model/livre.model';
 import { Emprunter } from '../../model/emprunter.model';
+import { RefreshService } from '../../service/refresh.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -18,7 +20,9 @@ export class DashboardComponent implements OnInit {
     private adherent: AdherentService,
     private bibliothecaire: BibliothecaireService,
     private emprunt: EmprunterService,
-    private livre: LivreService
+    private livre: LivreService,
+    private router: Router,
+    private refreshService: RefreshService
   ) {
     this.getlivre();
     this.getemprunt();
@@ -35,7 +39,41 @@ export class DashboardComponent implements OnInit {
     this.getbibliothecaire();
 
     this.getData();
+    this.returnSetting();
 
+    /////////////////////////CHART ADHESION PAR MOIS ///////////////
+
+    /////////////////////CHART COUNT PAR EMPRUNT//////////////////////
+    for (let i = 0; i < this.empruntdata.length; i++) {
+      const element = this.empruntdata[i].livre.categorie;
+      this.categories.push(element);
+      this.CountCategories = this.countOccurence(this.categories);
+      this.Uniquecategories = this.getUniqueCategories(this.categories);
+    }
+    const barCanvasEmprunt: any = document.getElementById('bar_chart_emprunt');
+    const barChartEmprunt = new Chart(barCanvasEmprunt.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: this.Uniquecategories,
+        datasets: [
+          {
+            label: 'Total',
+            data: this.CountCategories,
+            backgroundColor: this.color,
+            borderColor: this.color,
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
     /////////////////////CHART COUNT PAR TYPE//////////////////////
     for (let i = 0; i < this.livredata.length; i++) {
       const element = this.livredata[i].categorie;
@@ -67,7 +105,7 @@ export class DashboardComponent implements OnInit {
         },
       },
     });
-    /////////////////////CHART Repartion EMprunter et retourner//////////////////////
+    /////////////////////CHART REPARTITION EMPRUNT ET RETOURNER//////////////////////
     const emprunteCanvas: any = document.getElementById('emprunter_chart');
     const enpre = new Chart(emprunteCanvas.getContext('2d'), {
       type: 'pie',
@@ -92,8 +130,6 @@ export class DashboardComponent implements OnInit {
       },
     });
   }
-
-  //totalRecuRetourner = 0;
 
   // --------------adherent------------------
   adherentdata: any[] = [];
@@ -203,5 +239,12 @@ export class DashboardComponent implements OnInit {
 
   calculateTotalDataCount(): number {
     return this.data.length;
+  }
+
+  //////////////////////REFRESH FORCED/////////
+  returnSetting(): void {
+    this.router
+      .navigate(['private/'])
+      .then(() => this.refreshService.triggerRefresh());
   }
 }

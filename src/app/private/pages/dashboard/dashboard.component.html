@@ -1,53 +1,73 @@
 <main class="dashboard">
   <section class="barre">
     <h1 class="title">Tableau de Bord</h1>
-    <div class="search">
-      <button><i class="fa fa-search"></i></button>
-      <input type="search" placeholder="Search" name="search" id="search" />
-    </div>
 
     <i class="fa fa-user"></i>
   </section>
   <section class="sect1">
-    <div class="count adherent">
-      <img src="../../../../assets/img/logo.webp" />
-      <div class="test">
-        <span>Nombre d'Adherent</span>
-        <hr />
-        <p>{{ adherenttotal() }}</p>
+    <div class="humain">
+      <div class="count adherent">
+        <img src="../../../../assets/img/logo.webp" />
+        <div class="test">
+          <span>Nombre d'Adherent</span>
+          <hr />
+          <p>{{ adherenttotal() }}</p>
+        </div>
+      </div>
+      <div class="count adherent">
+        <img src="../../../../assets/img/bibliothecaire.png" />
+        <div class="test">
+          <span>Nombre de bibliothecaire</span>
+          <hr />
+          <p>{{ bibliothecairetotal() }}</p>
+        </div>
+      </div>
+      <div>
+        <div class="count adherent">
+          <img src="../../../../assets/img/logo.webp" />
+          <div class="test">
+            <!-- <span>Nombre d'Adherent</span> -->
+            <hr />
+            <!-- <p>{{ adherenttotal() }}</p> -->
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="count adherent">
+          <img src="../../../../assets/img/logo.webp" />
+          <div class="test">
+            <!-- <span>Nombre d'Adherent</span> -->
+            <hr />
+            <!-- <p>{{ adherenttotal() }}</p> -->
+          </div>
+        </div>
       </div>
     </div>
-    <div class="count adherent">
-      <img src="../../../../assets/img/bibliothecaire.png" />
-      <div class="test">
-        <span>Nombre de bibliothecaire</span>
-        <hr />
-        <p>{{ bibliothecairetotal() }}</p>
+    <div class="livre">
+      <div class="count adherent">
+        <img src="../../../../assets/img/next.jpg" />
+        <div class="test">
+          <span>Nombre de livre</span>
+          <hr />
+          <p>{{ livretotal() }}</p>
+        </div>
       </div>
-    </div>
-    <div class="count adherent">
-      <img src="../../../../assets/img/next.jpg" />
-      <div class="test">
-        <span>Nombre de livre</span>
-        <hr />
-        <p>{{ livretotal() }}</p>
+      <div class="count adherent">
+        <img src="../../../../assets/img/next.jpg" />
+        <div class="test">
+          <span>Livre Emprunter</span>
+          <hr />
+          <p>{{ emprunttotal() }}</p>
+        </div>
       </div>
-    </div>
-    <div class="count adherent">
-      <img src="../../../../assets/img/next.jpg" />
-      <div class="test">
-        <span>Livre Emprunter</span>
-        <hr />
-        <p>{{ emprunttotal() }}</p>
-      </div>
-    </div>
 
-    <div class="count adherent">
-      <img src="../../../../assets/img/return.jpg" />
-      <div class="test">
-        <span>Livre Retourner</span>
-        <hr />
-        <p>{{ calculateTotalDataCount() }}</p>
+      <div class="count adherent">
+        <img src="../../../../assets/img/return.jpg" />
+        <div class="test">
+          <span>Livre Retourner</span>
+          <hr />
+          <p>{{ calculateTotalDataCount() }}</p>
+        </div>
       </div>
     </div>
   </section>
@@ -56,14 +76,14 @@
       <div class="chart-first">
         <div class="header-chart-first">
           <h1>Livre par Categories</h1>
-
           <canvas id="bar_chart"></canvas>
         </div>
       </div>
       <div class="chart-second">
         <div class="chart-second-first">
           <div class="header-chart-second">
-            <h1>Categorie le plus emprunte</h1>
+            <h1>Categorie le plus emprunter</h1>
+            <canvas id="bar_chart_emprunt"></canvas>
           </div>
         </div>
         <div class="chart-second-second">
@@ -77,8 +97,8 @@
       <div class="chart-last-section">
         <div class="last-section-header">
           <h1>Historiques d'empruntes et de retour</h1>
+          <canvas id="emprunter_chart"></canvas>
         </div>
-        <canvas id="emprunter_chart" width="100px" height="100px"></canvas>
       </div>
     </div>
   </section>
