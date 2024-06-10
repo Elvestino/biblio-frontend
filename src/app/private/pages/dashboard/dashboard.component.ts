@@ -1,13 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { AdherentService } from '../../service/adherent.service';
 import { BibliothecaireService } from '../../service/bibliothecaire.service';
 import { EmprunterService } from '../../service/emprunter.service';
-import { Chart } from 'chart.js/auto';
+import { Chart, ChartData, ChartOptions } from 'chart.js/auto';
 import { LivreService } from '../../service/livre.service';
 import { Livre } from '../../model/livre.model';
 import { Emprunter } from '../../model/emprunter.model';
-import { RefreshService } from '../../service/refresh.service';
-import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -20,29 +19,81 @@ export class DashboardComponent implements OnInit {
     private adherent: AdherentService,
     private bibliothecaire: BibliothecaireService,
     private emprunt: EmprunterService,
-    private livre: LivreService,
-    private router: Router,
-    private refreshService: RefreshService
+    private livre: LivreService
   ) {
     this.getlivre();
     this.getemprunt();
     this.getadherent();
     this.getbibliothecaire();
-
+    // this.createChart();
     this.getData();
   }
+  date_adhesion: any[] = [];
 
   ngOnInit() {
+    // this.createChart();
     this.getlivre();
     this.getemprunt();
     this.getadherent();
     this.getbibliothecaire();
 
     this.getData();
-    this.returnSetting();
 
     /////////////////////////CHART ADHESION PAR MOIS ///////////////
+    for (let i = 0; i < this.adherentdata.length; i++) {
+      const element = this.adherentdata[i].dt_adhesion;
+      console.log(element);
+      this.date_adhesion.push(element);
+    }
+    const CountDate: { [key: number]: number } = this.date_adhesion.reduce(
+      (acc: { [key: number]: number }, test) => {
+        const mois = new Date(test).getMonth();
+        acc[mois] = (acc[mois] || 0) + 1;
+        return acc;
+      },
+      {}
+    );
+    const monthNames = [
+      'Janvier',
+      'Fevrier',
+      'Mars',
+      'Avril',
+      'Mai',
+      'Juin',
+      'Juillet',
+      'Aout',
+      'Septembre',
+      'Octobre',
+      'Novembre',
+      'Decembre',
+    ];
 
+    const labelMois = monthNames;
+    const testMois = labelMois.map((_, index) => CountDate[index] || 0);
+    const historiquemois: any = document.getElementById('chat_mois');
+    const mois = new Chart(historiquemois.getContext('2d'), {
+      type: 'bar',
+      data: {
+        labels: labelMois,
+        datasets: [
+          {
+            label: 'Adhesion par mois',
+            data: testMois,
+            backgroundColor: this.color,
+            borderColor: this.color,
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
     /////////////////////CHART COUNT PAR EMPRUNT//////////////////////
     for (let i = 0; i < this.empruntdata.length; i++) {
       const element = this.empruntdata[i].livre.categorie;
@@ -239,12 +290,5 @@ export class DashboardComponent implements OnInit {
 
   calculateTotalDataCount(): number {
     return this.data.length;
-  }
-
-  //////////////////////REFRESH FORCED/////////
-  returnSetting(): void {
-    this.router
-      .navigate(['private/'])
-      .then(() => this.refreshService.triggerRefresh());
   }
 }

@@ -123,6 +123,7 @@ export class LivreComponent implements OnInit {
   isSubmitting: boolean = false;
   isRegisterSuccess: boolean = false;
   modifdata: any[] = [];
+  search = new FormControl();
   formHeader = 'Valider';
 
   selectedlivre: Livre = {
@@ -181,6 +182,15 @@ export class LivreComponent implements OnInit {
     this.loadlivres();
     this.getAllEmprunter();
     this.getAllAdherent();
+    this.search.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        switchMap((searchterm) => this.livreService.filterFrns(searchterm))
+      )
+      .subscribe((filteredItems) => {
+        this.livres = filteredItems;
+      });
   }
 
   AllEmprunter: Emprunter[] = [];

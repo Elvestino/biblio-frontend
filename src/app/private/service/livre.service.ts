@@ -30,4 +30,18 @@ export class LivreService {
   deletelivre(id: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/api/livre/${id}`);
   }
+  filterFrns(searchterm: string) {
+    return this.http.get<any[]>(`${this.apiUrl}/api/livre`).pipe(
+      map((data) => {
+        return data.filter((item) => {
+          return (
+            item.titreLivre.toLowerCase().includes(searchterm.toLowerCase()) ||
+            item.auteurLivre.toLowerCase().includes(searchterm.toLowerCase()) ||
+            item.description.toLowerCase().includes(searchterm.toLowerCase()) ||
+            item.categorie.toLowerCase().includes(searchterm.toLowerCase())
+          );
+        });
+      })
+    );
+  }
 }

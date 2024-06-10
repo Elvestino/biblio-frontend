@@ -248,7 +248,13 @@
   <section class="heading">
     <h1 class="title">Les livres disponibles</h1>
     <div class="search">
-      <input type="search" placeholder="Search" name="search" id="search" />
+      <input
+        type="search"
+        placeholder="Search"
+        [formControl]="search"
+        name="search"
+        id="search"
+      />
       <button><i class="fa fa-search"></i></button>
     </div>
     <div class="btn-add">
