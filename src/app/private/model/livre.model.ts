@@ -6,6 +6,8 @@ export class Livre {
   description: string;
   categorie: string;
   disponible: boolean;
+  imageUrl?: string;
+  quantity: number;
   [key: string]: any;
 
   constructor(
@@ -15,7 +17,9 @@ export class Livre {
     editionLivre: string,
     description: string,
     categorie: string,
-    disponible: boolean
+    disponible: boolean,
+    quantity: number,
+    imageUrl?: string
   ) {
     this.id = id;
     this.titreLivre = titreLivre;
@@ -23,6 +27,8 @@ export class Livre {
     this.editionLivre = editionLivre;
     this.description = description;
     this.categorie = categorie;
+    this.quantity = quantity;
     this.disponible = disponible;
+    this.imageUrl = imageUrl;
   }
 }

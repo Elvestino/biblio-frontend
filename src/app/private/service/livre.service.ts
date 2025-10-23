@@ -44,4 +44,10 @@ export class LivreService {
       })
     );
   }
+
+  uploadImage(formData: FormData) {
+    return this.http.post(`${this.apiUrl}/api/livre/upload`, formData, {
+      responseType: 'text',
+    });
+  }
 }

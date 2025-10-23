@@ -20,6 +20,7 @@ import { EmprunterService } from '../../service/emprunter.service';
 import { Emprunter } from '../../model/emprunter.model';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-livre',
   standalone: true,
@@ -37,6 +38,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './livre.component.scss',
 })
 export class LivreComponent implements OnInit {
+  apiBaseURL: string = environment.apiBaseURL;
   constructor(
     private livreService: LivreService,
     private adherentservice: AdherentService,
@@ -109,6 +111,8 @@ export class LivreComponent implements OnInit {
     editionLivre: ['', [Validators.required]],
     categorie: ['', [Validators.required]],
     description: ['', [Validators.required]],
+    quantity: [0, [Validators.required, Validators.min(0)]],
+    imageUrl: [''],
   });
   get titreLivre() {
     return this.LivreForm.get('titreLivre');
@@ -118,6 +122,9 @@ export class LivreComponent implements OnInit {
   }
   get editionLivre() {
     return this.LivreForm.get('editionLivre');
+  }
+  get quantityLivre() {
+    return this.LivreForm.get('quantityLivre');
   }
 
   isSubmitting: boolean = false;
@@ -154,6 +161,7 @@ export class LivreComponent implements OnInit {
     categorie: '',
     description: '',
     editionLivre: '',
+    quantity: 0,
     disponible: true,
   };
   isEditing = false;
@@ -255,6 +263,18 @@ export class LivreComponent implements OnInit {
       }
     );
   }
+  ///////////////////////IMAGE LIVRE //////////////////////
+  // Pour gérer le fichier sélectionné
+  selectedFile!: File;
+  imagePreview: string | ArrayBuffer | null = null;
+
+  // Méthode pour afficher un aperçu local avant upload
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => (this.imagePreview = reader.result);
+    reader.readAsDataURL(this.selectedFile);
+  }
 
   //////////////////////////CONDITION INDISPONIBLE/////////////
   verification: string = '';
@@ -301,6 +321,7 @@ export class LivreComponent implements OnInit {
       editionLivre: '',
       description: '',
       categorie: '',
+      quantity: 0,
       disponible: false,
     },
     adherent: {
@@ -576,40 +597,89 @@ export class LivreComponent implements OnInit {
           },
         });
     } else {
-      //  requete send add
+      // requete send add
       if (this.LivreForm.valid) {
         const livredata = this.LivreForm.value;
-        this.livreService.createlivre(livredata).subscribe({
-          next: (result) => {
-            Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'Livre enregistré',
-              showConfirmButton: false,
-              timer: 1500,
-            }).then(() => {
-              this.loadlivres();
-              this.LivreForm.reset();
+
+        if (this.selectedFile) {
+          // --- Étape 1 : upload de l’image ---
+          const formData = new FormData();
+          formData.append('file', this.selectedFile);
+
+          this.livreService.uploadImage(formData).subscribe({
+            next: (imageUrl: string) => {
+              // --- Étape 2 : on ajoute le lien au livre ---
+              livredata.imageUrl = imageUrl;
+
+              // --- Étape 3 : envoi du livre comme avant ---
+              this.livreService.createlivre(livredata).subscribe({
+                next: (result) => {
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Livre enregistré avec image 🎉',
+                    showConfirmButton: false,
+                    timer: 1500,
+                  }).then(() => {
+                    this.loadlivres();
+                    this.LivreForm.reset();
+                    this.isSubmitting = false;
+                    this.isRegisterSuccess = true;
+                    this.closeCard();
+                  });
+                },
+                error: () => {
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: "Erreur lors de l'enregistrement du livre",
+                    showConfirmButton: false,
+                    timer: 1500,
+                  });
+                  console.log("Erreur lors de l'enregistrement :", livredata);
+                  this.isSubmitting = false;
+                },
+              });
+            },
+            error: (err) => {
+              Swal.fire({
+                icon: 'error',
+                title: "Erreur d'upload de l'image",
+                text: err.message,
+              });
               this.isSubmitting = false;
-              this.isRegisterSuccess = true;
-              this.closeCard();
-            });
-          },
-          error: () => {
-            Swal.fire({
-              position: 'center',
-              icon: 'error',
-              title: "Erreur lors de l'enregistrement du livre",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            console.log(
-              "Erreur lors de l'enregistrement : ",
-              this.LivreForm.value
-            );
-            this.isSubmitting = false;
-          },
-        });
+            },
+          });
+        } else {
+          // Si aucune image, on envoie directement comme avant
+          this.livreService.createlivre(livredata).subscribe({
+            next: (result) => {
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Livre enregistré sans image',
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(() => {
+                this.loadlivres();
+                this.LivreForm.reset();
+                this.isSubmitting = false;
+                this.isRegisterSuccess = true;
+                this.closeCard();
+              });
+            },
+            error: () => {
+              Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: "Erreur lors de l'enregistrement du livre",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              this.isSubmitting = false;
+            },
+          });
+        }
       }
     }
   }
