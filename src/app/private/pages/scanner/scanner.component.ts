@@ -6,16 +6,18 @@ import Swal from 'sweetalert2';
 import { ScannerImageComponent } from '../../component/scanner-image/scanner-image.component';
 import { HttpClient } from '@angular/common/http';
 import { FileUploadService } from '../../service/file-upload.service';
-
+import { CommonModule, NgIf, NgFor } from '@angular/common';
 @Component({
   selector: 'app-scanner',
   standalone: true,
   imports: [
     ZXingScannerModule,
     RouterLink,
+    NgIf,
+    NgFor,
     ReactiveFormsModule,
     ScannerImageComponent,
-    ScannerComponent,
+    CommonModule,
   ],
   templateUrl: './scanner.component.html',
   styleUrl: './scanner.component.scss',

@@ -157,30 +157,45 @@ export class DashboardComponent implements OnInit {
         },
       },
     });
-    /////////////////////CHART REPARTITION EMPRUNT ET RETOURNER//////////////////////
+
+    ///////////////////// CHART REPARTITION EMPRUNT ET RETOURNER /////////////////////
     const emprunteCanvas: any = document.getElementById('emprunter_chart');
-    const enpre = new Chart(emprunteCanvas.getContext('2d'), {
-      type: 'pie',
-      data: {
-        labels: ['Livres retourné', 'Livres emprunté'],
-        datasets: [
-          {
-            data: [this.calculateTotalDataCount(), this.empruntdata.length],
-            label: 'nombres ',
-            borderColor: this.color,
-            backgroundColor: this.color,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true,
+    if (emprunteCanvas) {
+      const enpre = new Chart(emprunteCanvas.getContext('2d'), {
+        type: 'doughnut', // Changement de 'pie' à 'doughnut'
+        data: {
+          labels: ['Livres retournés', 'Livres empruntés'],
+          datasets: [
+            {
+              data: [this.calculateTotalDataCount(), this.empruntdata.length],
+              backgroundColor: ['#00CED1', '#CE2029'], // couleurs personnalisées
+              borderColor: ['#00CED1', '#CE2029'],
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                font: {
+                  size: 14,
+                },
+              },
+            },
+            tooltip: {
+              callbacks: {
+                label: function (context) {
+                  return context.label + ': ' + context.raw;
+                },
+              },
+            },
           },
         },
-      },
-    });
+      });
+    }
   }
 
   // --------------adherent------------------

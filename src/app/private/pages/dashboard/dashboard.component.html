@@ -1,106 +1,128 @@
-<main class="dashboard">
-  <section class="barre">
-    <h1 class="title">Tableau de Bord</h1>
-
-    <i class="fa fa-user"></i>
+<main class="p-6 space-y-8">
+  <!-- Barre du haut -->
+  <section
+    class="flex justify-between items-center bg-gray-200 rounded-lg shadow-md px-6 py-3"
+  >
+    <h1 class="text-xl font-bold uppercase text-gray-700">Tableau de Bord</h1>
+    <i class="fa fa-user text-2xl text-[color:var(--blue)]"></i>
   </section>
-  <section class="sect1">
-    <div class="humain">
-      <div class="count adherent">
-        <img src="../../../../assets/img/logo.webp" />
-        <div class="test">
-          <span>Nombre d'Adherent</span>
-          <hr />
-          <p>{{ adherenttotal() }}</p>
+
+  <!-- Première section -->
+  <section
+    class="grid grid-cols-1 md:grid-cols-2 gap-6 p-5 bg-gray-200 rounded-lg shadow-md"
+  >
+    <!-- Humains -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div
+        class="bg-gray-100 rounded-xl shadow-md grid grid-cols-2 overflow-hidden hover:shadow-lg transition"
+      >
+        <div class="flex items-center justify-center bg-blue-100">
+          <i class="fas fa-users text-4xl text-blue-600"></i>
         </div>
-      </div>
-      <div class="count adherent">
-        <img src="../../../../assets/img/bibliothecaire.png" />
-        <div class="test">
-          <span>Nombre de bibliothecaire</span>
-          <hr />
-          <p>{{ bibliothecairetotal() }}</p>
-        </div>
-      </div>
-      <div>
-        <div class="count adherent">
-          <img src="../../../../assets/img/logo.webp" />
-          <div class="test">
-            <!-- <span>Nombre d'Adherent</span> -->
-            <hr />
-            <!-- <p>{{ adherenttotal() }}</p> -->
-          </div>
-        </div>
-      </div>
-      <div>
-        <div class="count adherent">
-          <img src="../../../../assets/img/logo.webp" />
-          <div class="test">
-            <!-- <span>Nombre d'Adherent</span> -->
-            <hr />
-            <!-- <p>{{ adherenttotal() }}</p> -->
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="livre">
-      <div class="count adherent">
-        <img src="../../../../assets/img/téléchargement.png" />
-        <div class="test">
-          <span>Nombre de livre</span>
-          <hr />
-          <p>{{ livretotal() }}</p>
-        </div>
-      </div>
-      <div class="count adherent">
-        <img src="../../../../assets/img/next.jpg" />
-        <div class="test">
-          <span>Livre Emprunter</span>
-          <hr />
-          <p>{{ emprunttotal() }}</p>
+        <div class="p-4 flex flex-col justify-center text-center">
+          <span class="text-blue-600 font-bold text-lg"
+            >Nombre d'Adhérents</span
+          >
+          <hr class="my-2 border-gray-400" />
+          <p class="text-2xl font-bold text-gray-800">{{ adherenttotal() }}</p>
         </div>
       </div>
 
-      <div class="count adherent">
-        <img src="../../../../assets/img/return.jpg" />
-        <div class="test">
-          <span>Livre Retourner</span>
-          <hr />
-          <p>{{ calculateTotalDataCount() }}</p>
+      <div
+        class="bg-gray-100 rounded-xl shadow-md grid grid-cols-2 overflow-hidden hover:shadow-lg transition"
+      >
+        <div class="flex items-center justify-center bg-green-100">
+          <i class="fas fa-user-tie text-4xl text-green-600"></i>
         </div>
+        <div class="p-4 flex flex-col justify-center text-center">
+          <span class="text-green-600 font-bold text-lg"
+            >Nombre de Bibliothécaires</span
+          >
+          <hr class="my-2 border-gray-400" />
+          <p class="text-2xl font-bold text-gray-800">
+            {{ bibliothecairetotal() }}
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Livres -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div
+        class="bg-gray-100 rounded-xl shadow-md flex flex-col items-center justify-center hover:shadow-lg transition p-4"
+      >
+        <i class="fas fa-book-open text-4xl text-indigo-600 mb-3"></i>
+        <span class="text-indigo-600 font-bold text-lg">Nombre de Livres</span>
+        <hr class="my-2 w-full border-gray-400" />
+        <p class="text-2xl font-bold text-gray-800">{{ livretotal() }}</p>
+      </div>
+
+      <div
+        class="bg-gray-100 rounded-xl shadow-md flex flex-col items-center justify-center hover:shadow-lg transition p-4"
+      >
+        <i class="fas fa-book-reader text-4xl text-yellow-600 mb-3"></i>
+        <span class="text-yellow-600 font-bold text-lg">Livres Empruntés</span>
+        <hr class="my-2 w-full border-gray-400" />
+        <p class="text-2xl font-bold text-gray-800">{{ emprunttotal() }}</p>
+      </div>
+
+      <div
+        class="bg-gray-100 rounded-xl shadow-md flex flex-col items-center justify-center hover:shadow-lg transition p-4"
+      >
+        <i class="fas fa-undo text-4xl text-red-600 mb-3"></i>
+        <span class="text-red-600 font-bold text-lg">Livres Retournés</span>
+        <hr class="my-2 w-full border-gray-400" />
+        <p class="text-2xl font-bold text-gray-800">
+          {{ calculateTotalDataCount() }}
+        </p>
       </div>
     </div>
   </section>
-  <section class="sect2">
-    <div class="chart first">
-      <div class="chart-first">
-        <div class="header-chart-first">
-          <h1>Livre par Categories</h1>
-          <canvas id="bar_chart"></canvas>
-        </div>
+
+  <!-- Deuxième section -->
+  <section
+    class="grid grid-cols-1 xl:grid-cols-3 gap-8 bg-gray-200 p-6 rounded-lg shadow-md"
+  >
+    <!-- Charts principaux -->
+    <div class="xl:col-span-2 flex flex-col gap-6">
+      <div
+        class="bg-gray-100 rounded-xl shadow-md p-4 border border-[color:var(--blue)]"
+      >
+        <h1 class="text-lg font-bold uppercase mb-3 text-gray-700">
+          Livres par Catégories
+        </h1>
+        <canvas id="bar_chart" class="w-full h-60"></canvas>
       </div>
-      <div class="chart-second">
-        <div class="chart-second-first">
-          <div class="header-chart-second">
-            <h1>Nombre d'adhesion par mois</h1>
-            <canvas id="chat_mois"></canvas>
-          </div>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        <div
+          class="bg-gray-100 rounded-xl shadow-md p-4 border border-[color:var(--blue)]"
+        >
+          <h1 class="text-lg font-bold uppercase mb-3 text-gray-700">
+            Nombre d'adhésions par mois
+          </h1>
+          <canvas id="chat_mois" class="w-full h-52"></canvas>
         </div>
-        <div class="chart-second-second">
-          <div class="header-second-second">
-            <h1>Categorie le plus emprunter</h1>
-            <canvas id="bar_chart_emprunt"></canvas>
-          </div>
+
+        <div
+          class="bg-gray-100 rounded-xl shadow-md p-4 border border-[color:var(--blue)]"
+        >
+          <h1 class="text-lg font-bold uppercase mb-3 text-gray-700">
+            Catégorie la plus empruntée
+          </h1>
+          <canvas id="bar_chart_emprunt" class="w-full h-52"></canvas>
         </div>
       </div>
     </div>
-    <div class="chart second">
-      <div class="chart-last-section">
-        <div class="last-section-header">
-          <h1>Historiques d'empruntes et de retour</h1>
-          <canvas id="emprunter_chart"></canvas>
-        </div>
-      </div>
+
+    <!-- Chart secondaire -->
+    <div
+      class="bg-gray-100 rounded-xl shadow-md p-4 border border-[color:var(--blue)]"
+    >
+      <h1 class="text-lg font-bold uppercase mb-3 text-gray-700">
+        Historique des Emprunts et Retours
+      </h1>
+      <canvas id="emprunter_chart" class="w-full h-96"></canvas>
     </div>
   </section>
 </main>

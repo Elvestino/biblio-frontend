@@ -1,49 +1,142 @@
-@if(scannerQrcode){
-<div class="app-qr-scanner">
-  <div class="scanner-card">
-    close button
-    <button type="button" (click)="closeForm()" class="btn-close">
-      <i class="fa fa-times"></i>
+<main class="p-6 space-y-10 bg-gray-50 min-h-screen">
+  <!-- TITRE PRINCIPAL -->
+  <header class="text-center mb-8">
+    <h1 class="text-3xl font-extrabold text-gray-800 mb-2">
+      Scanner & Gestion des Données
+    </h1>
+    <p class="text-gray-600 text-sm">
+      Analysez vos codes QR ou vos images et visualisez les informations
+      scannées
+    </p>
+  </header>
+
+  <!-- Boutons pour ouvrir le scanner -->
+  <div class="flex gap-6 justify-center">
+    <button
+      type="button"
+      class="px-6 py-3 bg-sky-600 text-white rounded-lg shadow-lg hover:bg-sky-700 transition transform hover:-translate-y-1 hover:shadow-2xl"
+      (click)="scannerQrcode = !scannerQrcode; scannerImage = false"
+    >
+      Scanner QR Code
     </button>
-    <span>Veuillez analyser le code QR ici...</span>
-    <i class="fa fa-arrow-down"></i>
-    <div class="scanner">
-      <zxing-scanner
-        (scanError)="onScanError($event)"
-        (scanSuccess)="onScanSuccess($event)"
-      ></zxing-scanner>
+
+    <button
+      type="button"
+      class="px-6 py-3 bg-green-600 text-white rounded-lg shadow-lg hover:bg-green-700 transition transform hover:-translate-y-1 hover:shadow-2xl"
+      (click)="scannerImage = !scannerImage; scannerQrcode = false"
+    >
+      Scanner Image
+    </button>
+  </div>
+
+  <!-- Scanner QR Code -->
+  <div
+    *ngIf="scannerQrcode"
+    class="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50"
+  >
+    <div
+      class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative flex flex-col items-center gap-6 animate-fade-up"
+    >
+      <!-- Bouton fermer -->
+      <button
+        type="button"
+        (click)="scannerQrcode = false"
+        class="absolute -top-5 -right-5 w-12 h-12 bg-red-600 text-white rounded-full flex justify-center items-center hover:scale-110 active:scale-90 transition shadow-lg"
+      >
+        <i class="fa fa-times text-xl"></i>
+      </button>
+
+      <span class="text-gray-700 text-center font-medium text-lg">
+        Veuillez analyser le code QR ici...
+      </span>
+      <i class="fa fa-arrow-down text-gray-500 text-3xl animate-bounce"></i>
+
+      <div
+        class="border-2 border-gray-300 w-72 h-72 overflow-hidden rounded-xl shadow-inner"
+      >
+        <zxing-scanner
+          (scanError)="onScanError($event)"
+          (scanSuccess)="onScanSuccess($event)"
+          class="w-full h-full object-cover"
+        ></zxing-scanner>
+      </div>
+
+      <p class="text-gray-500 text-sm text-center">
+        Placez le QR Code dans la zone pour le scanner automatiquement.
+      </p>
     </div>
   </div>
-</div>
-} @if(scannerImage){
-<input type="file" (change)="onFileChange($event)" accept="image/*" />
-<img
-  ngIf="imageSrc"
-  [src]="imageSrc"
-  alt="Uploaded Image"
-  style="max-width: 100%"
-/>
-<br />
-<button (click)="submitImage()" class="btn btn-primary">Submit</button>
 
-}
-<br />
-<br />
-<button type="button" class="btn btn-primary" (click)="openScannImage()">
-  Scanner Image
-</button>
-<button type="button" class="btn btn-primary">Scanner QrCode</button>
+  <!-- Scanner Image -->
+  <div *ngIf="scannerImage" class="flex flex-col gap-4 max-w-lg mx-auto">
+    <label class="text-gray-700 font-semibold text-lg"
+      >Uploader une image à scanner</label
+    >
+    <input
+      type="file"
+      (change)="onFileChange($event)"
+      accept="image/*"
+      class="block w-full text-sm text-gray-700 file:bg-gray-200 file:px-4 file:py-2 file:border file:rounded-lg file:border-gray-300 file:cursor-pointer hover:file:bg-gray-300"
+    />
 
-<!-- /////////////////////TABLEAU///////////////////////// -->
+    <div *ngIf="imageSrc" class="flex justify-center">
+      <img
+        [src]="imageSrc"
+        alt="Uploaded Image"
+        class="max-w-full max-h-96 object-contain rounded-lg shadow-lg border border-gray-200"
+      />
+    </div>
 
-<div ngIf="scannedData">
-  <h2>Liste des données scannées</h2>
-  <ul>
-    @for(item of scannedData; track $index){
-    <li>{{ item }}</li>
+    <button
+      (click)="submitImage()"
+      class="px-6 py-3 bg-green-600 text-white rounded-lg shadow-lg hover:bg-green-700 transition transform hover:-translate-y-1 hover:shadow-2xl"
+    >
+      Scanner l'image
+    </button>
+  </div>
+
+  <!-- Liste des données scannées -->
+  <div
+    *ngIf="scannedData.length > 0"
+    class="mt-10 max-w-2xl mx-auto bg-white rounded-xl shadow-xl p-6 border border-gray-200"
+  >
+    <h2 class="text-xl font-bold text-gray-800 mb-4">Données scannées</h2>
+    <p class="text-gray-600 text-sm mb-4">
+      Retrouvez ci-dessous toutes les informations que vous avez scannées
+      jusqu'à présent.
+    </p>
+
+    <ul class="list-disc list-inside space-y-2 max-h-64 overflow-y-auto">
+      <li
+        *ngFor="let item of scannedData; index as i"
+        class="text-gray-800 px-2 py-1 bg-gray-50 rounded shadow-sm hover:bg-gray-100 transition"
+      >
+        {{ item }}
+      </li>
+    </ul>
+
+    <button
+      (click)="deleteAllScannedData()"
+      class="mt-4 px-6 py-3 bg-red-600 text-white rounded-lg shadow-lg hover:bg-red-700 transition transform hover:-translate-y-1 hover:shadow-2xl"
+    >
+      Supprimer toutes les données
+    </button>
+  </div>
+</main>
+
+<!-- Animations Tailwind -->
+<style>
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
     }
-  </ul>
-  <button (click)="deleteAllScannedData()" class="btn btn-danger">
-    Supprimer toutes les données
-  </button>
-</div>
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-fade-up {
+    animation: fade-up 0.3s forwards;
+  }
+</style>
