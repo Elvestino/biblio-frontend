@@ -41,9 +41,7 @@
         </div>
 
         <div class="flex flex-col relative">
-          <span class="text-base text-orange-600 p-1"
-            >Le nom&prenom de l'Adherent</span
-          >
+          <span class="text-base text-orange-600 p-1">L'Adherent</span>
           <select
             formControlName="nom_Adh"
             id="nomAdherent"
@@ -90,100 +88,172 @@
 </main>
 }
 <hr />
-
-@if(isVoirplus){
+<!-- ///////////////////////voir plus///////////////// -->
 <main
+  *ngIf="isVoirplus"
   class="fixed inset-0 z-50 flex items-center justify-center bg-opacity-40 backdrop-blur-sm animate-fade-in"
 >
   <div
     class="w-full max-w-4xl min-h-[250px] rounded-lg bg-[color:var(--blue)] shadow-xl relative"
   >
+    <!-- Bouton fermer -->
     <button
       class="absolute top-0 right-0 w-10 h-10 text-xl text-[color:var(--primary)] bg-transparent opacity-60 transition-all duration-300 ease-in-out hover:text-red-500 hover:opacity-100 active:scale-90"
       type="button"
-      aria-label="close buttton"
+      aria-label="close button"
       (click)="closeVoirPLus()"
     >
       <i class="fa fa-times"></i>
     </button>
+
     <form class="bg-gray-200 rounded-2xl m-6 p-6">
       <h1 class="text-2xl font-bold text-center text-[color:var(--blue)]">
         En savoir plus...
       </h1>
       <hr class="border-t border-black mb-6" />
+
       <div class="flex flex-col gap-4 mx-5">
-        @if( selectedlivre){ @for (field of ['titreLivre', 'auteurLivre',
-        'editionLivre', 'categorie']; track field) {
-        <div class="flex justify-between items-center text-[color:var(--blue)]">
-          <label class="text-lg font-semibold" for="{{ field }}"
-            >{{
-              field.slice(0, 1).toUpperCase() +
-                field
-                  .slice(1)
-                  .replace("Livre", "")
-                  .replace("auteur", "Auteur")
-                  .replace("edition", "Édition")
-                  .replace("categorie", "Catégorie")
-            }}
-            :</label
+        <!-- Informations du livre en grille 2 colonnes -->
+        <ng-container *ngIf="selectedlivre">
+          <div
+            class="grid grid-cols-2 gap-x-6 gap-y-4 text-[color:var(--blue)]"
           >
-          <p class="text-xl font-bold p-1 max-h-10 uppercase">
-            {{ selectedlivre[field] }}
-          </p>
-        </div>
-        }
+            <ng-container
+              *ngFor="
+                let field of [
+                  'titreLivre',
+                  'auteurLivre',
+                  'editionLivre',
+                  'categorie'
+                ]
+              "
+            >
+              <div class="font-semibold text-lg">
+                {{
+                  field
+                    .replace("titreLivre", "Titre")
+                    .replace("auteurLivre", "Auteur")
+                    .replace("editionLivre", "Édition")
+                    .replace("categorie", "Catégorie")
+                }}:
+              </div>
+              <div class="text-xl font-bold p-1 max-h-10 uppercase">
+                {{ selectedlivre[field] }}
+              </div>
+            </ng-container>
 
-        <div class="mt-4 text-[color:var(--blue)]">
-          <label class="text-lg font-semibold block mb-2" for="description"
-            >Description :</label
-          >
-          <p
-            class="text-base text-gray-800 p-2 border border-gray-400 rounded-md overflow-y-auto max-h-24"
-          >
-            {{ selectedlivre.description }}
-          </p>
-        </div>
-        }
+            <!-- Description sur les 2 colonnes -->
+            <div class="col-span-2 mt-4">
+              <label class="text-lg font-semibold block mb-2" for="description">
+                Description :
+              </label>
+              <p
+                class="text-base text-gray-800 p-2 border border-gray-400 rounded-md overflow-y-auto max-h-24"
+              >
+                {{ selectedlivre.description }}
+              </p>
+            </div>
+          </div>
 
-        <div class="flex justify-center items-center gap-5 mt-8 border-none">
-          <button
-            type="button"
-            class="px-12 py-3 font-bold uppercase tracking-wider rounded-lg opacity-90 transition-all duration-300 active:scale-95 text-[color:var(--primary)] bg-[color:var(--blue)] hover:opacity-100 hover:filter-none"
-          >
-            <i class="fa fa-download mr-2"></i> Télécharger
-          </button>
+          <!-- Gestion de la quantité avec compteur -->
+          <div class="mt-4 flex flex-col items-center">
+            <p
+              *ngIf="selectedlivre.quantity === 0"
+              class="text-red-600 font-bold mb-2"
+            >
+              Livre indisponible
+            </p>
+            <p
+              *ngIf="selectedlivre.quantity > 0"
+              class="text-green-600 font-bold mb-2"
+            >
+              {{ selectedlivre.quantity }} exemplaire(s) disponible(s)
+            </p>
 
-          @if (isSynthPlaying) {
-          <button
-            type="button"
-            class="px-10 py-3 font-bold uppercase tracking-wider rounded-lg transition border border-[color:var(--text-dark)] bg-transparent text-[color:var(--text-dark)] hover:opacity-100 hover:filter-none active:scale-95"
-            (click)="cancel()"
-          >
-            <i class="fa-solid fa-ear-deaf mr-2"></i> Arrêter
-          </button>
-          } @else {
-          <button
-            type="button"
-            class="px-10 py-3 font-bold uppercase tracking-wider rounded-lg transition border border-[color:var(--text-dark)] bg-transparent text-[color:var(--text-dark)] hover:opacity-100 hover:filter-none active:scale-95"
-            (click)="speakText()"
-          >
-            <i class="fa-solid fa-ear-listen mr-2"></i> Description vocale
-          </button>
-          }
+            <div
+              *ngIf="selectedlivre.quantity > 0"
+              class="flex items-center gap-4 mt-2"
+            >
+              <button
+                type="button"
+                (click)="borrowCount = borrowCount - 1"
+                [disabled]="borrowCount <= 0"
+                class="px-3 py-2 bg-gray-300 text-gray-800 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-400 transition"
+                aria-label="Décrémenter"
+              >
+                <i class="fa fa-minus"></i>
+              </button>
 
-          <button
-            type="button"
-            class="px-10 py-3 font-bold uppercase tracking-wider rounded-lg opacity-90 transition-all duration-300 active:scale-95 text-[color:var(--blue)] bg-white border border-[color:var(--blue)] hover:opacity-100 hover:filter-none"
-            (click)="openEmpreinte()"
+              <span class="text-xl font-bold">{{ borrowCount }}</span>
+
+              <button
+                type="button"
+                (click)="borrowCount = borrowCount + 1"
+                [disabled]="borrowCount >= selectedlivre.quantity"
+                class="px-3 py-2 bg-gray-300 text-gray-800 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-400 transition"
+                aria-label="Incrémenter"
+              >
+                <i class="fa fa-plus"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Boutons Télécharger / Description vocale / Emprunter -->
+          <div
+            class="flex justify-center items-center gap-5 mt-8 border-none flex-wrap"
           >
-            <i class="fas fa-hand-holding-usd mr-2"></i> Emprunter
-          </button>
-        </div>
+            <!-- Télécharger -->
+            <button
+              type="button"
+              class="px-12 py-3 font-bold uppercase tracking-wider rounded-lg opacity-90 transition-all duration-300 active:scale-95 text-[color:var(--primary)] bg-[color:var(--blue)] hover:opacity-100 hover:filter-none"
+            >
+              <i class="fa fa-download mr-2"></i> Télécharger
+            </button>
+
+            <!-- Description vocale -->
+            <ng-container *ngIf="isSynthPlaying; else speakButton">
+              <button
+                type="button"
+                class="px-10 py-3 font-bold uppercase tracking-wider rounded-lg transition border border-[color:var(--text-dark)] bg-transparent text-[color:var(--text-dark)] hover:opacity-100 hover:filter-none active:scale-95"
+                (click)="cancel()"
+              >
+                <i class="fa-solid fa-ear-deaf mr-2"></i> Arrêter
+              </button>
+            </ng-container>
+            <ng-template #speakButton>
+              <button
+                type="button"
+                class="px-10 py-3 font-bold uppercase tracking-wider rounded-lg transition border border-[color:var(--text-dark)] bg-transparent text-[color:var(--text-dark)] hover:opacity-100 hover:filter-none active:scale-95"
+                (click)="speakText()"
+              >
+                <i class="fa-solid fa-ear-listen mr-2"></i> Description vocale
+              </button>
+            </ng-template>
+
+            <!-- Emprunter -->
+            <button
+              type="button"
+              class="px-5 py-2 font-semibold rounded transition-all duration-200"
+              [disabled]="selectedlivre.quantity === 0 || borrowCount <= 0"
+              [ngClass]="{
+                'bg-white text-[color:var(--blue)] border border-[color:var(--blue)] hover:opacity-100':
+                  selectedlivre.quantity > 0 && borrowCount > 0,
+                'bg-gray-400 text-white cursor-not-allowed':
+                  selectedlivre.quantity === 0 || borrowCount <= 0
+              }"
+              (click)="openEmpreinte(borrowCount)"
+            >
+              <i class="fas fa-hand-holding-usd mr-2"></i> Emprunter
+            </button>
+          </div>
+        </ng-container>
       </div>
     </form>
   </div>
 </main>
-}@if(isAddLivre){
+
+<hr />
+@if(isAddLivre){
 <main
   class="fixed inset-0 bg-black/40 z-[999] backdrop-blur-sm flex justify-center items-center animate-fade-in"
 >
@@ -471,60 +541,78 @@
   </section>
 
   <section class="grid gap-10 mt-5 p-5 md:grid-cols-2 lg:grid-cols-3">
-    @for( item of livres; track $index){
-    <div class="bg-gray-200 rounded-lg shadow-md relative">
-      <div class="absolute top-0 right-0 flex gap-2 p-2">
-        <button
-          class="p-2 rounded-sm bg-green-500 text-white hover:bg-green-600 transition active:scale-95"
-          (click)="updatelivre(item)"
-        >
-          <i class="fas fa-pencil"></i>
-        </button>
-        <button
-          class="p-2 rounded-sm bg-red-500 text-white hover:bg-red-600 transition active:scale-95"
-          (click)="deletelivre(item.id)"
-        >
-          <i class="fa-solid fa-trash"></i>
-        </button>
-      </div>
-
-      <div class="grid justify-center items-center gap-2 p-10 pt-16">
+    @for (item of livres; track $index) {
+    <div
+      class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition relative flex flex-col"
+    >
+      <!-- Image -->
+      <div class="h-64 w-full">
         <img
           [src]="apiBaseURL + item.imageUrl"
           [alt]="item.titreLivre"
-          class="w-20 h-20 object-cover rounded"
+          class="h-full w-full object-cover"
         />
+      </div>
 
-        <span class="flex items-center gap-2 text-gray-700 font-semibold"
-          ><i class="fas fa-heading text-lg text-[color:var(--blue)]"></i> Titre
-          :
-          <p class="uppercase">{{ item.titreLivre }}</p></span
-        >
+      <!-- Boutons d’action (à droite) -->
+      <div class="flex justify-end items-center mt-3 px-5">
+        <div class="flex gap-2">
+          <button
+            class="p-2 rounded-md bg-green-500 text-white hover:bg-green-600 transition active:scale-95"
+            (click)="updatelivre(item)"
+            title="Modifier"
+          >
+            <i class="fas fa-pencil"></i>
+          </button>
+          <button
+            class="p-2 rounded-md bg-red-500 text-white hover:bg-red-600 transition active:scale-95"
+            (click)="deletelivre(item.id)"
+            title="Supprimer"
+          >
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+      </div>
 
-        <span class="flex items-center gap-2 text-gray-700 font-semibold"
-          ><i class="fa fa-user text-lg text-[color:var(--blue)]"></i> Auteur :
-          <p class="uppercase">{{ item.auteurLivre }}</p></span
-        >
+      <!-- Contenu -->
+      <div class="p-5 flex flex-col justify-between flex-grow">
+        <div class="space-y-2 text-gray-700 font-semibold">
+          <div class="flex items-center gap-2">
+            <i class="fas fa-heading text-lg text-[color:var(--blue)]"></i>
+            <span>Titre :</span>
+            <p class="uppercase">{{ item.titreLivre }}</p>
+          </div>
 
-        <span class="flex items-center gap-2 text-gray-700 font-semibold"
-          ><i class="fas fa-tag text-lg text-[color:var(--blue)]"></i> Edition :
-          <p class="uppercase">{{ item.editionLivre }}</p></span
-        >
+          <div class="flex items-center gap-2">
+            <i class="fa fa-user text-lg text-[color:var(--blue)]"></i>
+            <span>Auteur :</span>
+            <p class="uppercase">{{ item.auteurLivre }}</p>
+          </div>
 
-        <span class="flex items-center gap-2 text-gray-700 font-semibold"
-          ><i class="fas fa-book text-lg text-[color:var(--blue)]"></i>
-          Catégorie :
-          <p class="uppercase">{{ item.categorie }}</p></span
-        >
-        <span class="flex items-center gap-2 text-gray-700 font-semibold"
-          ><i class="fas fa-layer-group text-lg text-[color:var(--blue)]"></i>
+          <div class="flex items-center gap-2">
+            <i class="fas fa-tag text-lg text-[color:var(--blue)]"></i>
+            <span>Édition :</span>
+            <p class="uppercase">{{ item.editionLivre }}</p>
+          </div>
 
-          Quantité :
-          <p class="uppercase">{{ item.quantity }}</p></span
-        >
+          <div class="flex items-center gap-2">
+            <i class="fas fa-book text-lg text-[color:var(--blue)]"></i>
+            <span>Catégorie :</span>
+            <p class="uppercase">{{ item.categorie }}</p>
+          </div>
 
+          <div class="flex items-center gap-2">
+            <i class="fas fa-layer-group text-lg text-[color:var(--blue)]"></i>
+            <span>Quantité :</span>
+            <p class="uppercase">{{ item.quantity }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bouton Voir plus (centré) -->
+      <div class="flex justify-center pb-5">
         <button
-          class="mt-4 px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg transition active:scale-95"
+          class="px-6 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg transition active:scale-95"
           (click)="openVoirPLus(item)"
         >
           Voir plus <i class="fa fa-arrow-right ml-2"></i>

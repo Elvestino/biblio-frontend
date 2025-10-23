@@ -12,38 +12,33 @@ import { Emprunter } from '../../model/emprunter.model';
   styleUrl: './livre-retourner.component.scss',
 })
 export class LivreRetournerComponent implements OnInit {
-  constructor(private cdr: ChangeDetectorRef) {
-    this.getData();
-    this.calculateTotalDataCount();
-  }
+  data: Emprunter[] = [];
+
+  key: string = 'myData';
+  totalDataCount: number = 0;
+
+  constructor(private cdr: ChangeDetectorRef) {}
+
   ngOnInit(): void {
-    if (typeof window != 'undefined') {
-      this.getData();
+    this.loadData();
+  }
+
+  loadData() {
+    const storedData = localStorage.getItem(this.key);
+    if (storedData) {
+      this.data = JSON.parse(storedData).map((e: any) => ({
+        ...e,
+        quantity: e.quantity || 1,
+      }));
+      this.totalDataCount = this.data.reduce(
+        (acc, curr) => acc + curr.quantity,
+        0
+      );
     }
     this.cdr.detectChanges();
   }
 
-  key: string = 'myData';
-  data: Emprunter[] = [];
-  getData() {
-    const storedData = localStorage.getItem(this.key);
-    if (storedData) {
-      this.data = JSON.parse(storedData);
-    }
-  }
   trackByFn(index: number, item: Emprunter): number {
     return Number(item.id);
   }
-  removeItemById(id: number) {
-    this.data = this.data.filter((item) => +item.id !== id);
-    localStorage.setItem(this.key, JSON.stringify(this.data));
-    this.cdr.detectChanges();
-    this.calculateTotalDataCount();
-  }
-  calculateTotalDataCount() {
-    console.log(this.data.length);
-
-    this.totalDataCount = this.data.length;
-  }
-  totalDataCount: number = 0;
 }

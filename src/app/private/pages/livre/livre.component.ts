@@ -180,6 +180,7 @@ export class LivreComponent implements OnInit {
   }
   openVoirPLus(item: Livre) {
     this.isVoirplus = true;
+    this.borrowCount = 0;
     this.LivreForm.patchValue({
       titreLivre: item.titreLivre,
       auteurLivre: item.auteurLivre,
@@ -199,10 +200,14 @@ export class LivreComponent implements OnInit {
   closeissueBook() {
     this.issueBook = false;
   }
-  openEmpreinte() {
+  openEmpreinte(count: number) {
+    if (this.borrowCount <= 0) return;
     this.isVoirplus = false;
     this.isEmprunterOpen = true;
+    this.selectedBorrowCount = count;
+    this.isEmprunterOpen = true;
   }
+
   closeEmpreinte() {
     this.isEmprunterOpen = false;
   }
@@ -279,25 +284,24 @@ export class LivreComponent implements OnInit {
   //////////////////////////CONDITION INDISPONIBLE/////////////
   verification: string = '';
   isButtonDisabled(): boolean {
-    const livreId = this.selectedlivre.id;
+    const livre = this.selectedlivre;
 
-    // Vérifier si le livre est actuellement emprunté
-    const emprunt = this.AllEmprunter.find((item) => item.livre.id === livreId);
-    if (emprunt && emprunt.status === 'Emprunté') {
-      console.log('Le livre est indisponible');
+    // Si la quantité est 0, le livre est indisponible
+    if (livre.quantity === 0) {
       this.verification = 'Indisponible';
       return true;
     }
 
-    // Si le livre est retourné, activer le bouton
-    if (emprunt && emprunt.status === 'Retourné') {
-      console.log('Le livre est disponible');
-      this.verification = 'Disponible';
-      return false;
+    // Vérifier si le livre est actuellement emprunté et non retourné
+    const emprunt = this.AllEmprunter.find(
+      (item) => item.livre.id === livre.id && item.status === 'Emprunté'
+    );
+
+    if (emprunt) {
+      this.verification = 'Indisponible';
+      return true;
     }
 
-    // Le livre n'est pas emprunté
-    console.log('Le livre est disponible');
     this.verification = 'Disponible';
     return false;
   }
@@ -337,6 +341,7 @@ export class LivreComponent implements OnInit {
     dateEmprunt: new Date(),
     dateRetour: new Date(),
     status: '',
+    quantity: 0,
   };
   createEmprunter() {
     this.isSubmitting = true;
@@ -365,6 +370,7 @@ export class LivreComponent implements OnInit {
       const livreId = Number(livre.id);
       const adherentId = Number(adherent.id);
       const joursEmprunt = Number(formValue.joursEmprunt);
+      const count = this.selectedBorrowCount;
 
       if (isNaN(livreId) || isNaN(adherentId) || isNaN(joursEmprunt)) {
         console.error(
@@ -381,11 +387,70 @@ export class LivreComponent implements OnInit {
         this.isSubmitting = false;
         return;
       }
+      if (count > livre.quantity) {
+        Swal.fire({
+          position: 'center',
+          icon: 'error',
+          title: 'Le nombre demandé dépasse la quantité disponible',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        this.isSubmitting = false;
+        return;
+      }
+      // Boucle pour emprunter plusieurs exemplaires
+      for (let i = 0; i < count; i++) {
+        this.emprunterservice
+          .emprunterLivre(adherentId, livreId, joursEmprunt)
+          .subscribe({
+            next: () => {
+              // Décrémenter la quantité localement
+              livre.quantity = livre.quantity - 1;
 
+              // Mettre à jour le backend
+              this.livreService.updatelivre(livre.id, livre).subscribe();
+            },
+            error: (err) => {
+              Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: "Erreur lors de l'enregistrement de l'emprunt du livre",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              this.isSubmitting = false;
+            },
+          });
+      }
+
+      // Après la boucle
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: `${count} exemplaire(s) emprunté(s) avec succès`,
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(() => {
+        this.getAllEmprunter();
+        this.loadlivres();
+        this.closeEmpreinte();
+        this.EmprunterLivre.reset();
+        this.borrowCount = 0; // reset
+        this.isSubmitting = false;
+        this.isRegisterSuccess = true;
+      });
+
+      ///////////////EMPRUNTER////////////
       this.emprunterservice
         .emprunterLivre(adherentId, livreId, joursEmprunt)
         .subscribe({
           next: (result) => {
+            // Décrémenter la quantité du livre
+            livre.quantity = livre.quantity - 1;
+
+            // Optionnel : mettre à jour le livre côté backend
+            this.livreService.updatelivre(livre.id, livre).subscribe();
+
             Swal.fire({
               position: 'center',
               icon: 'success',
@@ -409,17 +474,26 @@ export class LivreComponent implements OnInit {
               showConfirmButton: false,
               timer: 1500,
             });
-            console.error("Erreur lors de l'enregistrement :", err);
             this.isSubmitting = false;
           },
         });
-    } else {
-      this.isSubmitting = false;
     }
   }
   retournerLivre(empruntId: number): void {
     this.emprunterservice.retournerLivre(empruntId).subscribe({
       next: (result) => {
+        // Incrémenter la quantité du livre retourné
+        const emprunt = this.AllEmprunter.find(
+          (e) => e.id === empruntId.toString()
+        );
+        if (emprunt) {
+          const livre = this.livres.find((l) => l.id === emprunt.livre.id);
+          if (livre) {
+            livre.quantity = livre.quantity + 1;
+            this.livreService.updatelivre(livre.id, livre).subscribe();
+          }
+        }
+
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -427,15 +501,7 @@ export class LivreComponent implements OnInit {
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          console.log('Livre retourné avec succès.');
-          // Rafraîchir la liste des emprunts après avoir retourné le livre
           this.getAllEmprunter();
-
-          // Vérifier si le livre retourné était celui sélectionné
-          if (this.selectedlivre && +this.selectedlivre.id === empruntId) {
-            // Mettre à jour la disponibilité du livre
-            this.updateLivreDisponibilite(true);
-          }
         });
       },
       error: (error) => {
@@ -446,7 +512,6 @@ export class LivreComponent implements OnInit {
           showConfirmButton: false,
           timer: 1500,
         });
-        console.error('Erreur lors du retour du livre : ', error);
       },
     });
   }
@@ -458,7 +523,7 @@ export class LivreComponent implements OnInit {
       .updateLivreDisponibilite(livreId, disponible)
       .subscribe(
         () => {
-          console.log('Disponibilité du livre mise à jour avec succès.');
+          // console.log('Disponibilité du livre mise à jour avec succès.');
         },
         (error) => {
           console.error(
@@ -476,6 +541,8 @@ export class LivreComponent implements OnInit {
   /////////////////////////////VOIR PLUS//////////////////////////
 
   selectedBook: any;
+  borrowCount: number = 0;
+  selectedBorrowCount: number = 0;
 
   speakText() {
     this.isSynthPlaying = true;
@@ -548,6 +615,7 @@ export class LivreComponent implements OnInit {
       auteurLivre: item.auteurLivre,
       description: item.description,
       categorie: item.categorie,
+      quantity: item.quantity,
       editionLivre: item.editionLivre,
     });
 
@@ -617,7 +685,7 @@ export class LivreComponent implements OnInit {
                   Swal.fire({
                     position: 'center',
                     icon: 'success',
-                    title: 'Livre enregistré avec image 🎉',
+                    title: 'Livre enregistré ',
                     showConfirmButton: false,
                     timer: 1500,
                   }).then(() => {
@@ -636,7 +704,7 @@ export class LivreComponent implements OnInit {
                     showConfirmButton: false,
                     timer: 1500,
                   });
-                  console.log("Erreur lors de l'enregistrement :", livredata);
+                  //console.log("Erreur lors de l'enregistrement :", livredata);
                   this.isSubmitting = false;
                 },
               });

@@ -8,6 +8,7 @@ export class Emprunter {
   dateEmprunt: Date;
   dateRetour: Date;
   status: string;
+  quantity: number;
 
   constructor(
     id: string,
@@ -15,7 +16,8 @@ export class Emprunter {
     adherent: Adherent,
     dateEmprunt: Date,
     joursEmprunt: number,
-    status: string
+    status: string,
+    quantity: number = 1
   ) {
     this.id = id;
     this.livre = livre;
@@ -23,7 +25,7 @@ export class Emprunter {
     this.dateEmprunt = dateEmprunt;
     this.dateRetour = new Date(dateEmprunt);
     this.dateRetour.setDate(this.dateEmprunt.getDate() + joursEmprunt);
-
+    this.quantity = quantity;
     this.status = status;
   }
 }

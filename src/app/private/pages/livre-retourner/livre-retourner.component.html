@@ -1,32 +1,56 @@
-<table class="section-table-bibliothecaire">
-  <thead class="table-heading-bibliothecaire">
-    <tr class="heading">
-      <th>Titre du livre</th>
-      <th>Adherent</th>
-      <th>Date de l'emprunt</th>
-      <th>Date de Retour</th>
-      <th>Status</th>
-      <!-- <th>Action</th> -->
-    </tr>
-  </thead>
-  <tbody class="table-body-bibliothecaire">
-    @for (item of data; track $index) {
-    <tr class="data">
-      <td>{{ item.livre.titreLivre }}</td>
-      <td>{{ item.adherent.nom_Adh }} {{ item.adherent.prenom_Adh }}</td>
-      <td>{{ item.dateEmprunt }}</td>
-      <td>{{ item.dateRetour }}</td>
-      <td>
-        <i class="fa fa-check"></i>
-        <i class="fa fa-check"></i>
-        Deja Retourner
-      </td>
-      <!-- <td>
-        <button class="btn btn-danger" (click)="removeItemById(+item.id)">
-          Supprimer
-        </button>
-      </td> -->
-    </tr>
-    }
-  </tbody>
-</table>
+<div class="overflow-x-auto mt-5 mx-12 rounded-xl">
+  <!-- Titre de la section -->
+
+  <div class="mb-6 space-y-4">
+    <div
+      class="flex justify-between items-center bg-gray-100 p-3 rounded-lg shadow-md"
+    >
+      <h1 class="text-xl font-extrabold uppercase text-gray-800">
+        Gestion des Livres Empruntés
+      </h1>
+      <span
+        class="mt-2 md:mt-0 px-3 py-1 bg-[color:var(--primary)] uppercase text-gray-800 rounded text-sm font-semibold"
+      >
+        Total : {{ data.length }}
+      </span>
+    </div>
+  </div>
+
+  <table class="min-w-full border-collapse text-center">
+    <thead>
+      <tr
+        class="bg-[color:var(--blue)] text-[color:var(--primary)] border border-[color:var(--orange)]"
+      >
+        <th class="px-5 py-4 w-[200px]">Titre du livre</th>
+        <th class="px-5 py-4 w-[150px]">Adhérent</th>
+        <th class="px-5 py-4 w-[150px]">Date de l'emprunt</th>
+        <th class="px-5 py-4 w-[150px]">Date de Retour</th>
+        <th class="px-5 py-4 w-[100px]">Quantité</th>
+        <th class="px-5 py-4 w-[150px]">Status</th>
+      </tr>
+    </thead>
+    <tbody class="text-[16px]">
+      <tr
+        *ngFor="let item of data; trackBy: trackByFn"
+        class="odd:bg-white border border-gray-200"
+      >
+        <td class="px-5 py-3 font-bold uppercase">
+          {{ item.livre.titreLivre }}
+        </td>
+        <td class="px-5 py-3">
+          {{ item.adherent.nom_Adh }} {{ item.adherent.prenom_Adh }}
+        </td>
+        <td class="px-5 py-3">{{ item.dateEmprunt }}</td>
+        <td class="px-5 py-3">{{ item.dateRetour }}</td>
+        <td class="px-5 py-3 font-semibold">{{ item.quantity }}</td>
+        <td
+          class="px-5 py-3 text-green-600 font-semibold flex items-center justify-center gap-1"
+        >
+          <i class="fa fa-check"></i>
+          <i class="fa fa-check"></i>
+          Déjà Retourné
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
