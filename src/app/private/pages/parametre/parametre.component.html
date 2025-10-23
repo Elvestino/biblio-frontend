@@ -1,38 +1,97 @@
-<main class="setting-users">
-  <form class="user">
-    <div class="modifiy-user">
-      <i class="fa fa-user"></i
-      ><label for="Nom d'utilisateur">Nom d'utilisateur</label>
-      <div class="name">
-        <span for="name">Nom d'utilisateur</span>
-        <input type="text" />
+<main class="min-h-screen bg-gray-50 flex justify-center items-start py-10">
+  <form class="w-full max-w-3xl bg-white shadow-2xl rounded-2xl p-8 space-y-10">
+    <!-- SECTION INFOS UTILISATEUR -->
+    <section class="modifiy-user space-y-6">
+      <div class="flex items-center gap-3 text-gray-700">
+        <i class="fa fa-user text-2xl"></i>
+        <h2 class="text-xl font-bold">Informations Utilisateur</h2>
       </div>
-      <div class="telusers">
-        <span for="telusers">Telephone</span>
-        <input type="text" />
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="flex flex-col">
+          <label for="name" class="text-gray-600 font-medium mb-1"
+            >Nom d'utilisateur</label
+          >
+          <input
+            type="text"
+            id="name"
+            placeholder="Entrez votre nom"
+            class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-400 focus:outline-none transition"
+          />
+        </div>
+
+        <div class="flex flex-col">
+          <label for="telusers" class="text-gray-600 font-medium mb-1"
+            >Téléphone</label
+          >
+          <input
+            type="text"
+            id="telusers"
+            placeholder="Entrez votre téléphone"
+            class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-400 focus:outline-none transition"
+          />
+        </div>
+
+        <div class="flex flex-col md:col-span-2">
+          <label for="adrsusers" class="text-gray-600 font-medium mb-1"
+            >Adresse</label
+          >
+          <input
+            type="text"
+            id="adrsusers"
+            placeholder="Entrez votre adresse"
+            class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-sky-400 focus:outline-none transition"
+          />
+        </div>
       </div>
-      <div class="adrsusers">
-        <span for="adrsusers">Adresse</span>
-        <input type="text" />
+
+      <button
+        type="button"
+        class="px-6 py-3 bg-sky-600 text-white rounded-lg shadow-lg hover:bg-sky-700 transition transform hover:-translate-y-1 hover:shadow-2xl"
+      >
+        Modifier
+      </button>
+    </section>
+
+    <!-- SECTION MOT DE PASSE -->
+    <section class="modify-password space-y-6">
+      <div class="flex items-center gap-3 text-gray-700">
+        <i class="fa fa-key text-2xl"></i>
+        <h2 class="text-xl font-bold">Modifier le mot de passe</h2>
       </div>
-      <button type="button">Modifier</button>
-    </div>
-    <div class="modify-password">
-      <i class="fa fa-key"></i>
-      <label for="password">Mot de passe</label>
-      <div class="password">
-        <span for="password">Nouveau mot de passe</span>
-        <input type="password" />
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="flex flex-col">
+          <label for="password1" class="text-gray-600 font-medium mb-1"
+            >Nouveau mot de passe</label
+          >
+          <input
+            type="password"
+            id="password1"
+            placeholder="Entrez le nouveau mot de passe"
+            class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none transition"
+          />
+        </div>
+
+        <div class="flex flex-col">
+          <label for="password2" class="text-gray-600 font-medium mb-1"
+            >Confirmer le mot de passe</label
+          >
+          <input
+            type="password"
+            id="password2"
+            placeholder="Confirmez le mot de passe"
+            class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-green-400 focus:outline-none transition"
+          />
+        </div>
       </div>
-      <div class="password">
-        <span for="password">Nouveau mot de passe</span>
-        <input type="password" />
-      </div>
-      <div class="confirm-password">
-        <span for="confirm-password">Nom d'utilisateur</span>
-        <input type="password" />
-        <button type="button">Modifier</button>
-      </div>
-    </div>
+
+      <button
+        type="button"
+        class="px-6 py-3 bg-green-600 text-white rounded-lg shadow-lg hover:bg-green-700 transition transform hover:-translate-y-1 hover:shadow-2xl"
+      >
+        Modifier le mot de passe
+      </button>
+    </section>
   </form>
 </main>
