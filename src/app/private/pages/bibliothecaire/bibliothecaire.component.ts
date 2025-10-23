@@ -17,12 +17,11 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { QRCodeModule } from 'angularx-qrcode';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
-import * as QRCode from 'qrcode';
 
 import { Subject, takeUntil } from 'rxjs';
 
 import * as XLSX from 'xlsx';
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
 @Component({
   selector: 'app-bibliothecaire',
   standalone: true,
@@ -33,6 +32,7 @@ import { isPlatformBrowser } from '@angular/common';
     HttpClientModule,
     ReactiveFormsModule,
     QRCodeModule,
+    CommonModule,
   ],
   templateUrl: './bibliothecaire.component.html',
   styleUrl: './bibliothecaire.component.scss',
@@ -93,46 +93,25 @@ export class BibliothecaireComponent implements OnInit {
   QrcodeClose() {
     this.qrcodeBibliothecaire = false;
   }
-  QrcodeOpen() {
-    this.qrcodeBibliothecaire = !this.qrcodeBibliothecaire;
-    console.log('ty le id :', this.selectedBibliothecaire?.prenom_biblio);
 
-    if (isPlatformBrowser(this.platformId)) {
-      this.route.params
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe((params) => {
-          const bibliothecaireId = params['id'];
-          if (bibliothecaireId) {
-            this.bibliothecaireService
-              .getBibliothecaireById(bibliothecaireId)
-              .subscribe({
-                next: (res) => {
-                  this.selectedBibliothecaire = res.data;
-                  if (
-                    this.selectedBibliothecaire &&
-                    this.selectedBibliothecaire.id
-                  ) {
-                    const qrValue = `A-${this.selectedBibliothecaire.id.toString()}`;
-                    console.log(`Valeur passée à generateQRCode: ${qrValue}`);
-                    this.generateQRCode(qrValue);
-                  } else {
-                    console.error(
-                      "selectedBibliothecaire n'est pas défini ou manque l'ID"
-                    );
-                  }
-                },
-                error: (err) => {
-                  console.error(
-                    'Erreur lors de la récupération des données du bibliothécaire:',
-                    err
-                  );
-                },
-              });
-          } else {
-            console.error("L'ID du bibliothécaire est undefined.");
-          }
-        });
+  QrcodeOpen(item: Bibliothecaire) {
+    // 👈 Accepte l'objet Bibliothécaire
+    if (!item || !item.id) {
+      console.error('ID du bibliothécaire manquant pour le QR code.');
+      return;
     }
+
+    // 1. Stocke l'objet sélectionné
+    this.selectedBibliothecaire = item;
+
+    // 2. Construit la chaîne de données du QR code
+    this.qrData = ` Nom: ${item.nom_biblio} \n Prénom: ${item.prenom_biblio} \n CIN: ${item.cin_biblio} \n Contact: ${item.tel_biblio}`;
+
+    // 3. Ouvre la modale
+    this.qrcodeBibliothecaire = true;
+
+    // Assurer la détection des changements pour l'affichage du QR
+    this.cdr.detectChanges();
   }
   //////////////////////////////QRCODE //////////////////
   @ViewChild('content', { static: false }) content: any;
@@ -211,7 +190,7 @@ export class BibliothecaireComponent implements OnInit {
     date_naissance: ['', [Validators.required]],
     lieu_naissance: ['', [Validators.required]],
     cin_biblio: ['', [Validators.required]],
-    tel_biblio: ['', [Validators.required]],
+    tel_biblio: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
   });
   get nom_biblio() {
     return this.BibliothecaireForm.get('nom_biblio');
@@ -333,21 +312,7 @@ export class BibliothecaireComponent implements OnInit {
     this.selectedBibliothecaire = item;
     this.isBibliothecaireComponentOpen = true;
   }
-  adminQrLink: string = '';
-  private generateQRCode(qrContent: string): void {
-    QRCode.toDataURL(qrContent)
-      .then((qrLink: string) => {
-        this.adminQrLink = qrLink;
-        this.cdr.detectChanges(); // Assurez-vous que les changements sont détectés
-      })
-      .catch((error) => {
-        console.error('Erreur lors de la génération du QR code:', error);
-      });
-  }
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
+  qrData: string = '';
 
   ////////////////EXCEL EXPORT //////////////////////
 

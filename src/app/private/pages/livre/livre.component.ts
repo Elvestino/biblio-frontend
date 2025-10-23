@@ -126,6 +126,27 @@ export class LivreComponent implements OnInit {
   search = new FormControl();
   formHeader = 'Valider';
 
+  // (Ajouter ces propriétés)
+  isTitreFocused: boolean = false;
+  isAuteurFocused: boolean = false;
+  isEditionFocused: boolean = false;
+  isDescriptionFocused: boolean = false;
+
+  // (Ajouter ces méthodes pour gérer les événements focus/blur)
+  onFocus(field: 'titre' | 'auteur' | 'edition' | 'description'): void {
+    if (field === 'titre') this.isTitreFocused = true;
+    if (field === 'auteur') this.isAuteurFocused = true;
+    if (field === 'edition') this.isEditionFocused = true;
+    if (field === 'description') this.isDescriptionFocused = true;
+  }
+
+  onBlur(field: 'titre' | 'auteur' | 'edition' | 'description'): void {
+    if (field === 'titre') this.isTitreFocused = false;
+    if (field === 'auteur') this.isAuteurFocused = false;
+    if (field === 'edition') this.isEditionFocused = false;
+    if (field === 'description') this.isDescriptionFocused = false;
+  }
+
   selectedlivre: Livre = {
     id: '',
     titreLivre: '',

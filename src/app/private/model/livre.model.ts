@@ -6,6 +6,7 @@ export class Livre {
   description: string;
   categorie: string;
   disponible: boolean;
+  [key: string]: any;
 
   constructor(
     id: string,

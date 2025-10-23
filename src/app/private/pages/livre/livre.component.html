@@ -1,48 +1,55 @@
 @if(isEmprunterOpen) {
-<main class="add-emprunter">
-  <div class="form-container">
+<main
+  class="fixed inset-0 z-50 flex items-center justify-center bg-opacity-40 backdrop-blur-sm animate-fade-in"
+>
+  <div
+    class="w-full max-w-xl min-h-[250px] rounded-lg bg-[color:var(--blue)] shadow-xl relative"
+  >
     <button
-      class="btn-close-form"
+      class="absolute top-0 right-0 w-10 h-10 text-xl text-[color:var(--primary)] bg-transparent opacity-60 transition-all duration-300 ease-in-out hover:text-red-500 hover:opacity-100 active:scale-90"
       type="button"
-      aria-label="close buttton"
+      aria-label="close button"
       (click)="closeEmpreinte()"
     >
       <i class="fa fa-times"></i>
     </button>
     <form
-      class="style-form"
+      class="flex justify-center items-center bg-gray-200 rounded-2xl m-6 p-6"
       (submit)="createEmprunter()"
       [formGroup]="EmprunterLivre"
     >
-      <div class="container-form-body">
-        <h1>Emprunter un livre</h1>
-        <hr />
+      <div class="grid gap-5 w-full">
+        <h1 class="text-xl font-bold uppercase tracking-wider text-center">
+          Emprunter un livre
+        </h1>
+        <hr class="border-t border-black" />
 
-        <div class="container-form">
-          <span>Titre du livre</span>
+        <div class="flex flex-col relative">
+          <span class="text-base text-orange-600 p-1">Titre du livre</span>
           @if( selectedlivre){
-          <div class="container-form titreLivre">
+          <div class="flex flex-col relative">
             <input
               type="text"
               formControlName="titreLivre"
               [(ngModel)]="selectedlivre.titreLivre"
               id="titreLivre"
-              style="
-                border: 1px solid #c0c0c0;
-                padding: 10px;
-                letter-spacing: 1px;
-                font-weight: bold;
-                cursor: not-allowed;
-              "
+              class="border border-gray-300 p-2 tracking-wide font-bold cursor-not-allowed text-[color:var(--blue)] bg-transparent rounded-sm"
               [disabled]="true"
             />
           </div>
           }
         </div>
 
-        <div class="container-form">
-          <span>Le nom&prenom de l'Adherent</span>
-          <select formControlName="nom_Adh" id="nomAdherent" required>
+        <div class="flex flex-col relative">
+          <span class="text-base text-orange-600 p-1"
+            >Le nom&prenom de l'Adherent</span
+          >
+          <select
+            formControlName="nom_Adh"
+            id="nomAdherent"
+            required
+            class="w-full h-10 rounded-sm mb-5 outline-none uppercase text-base bg-gray-200 border border-gray-400 p-2"
+          >
             @for(i of allAdherent; track $index){
             <option value="{{ i.nom_Adh }}">
               {{ i.nom_Adh }} {{ i.prenom_Adh }}
@@ -51,23 +58,27 @@
           </select>
         </div>
 
-        <div class="container-form">
-          <span>Nombre de jours d'emprunt</span>
+        <div class="flex flex-col relative">
+          <span class="text-base text-orange-600 p-1"
+            >Nombre de jours d'emprunt</span
+          >
           <input
             id="joursEmprunt"
             formControlName="joursEmprunt"
             type="number"
+            class="border border-gray-400 text-[color:var(--blue)] p-2 text-base tracking-wider rounded-sm"
           />
         </div>
 
-        <div class="btn-add">
+        <div class="flex justify-center items-center mt-4">
           <button
-            class="btn"
+            class="px-20 py-3 font-bold uppercase tracking-wider rounded-lg opacity-90 transition-all duration-300 active:scale-95"
             type="submit"
             [disabled]="isButtonDisabled()"
             [ngClass]="{
-              'btn-primary': !isButtonDisabled(),
-              'btn-secondary': isButtonDisabled()
+              'bg-sky-600 text-white hover:opacity-100 hover:filter-none':
+                !isButtonDisabled(),
+              'bg-gray-400 text-gray-700 cursor-not-allowed': isButtonDisabled()
             }"
           >
             {{ verification }}
@@ -77,225 +88,405 @@
     </form>
   </div>
 </main>
+}
+<hr />
 
-} @if(isVoirplus){
-<main class="add-voir-plus">
-  <div class="form-container">
+@if(isVoirplus){
+<main
+  class="fixed inset-0 z-50 flex items-center justify-center bg-opacity-40 backdrop-blur-sm animate-fade-in"
+>
+  <div
+    class="w-full max-w-4xl min-h-[250px] rounded-lg bg-[color:var(--blue)] shadow-xl relative"
+  >
     <button
-      class="btn-close-form"
+      class="absolute top-0 right-0 w-10 h-10 text-xl text-[color:var(--primary)] bg-transparent opacity-60 transition-all duration-300 ease-in-out hover:text-red-500 hover:opacity-100 active:scale-90"
       type="button"
       aria-label="close buttton"
       (click)="closeVoirPLus()"
     >
       <i class="fa fa-times"></i>
     </button>
-    <form class="style-form">
-      <h1 class="title-voir-plus">En savoir plus...</h1>
-      <hr />
-      <div class="container-form-body">
-        @if( selectedlivre){
-        <div class="container-form titreLivre">
-          <label for="titreLivre">Titre </label>
-          <p>{{ selectedlivre.titreLivre }}</p>
-        </div>
-
-        <div class="container-form auteurLivre">
-          <label for="auteurLivre">Auteur </label>
-          <p>{{ selectedlivre.auteurLivre }}</p>
-        </div>
-
-        <div class="container-form editionLivre">
-          <label for="editionLivre">Edition </label>
-          <p>{{ selectedlivre.editionLivre }}</p>
-        </div>
-
-        <div class="container-form categorieLivre">
-          <label for="categorieLivre">Categorie </label>
-          <p>{{ selectedlivre.categorie }}</p>
-        </div>
-
-        <div class="description">
-          <label for="description">Description </label>
-          <p>{{ selectedlivre.description }}</p>
+    <form class="bg-gray-200 rounded-2xl m-6 p-6">
+      <h1 class="text-2xl font-bold text-center text-[color:var(--blue)]">
+        En savoir plus...
+      </h1>
+      <hr class="border-t border-black mb-6" />
+      <div class="flex flex-col gap-4 mx-5">
+        @if( selectedlivre){ @for (field of ['titreLivre', 'auteurLivre',
+        'editionLivre', 'categorie']; track field) {
+        <div class="flex justify-between items-center text-[color:var(--blue)]">
+          <label class="text-lg font-semibold" for="{{ field }}"
+            >{{
+              field.slice(0, 1).toUpperCase() +
+                field
+                  .slice(1)
+                  .replace("Livre", "")
+                  .replace("auteur", "Auteur")
+                  .replace("edition", "Édition")
+                  .replace("categorie", "Catégorie")
+            }}
+            :</label
+          >
+          <p class="text-xl font-bold p-1 max-h-10 uppercase">
+            {{ selectedlivre[field] }}
+          </p>
         </div>
         }
-        <div class="btn-group">
-          <div class="down">
-            <button type="button" class="btn download">
-              <i class="fa fa-download"></i> Telecharger
-            </button>
-          </div>
+
+        <div class="mt-4 text-[color:var(--blue)]">
+          <label class="text-lg font-semibold block mb-2" for="description"
+            >Description :</label
+          >
+          <p
+            class="text-base text-gray-800 p-2 border border-gray-400 rounded-md overflow-y-auto max-h-24"
+          >
+            {{ selectedlivre.description }}
+          </p>
+        </div>
+        }
+
+        <div class="flex justify-center items-center gap-5 mt-8 border-none">
+          <button
+            type="button"
+            class="px-12 py-3 font-bold uppercase tracking-wider rounded-lg opacity-90 transition-all duration-300 active:scale-95 text-[color:var(--primary)] bg-[color:var(--blue)] hover:opacity-100 hover:filter-none"
+          >
+            <i class="fa fa-download mr-2"></i> Télécharger
+          </button>
 
           @if (isSynthPlaying) {
           <button
             type="button"
-            class="btn btn-download-book transition"
+            class="px-10 py-3 font-bold uppercase tracking-wider rounded-lg transition border border-[color:var(--text-dark)] bg-transparent text-[color:var(--text-dark)] hover:opacity-100 hover:filter-none active:scale-95"
             (click)="cancel()"
-            style="
-              border: 1px solid var(--text-dark);
-              background: 0;
-              color: var(--text-dark);
-            "
           >
-            <i class="fa-solid fa-ear-deaf"></i> Arrêter
+            <i class="fa-solid fa-ear-deaf mr-2"></i> Arrêter
           </button>
           } @else {
           <button
             type="button"
-            class="btn btn-download-book transition"
+            class="px-10 py-3 font-bold uppercase tracking-wider rounded-lg transition border border-[color:var(--text-dark)] bg-transparent text-[color:var(--text-dark)] hover:opacity-100 hover:filter-none active:scale-95"
             (click)="speakText()"
-            style="
-              border: 1px solid var(--text-dark);
-              background: 0;
-              color: var(--text-dark);
-            "
           >
-            <i class="fa-solid fa-ear-listen"></i> Description vocale
+            <i class="fa-solid fa-ear-listen mr-2"></i> Description vocale
           </button>
           }
-          <div class="issuebook">
-            <button type="button" class="btn link" (click)="openEmpreinte()">
-              <i class="fas fa-hand-holding-usd"></i>
-              Emprunter
-            </button>
-          </div>
+
+          <button
+            type="button"
+            class="px-10 py-3 font-bold uppercase tracking-wider rounded-lg opacity-90 transition-all duration-300 active:scale-95 text-[color:var(--blue)] bg-white border border-[color:var(--blue)] hover:opacity-100 hover:filter-none"
+            (click)="openEmpreinte()"
+          >
+            <i class="fas fa-hand-holding-usd mr-2"></i> Emprunter
+          </button>
         </div>
       </div>
     </form>
   </div>
 </main>
-
-} @if(isAddLivre){
-<main class="add-livre">
-  <div class="form-container">
+}@if(isAddLivre){
+<main
+  class="fixed inset-0 bg-black/40 z-[999] backdrop-blur-sm flex justify-center items-center animate-fade-in"
+>
+  <div
+    class="w-full max-w-3xl min-h-64 max-h-[90vh] overflow-y-auto rounded-lg relative"
+    [style.background-color]="'var(--blue)'"
+  >
     <button
-      class="btn-close-form"
+      class="absolute top-0 right-0 w-10 h-10 text-2xl border-0 outline-none bg-transparent opacity-60 transition duration-200 hover:text-red-500 hover:opacity-100 active:scale-90"
       type="button"
-      aria-label="close buttton"
+      aria-label="close button"
       (click)="closeCard()"
+      [style.color]="'var(--primary)'"
     >
       <i class="fa fa-times"></i>
     </button>
-    <form class="style-form" (submit)="createlivre()" [formGroup]="LivreForm">
-      <div class="container-form-body">
-        <h1>{{ isModifAction ? "Modification" : "Enregistrement" }}</h1>
-        <hr />
-        <div class="container-form titreLivre">
-          <input type="text" formControlName="titreLivre" required /><span
-            >Titre*
-          </span>
-        </div>
-        @if (titreLivre?.touched && titreLivre?.errors?.["required"]) {
-        <p class="error-text">Titre, s'il vous plait.</p>
-        }
-        <div class="container-form auteurLivre">
-          <input type="text" formControlName="auteurLivre" required />
-          <span>Auteur* </span>
-        </div>
-        @if (auteurLivre?.touched && auteurLivre?.errors?.["required"]) {
-        <p class="error-text">Auteur, s'il vous plait.</p>
-        }
-        <div class="container-form editionLivre">
-          <input type="text" formControlName="editionLivre" required />
-          <span>Edition* </span>
-        </div>
-        @if (editionLivre?.touched && editionLivre?.errors?.["required"]) {
-        <p class="error-text">Edition, s'il vous plait.</p>
-        }
-        <div class="categorie">
-          <select formControlName="categorie" id="categorie" required>
-            <option value="choisir">Choisiser la categorie</option>
-            @for (item of categorie; track $index) {
+    <form
+      class="bg-gray-100 rounded-2xl m-6 p-6"
+      (submit)="createlivre()"
+      [formGroup]="LivreForm"
+    >
+      <div class="flex flex-col">
+        <h1 class="uppercase text-xl tracking-wider text-center font-bold">
+          {{ isModifAction ? "Modification" : "Enregistrement" }}
+        </h1>
+        <hr class="border-t border-black mb-4" />
 
-            <option [value]="item">{{ item }}</option>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+          <div class="mb-5">
+            <div
+              class="relative flex flex-col border-b-2"
+              [style.border-color]="
+                titreLivre?.invalid && titreLivre?.touched
+                  ? 'red'
+                  : 'var(--orange)'
+              "
+            >
+              <input
+                type="text"
+                formControlName="titreLivre"
+                required
+                class="peer border-none text-base p-2 w-full outline-none bg-transparent z-10 font-bold"
+                [style.color]="'var(--blue)'"
+              />
+              <span
+                class="absolute left-0 text-base tracking-wider transition duration-500 ease-in-out pointer-events-none text-gray-500 peer-focus:text-xs peer-focus:-translate-y-5 peer-focus:!text-[var(--orange)]"
+                [ngClass]="{
+                  'text-xs -translate-y-5 !text-[var(--orange)]':
+                    LivreForm.get('titreLivre')?.value
+                }"
+              >
+                Titre*
+              </span>
+            </div>
+            @if (titreLivre?.touched && titreLivre?.errors?.['required']) {
+            <p class="uppercase text-xs font-bold text-red-500 mt-1">
+              Le titre est requis.
+            </p>
             }
-          </select>
+          </div>
+
+          <div class="mb-5">
+            <div
+              class="relative flex flex-col border-b-2"
+              [style.border-color]="
+                auteurLivre?.invalid && auteurLivre?.touched
+                  ? 'red'
+                  : 'var(--orange)'
+              "
+            >
+              <input
+                type="text"
+                formControlName="auteurLivre"
+                required
+                class="peer border-none text-base p-2 w-full outline-none bg-transparent z-10"
+                [style.color]="'var(--blue)'"
+              />
+              <span
+                class="absolute left-0 text-base tracking-wider transition duration-500 ease-in-out pointer-events-none text-gray-500 peer-focus:text-xs peer-focus:-translate-y-5 peer-focus:!text-[var(--orange)]"
+                [ngClass]="{
+                  'text-xs -translate-y-5 !text-[var(--orange)]':
+                    LivreForm.get('auteurLivre')?.value
+                }"
+              >
+                Auteur*
+              </span>
+            </div>
+            @if (auteurLivre?.touched && auteurLivre?.errors?.['required']) {
+            <p class="uppercase text-xs font-bold text-red-500 mt-1">
+              L'auteur est requis.
+            </p>
+            }
+          </div>
+
+          <div class="mb-5">
+            <div
+              class="relative flex flex-col border-b-2"
+              [style.border-color]="
+                editionLivre?.invalid && editionLivre?.touched
+                  ? 'red'
+                  : 'var(--orange)'
+              "
+            >
+              <input
+                type="text"
+                formControlName="editionLivre"
+                required
+                class="peer border-none text-base p-2 w-full outline-none bg-transparent z-10"
+                [style.color]="'var(--blue)'"
+              />
+              <span
+                class="absolute left-0 text-base tracking-wider transition duration-500 ease-in-out pointer-events-none text-gray-500 peer-focus:text-xs peer-focus:-translate-y-5 peer-focus:!text-[var(--orange)]"
+                [ngClass]="{
+                  'text-xs -translate-y-5 !text-[var(--orange)]':
+                    LivreForm.get('editionLivre')?.value
+                }"
+              >
+                Edition*
+              </span>
+            </div>
+            @if (editionLivre?.touched && editionLivre?.errors?.['required']) {
+            <p class="uppercase text-xs font-bold text-red-500 mt-1">
+              L'édition est requise.
+            </p>
+            }
+          </div>
+
+          <div class="mb-5">
+            <span
+              class="pointer-events-none text-gray-500 text-base tracking-wider transition duration-500"
+              >Catégorie*
+            </span>
+            <select
+              formControlName="categorie"
+              id="categorie"
+              required
+              class="w-full h-10 rounded-sm mt-1 mb-1 outline-none text-base bg-gray-100 border p-2"
+              [style.color]="'var(--blue)'"
+              [ngClass]="{
+                'border-red-500':
+                  LivreForm.get('categorie')?.invalid &&
+                  LivreForm.get('categorie')?.touched,
+                'border-gray-400':
+                  LivreForm.get('categorie')?.valid ||
+                  LivreForm.get('categorie')?.untouched
+              }"
+            >
+              <option value="choisir" disabled>Choisiser la categorie</option>
+              @for (item of categorie; track $index) {
+              <option [value]="item">{{ item }}</option>
+              }
+            </select>
+            @if (LivreForm.get('categorie')?.touched &&
+            LivreForm.get('categorie')?.errors?.['required']) {
+            <p class="uppercase text-xs font-bold text-red-500 mt-1">
+              La catégorie est requise.
+            </p>
+            }
+          </div>
         </div>
 
-        <div class="description">
+        <div class="relative mb-5">
           <textarea
-            class="text"
+            class="w-full h-24 max-w-full border text-base p-2 outline-none rounded-md bg-transparent resize-none pt-6 peer"
+            [ngClass]="{
+              'border-red-500':
+                LivreForm.get('description')?.invalid &&
+                LivreForm.get('description')?.touched,
+              'border-gray-400':
+                LivreForm.get('description')?.valid ||
+                LivreForm.get('description')?.untouched
+            }"
+            [style.color]="'var(--blue)'"
             formControlName="description"
             id="description"
             cols="30"
             rows="10"
             required
           ></textarea>
-          <span>Description* </span>
-        </div>
-        <div class="btn-add">
-          @if (LivreForm.valid) {
-          <button
-            class="{{
-              isRegisterSuccess
-                ? 'btn btn-success transition'
-                : 'btn btn-primary transition'
-            }}"
-            type="submit"
+          <span
+            class="absolute left-2 top-2 text-gray-500 text-base tracking-wider transition duration-500 ease-in-out pointer-events-none peer-focus:text-xs peer-focus:-translate-y-5 peer-focus:!text-[var(--orange)]"
+            [ngClass]="{
+              'text-xs -translate-y-5 !text-[var(--orange)]':
+                LivreForm.get('description')?.value
+            }"
           >
-            @if(!isSubmitting && !isRegisterSuccess) {
-            {{ isModifAction ? "Modifier" : "Valider" }} }
-          </button>
+            Description*
+          </span>
+          @if (LivreForm.get('description')?.touched &&
+          LivreForm.get('description')?.errors?.['required']) {
+          <p class="uppercase text-xs font-bold text-red-500 mt-1">
+            La description est requise.
+          </p>
           }
+        </div>
+
+        <div class="flex justify-center items-center border-none mt-4">
+          <button
+            class="text-white tracking-wider rounded-lg text-base opacity-90 border-none px-20 py-2 font-bold uppercase cursor-pointer transition duration-300 hover:opacity-100 hover:brightness-110 active:scale-90 disabled:opacity-50 disabled:cursor-not-allowed"
+            [ngClass]="{
+              'bg-green-500': isRegisterSuccess,
+              'bg-sky-600': !isRegisterSuccess
+            }"
+            type="submit"
+            [disabled]="LivreForm.invalid || isSubmitting"
+          >
+            @if(isSubmitting) {
+            <span>Chargement...</span>
+            } @else if (isRegisterSuccess) {
+            <span>✅ Succès!</span>
+            } @else {
+            {{ isModifAction ? "Modifier" : "Valider" }}
+            }
+          </button>
         </div>
       </div>
     </form>
   </div>
 </main>
-
 }
-<main class="main-livre">
-  <section class="heading">
-    <h1 class="title">Les livres disponibles</h1>
-    <div class="search">
+
+<main class="p-0 m-5">
+  <section
+    class="flex justify-between items-center bg-[color:var(--blue)] text-[color:var(--primary)] p-3 mt-5 rounded-lg"
+  >
+    <h1 class="text-xl font-extrabold uppercase tracking-wide">
+      Les livres disponibles
+    </h1>
+
+    <div class="relative w-full max-w-lg mx-8">
       <input
         type="search"
         placeholder="Search"
         [formControl]="search"
         name="search"
         id="search"
+        class="border-none w-full outline-none p-2.5 pl-16 rounded-lg text-gray-700"
       />
-      <button><i class="fa fa-search"></i></button>
+      <button
+        class="absolute top-0.5 left-0.5 w-12 h-9 outline-none border-none bg-[color:var(--primary)] rounded-lg"
+      >
+        <i class="fa fa-search text-[color:var(--blue)] hover:text-black"></i>
+      </button>
     </div>
-    <div class="btn-add">
-      <button class="add" (click)="openLivre()">
-        <i class="fa fa-add"></i>
+
+    <div>
+      <button
+        class="outline-none border-none bg-transparent"
+        (click)="openLivre()"
+      >
+        <i
+          class="fa fa-add text-xl text-[color:var(--primary)] hover:text-gray-300"
+        ></i>
       </button>
     </div>
   </section>
 
-  <section class="body">
+  <section class="grid gap-10 mt-5 p-5 md:grid-cols-2 lg:grid-cols-3">
     @for( item of livres; track $index){
-
-    <div class="book">
-      <div class="deletebook">
-        <button class="btn btn-success" (click)="updatelivre(item)">
+    <div class="bg-gray-200 rounded-lg shadow-md relative">
+      <div class="absolute top-0 right-0 flex gap-2 p-2">
+        <button
+          class="p-2 rounded-sm bg-green-500 text-white hover:bg-green-600 transition active:scale-95"
+          (click)="updatelivre(item)"
+        >
           <i class="fas fa-pencil"></i>
         </button>
-        <button class="btn btn-danger" (click)="deletelivre(item.id)">
+        <button
+          class="p-2 rounded-sm bg-red-500 text-white hover:bg-red-600 transition active:scale-95"
+          (click)="deletelivre(item.id)"
+        >
           <i class="fa-solid fa-trash"></i>
         </button>
       </div>
-      <div class="list-book">
-        <span class="title book">
-          <i class="fas fa-heading"></i> Titre :
-          <p>{{ item.titreLivre }}</p></span
-        >
-        <span class="title auteur"
-          ><i class="fa fa-user"></i> Auteur :
-          <p>{{ item.auteurLivre }}</p></span
+
+      <div class="grid justify-center items-center gap-2 p-10 pt-16">
+        <span class="flex items-center gap-2 text-gray-700 font-semibold"
+          ><i class="fas fa-heading text-lg text-[color:var(--blue)]"></i> Titre
+          :
+          <p class="uppercase">{{ item.titreLivre }}</p></span
         >
 
-        <span class="title edition"
-          ><i class="fas fa-tag"></i> Edition :
-          <p>{{ item.editionLivre }}</p></span
+        <span class="flex items-center gap-2 text-gray-700 font-semibold"
+          ><i class="fa fa-user text-lg text-[color:var(--blue)]"></i> Auteur :
+          <p class="uppercase">{{ item.auteurLivre }}</p></span
         >
-        <span class="title categorie"
-          ><i class="fas fa-book"></i> Categorie :
-          <p>{{ item.categorie }}</p></span
+
+        <span class="flex items-center gap-2 text-gray-700 font-semibold"
+          ><i class="fas fa-tag text-lg text-[color:var(--blue)]"></i> Edition :
+          <p class="uppercase">{{ item.editionLivre }}</p></span
         >
-        <button class="btn btn-primary" (click)="openVoirPLus(item)">
-          Voir plus <i class="fa fa-arrow-right"></i>
+
+        <span class="flex items-center gap-2 text-gray-700 font-semibold"
+          ><i class="fas fa-book text-lg text-[color:var(--blue)]"></i>
+          Catégorie :
+          <p class="uppercase">{{ item.categorie }}</p></span
+        >
+
+        <button
+          class="mt-4 px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg transition active:scale-95"
+          (click)="openVoirPLus(item)"
+        >
+          Voir plus <i class="fa fa-arrow-right ml-2"></i>
         </button>
       </div>
     </div>

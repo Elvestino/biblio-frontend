@@ -1,111 +1,296 @@
 @if (isAdherentComponentOpen) {
-<main class="add-adherent">
-  <div class="form-container">
+<main
+  class="fixed inset-0 bg-black/40 z-[999] backdrop-blur-sm flex justify-center items-center"
+>
+  <div
+    class="w-full max-w-3xl min-h-64 max-h-[90vh] overflow-y-auto rounded-lg relative"
+    [style.background-color]="'var(--blue)'"
+  >
     <button
-      class="btn-close-form"
+      class="absolute top-0 right-0 w-10 h-10 text-2xl border-0 outline-none bg-transparent opacity-60 transition duration-200 hover:text-red-500 hover:opacity-100 active:scale-90"
       type="button"
-      aria-label="close buttton"
+      aria-label="close button"
       (click)="closeCard()"
+      [style.color]="'var(--primary)'"
     >
       <i class="fa fa-times"></i>
     </button>
     <form
-      class="style-form"
-      (submit)="createadherent()"
+      class="bg-gray-100 rounded-2xl m-6 p-6"
+      (ngSubmit)="createadherent()"
       [formGroup]="AdherentForm"
     >
-      <div class="container-form-body">
-        <h1>{{ isModifAction ? "Modification" : "Enregistrement" }}</h1>
-        <hr />
+      <div class="flex flex-col">
+        <h1 class="uppercase text-xl tracking-wider text-center font-bold">
+          {{ isModifAction ? "Modification" : "Enregistrement" }}
+        </h1>
+        <hr class="border-t border-black mb-4" />
 
-        <div class="container-form nom_Adh">
-          <input type="text" formControlName="nom_Adh" required /><span
-            >Nom*
-          </span>
-        </div>
-        @if (nom_Adh?.touched && nom_Adh?.errors?.["required"]) {
-        <p class="error-text">Nom, s'il vous plait.</p>
-        }
-        <div class="container-form prenom_Adh">
-          <input type="text" formControlName="prenom_Adh" required />
-          <span>Prenom* </span>
-        </div>
-        @if (prenom_Adh?.touched && prenom_Adh?.errors?.["required"]) {
-        <p class="error-text">Prenom, s'il vous plait.</p>
-        }
-        <div class="container-form adrs_Adh">
-          <input type="text" formControlName="adrs_Adh" required />
-          <span>Adresse* </span>
-        </div>
-        @if (adrs_Adh?.touched && adrs_Adh?.errors?.["required"]) {
-        <p class="error-text">Adresse, s'il vous plait.</p>
-        }
-        <div class="container-form tel_Adh">
-          <input type="text" formControlName="tel_Adh" required />
-          <span>Contact* </span>
-        </div>
-        @if (tel_Adh?.touched && tel_Adh?.errors?.["required"]) {
-        <p class="error-text">Contact, s'il vous plait.</p>
-        }
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+          <div class="mb-5">
+            <div
+              class="relative flex flex-col border-b-2"
+              [style.border-color]="
+                nom_Adh?.invalid && nom_Adh?.touched ? 'red' : 'var(--orange)'
+              "
+            >
+              <input
+                type="text"
+                formControlName="nom_Adh"
+                required
+                class="peer border-none text-base p-2 w-full outline-none bg-transparent z-10 uppercase font-bold"
+                [style.color]="'var(--blue)'"
+              />
 
-        <div class="dt_adhesion">
-          <span>Date d'adhesion* </span>
-          <input type="date" formControlName="dt_adhesion" required />
-        </div>
-
-        <div class="categorie">
-          <select formControlName="categorie" id="categorie" required>
-            <option value="choix">Choisiser la categorie</option>
-            @for (i of categorie; track $index) {
-
-            <option [value]="i">{{ i }}</option>
+              <span
+                class="absolute left-0 text-base tracking-wider transition duration-500 ease-in-out pointer-events-none text-gray-500 peer-focus:text-xs peer-focus:-translate-y-5 peer-focus:!text-[var(--orange)]"
+                [ngClass]="{
+                  'text-xs -translate-y-5 !text-[var(--orange)]': nom_Adh?.value
+                }"
+              >
+                Nom*
+              </span>
+            </div>
+            @if (nom_Adh?.touched && nom_Adh?.errors?.["required"]) {
+            <p class="uppercase text-xs font-bold text-red-500 mt-1">
+              Le nom est requis.
+            </p>
             }
-          </select>
-        </div>
+          </div>
 
-        <div class="btn-add">
-          @if (AdherentForm.valid) {
+          <div class="mb-5">
+            <div
+              class="relative flex flex-col border-b-2"
+              [style.border-color]="
+                prenom_Adh?.invalid && prenom_Adh?.touched
+                  ? 'red'
+                  : 'var(--orange)'
+              "
+            >
+              <input
+                type="text"
+                formControlName="prenom_Adh"
+                required
+                class="peer border-none text-base p-2 w-full outline-none bg-transparent z-10"
+                [style.color]="'var(--blue)'"
+              />
+
+              <span
+                class="absolute left-0 text-base tracking-wider transition duration-500 ease-in-out pointer-events-none text-gray-500 peer-focus:text-xs peer-focus:-translate-y-5 peer-focus:!text-[var(--orange)]"
+                [ngClass]="{
+                  'text-xs -translate-y-5 !text-[var(--orange)]':
+                    prenom_Adh?.value
+                }"
+              >
+                Prenom*
+              </span>
+            </div>
+            @if (prenom_Adh?.touched && prenom_Adh?.errors?.["required"]) {
+            <p class="uppercase text-xs font-bold text-red-500 mt-1">
+              Le prénom est requis.
+            </p>
+            }
+          </div>
+
+          <div class="mb-5">
+            <div
+              class="relative flex flex-col border-b-2"
+              [style.border-color]="
+                adrs_Adh?.invalid && adrs_Adh?.touched ? 'red' : 'var(--orange)'
+              "
+            >
+              <input
+                type="text"
+                formControlName="adrs_Adh"
+                required
+                class="peer border-none text-base p-2 w-full outline-none bg-transparent z-10"
+                [style.color]="'var(--blue)'"
+              />
+
+              <span
+                class="absolute left-0 text-base tracking-wider transition duration-500 ease-in-out pointer-events-none text-gray-500 peer-focus:text-xs peer-focus:-translate-y-5 peer-focus:!text-[var(--orange)]"
+                [ngClass]="{
+                  'text-xs -translate-y-5 !text-[var(--orange)]':
+                    adrs_Adh?.value
+                }"
+              >
+                Adresse*
+              </span>
+            </div>
+            @if (adrs_Adh?.touched && adrs_Adh?.errors?.["required"]) {
+            <p class="uppercase text-xs font-bold text-red-500 mt-1">
+              L'adresse est requise.
+            </p>
+            }
+          </div>
+
+          <div class="mb-5">
+            <span
+              class="pointer-events-none text-gray-500 text-base tracking-wider transition duration-500"
+              >Contact*
+            </span>
+
+            <div class="flex gap-2">
+              <select
+                id="countryCodeSelect"
+                #countryCodeSelect
+                class="h-10 rounded-sm mt-1 mb-1 outline-none text-base bg-gray-100 border p-2"
+                [style.color]="'var(--blue)'"
+              >
+                @for (country of countryDialCodes; track country.isoCode) {
+                <option
+                  [value]="country.prefix"
+                  [selected]="country.isoCode === 'MG'"
+                >
+                  {{ country.prefix }} ({{ country.isoCode }})
+                </option>
+                }
+              </select>
+
+              <div
+                class="relative flex flex-col border-b-2 flex-grow"
+                [style.border-color]="
+                  tel_Adh?.invalid && tel_Adh?.touched ? 'red' : 'var(--orange)'
+                "
+              >
+                <input
+                  type="text"
+                  formControlName="tel_Adh"
+                  required
+                  class="border-none text-base p-2 w-full outline-none bg-transparent z-10"
+                  [style.color]="'var(--blue)'"
+                  placeholder="Numéro de téléphone"
+                />
+              </div>
+            </div>
+
+            @if (tel_Adh?.touched && tel_Adh?.errors?.["required"]) {
+            <p class="uppercase text-xs font-bold text-red-500 mt-1">
+              Le numéro de téléphone est requis.
+            </p>
+            } @if (tel_Adh?.touched && tel_Adh?.errors?.["pattern"]) {
+            <p class="uppercase text-xs font-bold text-red-500 mt-1">
+              Le numéro de contact est invalide.
+            </p>
+            }
+          </div>
+
+          <div class="mb-5">
+            <span
+              class="pointer-events-none text-gray-500 text-base tracking-wider transition duration-500"
+              >Date d'adhesion*
+            </span>
+            <input
+              type="date"
+              formControlName="dt_adhesion"
+              required
+              class="w-full h-10 rounded-sm mt-1 mb-1 outline-none text-center border text-base bg-gray-100 p-2"
+              [ngClass]="{
+                'border-red-500':
+                  AdherentForm.get('dt_adhesion')?.invalid &&
+                  AdherentForm.get('dt_adhesion')?.touched,
+                'border-gray-400':
+                  AdherentForm.get('dt_adhesion')?.valid ||
+                  AdherentForm.get('dt_adhesion')?.untouched
+              }"
+            />
+            @if (AdherentForm.get('dt_adhesion')?.touched &&
+            AdherentForm.get('dt_adhesion')?.errors?.["required"]) {
+            <p class="uppercase text-xs font-bold text-red-500 mt-1">
+              La date est requise.
+            </p>
+            }
+          </div>
+
+          <div class="mb-5">
+            <span
+              class="pointer-events-none text-gray-500 text-base tracking-wider transition duration-500"
+              >Catégorie*
+            </span>
+            <select
+              formControlName="categorie"
+              id="categorie"
+              required
+              class="w-full h-10 rounded-sm mt-1 mb-1 outline-none text-base bg-gray-100 border p-2"
+              [style.color]="'var(--blue)'"
+              [ngClass]="{
+                'border-red-500':
+                  AdherentForm.get('categorie')?.invalid &&
+                  AdherentForm.get('categorie')?.touched,
+                'border-gray-400':
+                  AdherentForm.get('categorie')?.valid ||
+                  AdherentForm.get('categorie')?.untouched
+              }"
+            >
+              <option value="choix" disabled>Choisir la catégorie</option>
+              @for (i of categorie; track $index) {
+              <option [value]="i">{{ i }}</option>
+              }
+            </select>
+            @if (AdherentForm.get('categorie')?.touched &&
+            AdherentForm.get('categorie')?.errors?.["required"]) {
+            <p class="uppercase text-xs font-bold text-red-500 mt-1">
+              La catégorie est requise.
+            </p>
+            }
+          </div>
+        </div>
+        <div class="flex justify-center items-center border-none mt-4">
           <button
-            class="{{
-              isRegisterSuccess
-                ? 'btn btn-success transition'
-                : 'btn btn-primary transition'
-            }}"
+            class="text-white tracking-wider rounded-lg text-base opacity-90 border-none px-20 py-2 font-bold uppercase cursor-pointer transition duration-300 hover:opacity-100 hover:brightness-110 active:scale-90 disabled:opacity-50 disabled:cursor-not-allowed"
+            [ngClass]="{
+              'bg-green-500': isRegisterSuccess,
+              'bg-sky-600': !isRegisterSuccess
+            }"
             type="submit"
+            [disabled]="AdherentForm.invalid || isSubmitting"
           >
-            @if(!isSubmitting && !isRegisterSuccess) {
-            {{ isModifAction ? "Modifier" : "Valider" }} }
+            @if(isSubmitting) {
+            <span>Chargement...</span>
+            } @else if (isRegisterSuccess) {
+            <span>✅ Succès!</span>
+            } @else {
+            {{ isModifAction ? "Modifier" : "Valider" }}
+            }
           </button>
-          }
         </div>
       </div>
     </form>
   </div>
 </main>
-} @if (qrcodeadherent) {
-<main class="qrcode">
-  <div class="form-container">
+}@if (qrcodeadherent) {
+<main
+  class="fixed inset-0 bg-black/40 z-[999] backdrop-blur-sm flex justify-center items-center"
+>
+  <div
+    class="w-full max-w-xl min-h-64 rounded-lg relative"
+    [style.background-color]="'var(--primary)'"
+  >
     <button
-      class="btn-close-form"
+      class="absolute top-0 right-0 w-10 h-10 text-2xl border-0 outline-none bg-transparent opacity-60 transition duration-200 hover:text-red-500 hover:opacity-100 active:scale-90"
       type="button"
       aria-label="close button"
-      (click)="closeCard()"
+      (click)="QrcodeClose()"
+      [style.color]="'var(--blue)'"
     >
       <i class="fa fa-times"></i>
     </button>
 
-    <div class="container-form-body">
-      <h1>Qrcode Adherent</h1>
-      <hr />
+    <div class="flex flex-col mx-5 py-8 relative">
+      <h1 class="uppercase text-xl tracking-wider text-center font-bold">
+        Qrcode Adherent
+      </h1>
+      <hr class="border-t border-black mb-4" />
 
-      <div class="container-form" #content>
-        <div class="qrcodeImage">
+      <div
+        class="flex justify-center items-center h-full max-h-[500px]"
+        #content
+      >
+        <div class="p-4">
           <qrcode
-            [qrdata]="
-              'Nom: TSIANOY  \n Prenom: Karl Elvestino Dorelin \n Adresse: Andrainjato \n Contact:0345678944 \n Date Adhesion : 2002-12-12 \n Categorie: Eleve'
-            "
-            [allowEmptyString]="true"
-            [ariaLabel]="'QR Code image with the following content...'"
+            [qrdata]="qrData"
+            [allowEmptyString]="false"
+            [ariaLabel]="'QR Code image with adherent details'"
             [cssClass]="'center'"
             [colorDark]="'#000000ff'"
             [colorLight]="'#ffffffff'"
@@ -115,107 +300,149 @@
             [imageWidth]="75"
             [margin]="4"
             [scale]="1"
-            [title]="'A custom title attribute'"
+            [title]="'QR Code Adherent'"
             [width]="400"
           ></qrcode>
         </div>
       </div>
-      <div class="btn-download">
-        <button class="download" (click)="Qr()">
+      <div class="outline-none flex justify-center items-center mt-4">
+        <button
+          class="bg-sky-500 text-white font-bold py-2 px-4 rounded transition duration-300 hover:bg-sky-600 active:scale-95"
+          (click)="Qr()"
+        >
           <i class="fa fa-download"></i> Télécharger
         </button>
       </div>
     </div>
   </div>
 </main>
-
 }
-<section class="count-group">
-  <div class="count">
-    <div class="dashboard teacher">
-      <span>Professeur</span>
-      <hr />
-      <p>{{ getTotalProfesseurs() }}</p>
-    </div>
+<section class="grid grid-cols-3 gap-8 m-8">
+  <div
+    class="rounded-xl p-5 text-white text-center"
+    [style.background-color]="'var(--blue)'"
+  >
+    <span class="text-3xl font-semibold">Professeur</span>
+    <hr class="border-t border-white" />
+    <p class="text-8xl">{{ getTotalProfesseurs() }}</p>
   </div>
-  <div class="count">
-    <div class="dashboard student">
-      <span>Eleve</span>
-      <hr />
-      <p>{{ getTotalEleves() }}</p>
-    </div>
+  <div
+    class="rounded-xl p-5 text-white text-center"
+    style="background-color: #818181"
+  >
+    <span class="text-3xl font-semibold">Eleve</span>
+    <hr class="border-t border-white" />
+    <p class="text-8xl">{{ getTotalEleves() }}</p>
   </div>
-  <div class="count">
-    <div class="dashboard other">
-      <span>Externe</span>
-      <hr />
-      <p>{{ getTotalExternes() }}</p>
-    </div>
+  <div
+    class="rounded-xl p-5 text-white text-center"
+    [style.background-color]="'var(--blue)'"
+  >
+    <span class="text-3xl font-semibold">Externe</span>
+    <hr class="border-t border-white" />
+    <p class="text-8xl">{{ getTotalExternes() }}</p>
   </div>
 </section>
-<div class="filtrer">
-  <span>Filtrer :</span>
+
+<div class="flex justify-end gap-8 mr-12 mb-6">
+  <div class="flex justify-end mt-4 mb-4">
+    <button
+      class="bg-sky-500 text-white font-bold py-2 px-4 rounded transition duration-200 hover:bg-sky-600 active:scale-95"
+      (click)="exportexcel()"
+    >
+      Exporter en Excel
+    </button>
+  </div>
+  <span
+    class="flex justify-center items-center text-xl text-gray-500 tracking-wider"
+    >Filtrer :</span
+  >
   <select
     name="filter-adherent"
     id="filter-adherent"
     [(ngModel)]="categorieSelectionnee"
+    class="text-xl rounded-md outline-none px-8 py-2 cursor-pointer"
+    [style.color]="'var(--blue)'"
   >
     @for(item of filter; track $index){
     <option [value]="item">{{ item }}</option>
     }
   </select>
 </div>
-<main class="main-adherent">
-  <div class="adherent">
-    <div class="table">
-      <div class="add">
-        <h1 class="title">Ajouter Aherent</h1>
-        <button type="button" class="btn btn-primary" (click)="openAdd()">
-          <i class="fa fa-add"></i>
-        </button>
-      </div>
-      <div class="exportExcel">
-        <button class="btn btn-primary" (click)="exportexcel()">
-          Exporter en Excel
-        </button>
-      </div>
-      <table class="section-table-adherent" id="dataExport">
-        <thead class="table-heading-adherent">
-          <tr class="heading">
-            <th>Nom</th>
-            <th>Prenom</th>
-            <th>Adresse</th>
-            <th>Contact</th>
-            <th>Date d'adhesion</th>
-            <th>Categorie</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody class="table-body-adherent">
-          @for (item of filtrerDonnees(); track $index) {
-          <tr class="data">
-            <td>{{ item.nom_Adh }}</td>
-            <td>{{ item.prenom_Adh }}</td>
-            <td>{{ item.adrs_Adh }}</td>
-            <td>{{ item.tel_Adh }}</td>
-            <td>{{ item.dt_adhesion }}</td>
-            <td>{{ item.categorie }}</td>
 
-            <td class="data-control">
-              <button class="btn btn-success" (click)="updateadherent(item)">
-                <i class="fa-solid fa-pencil"></i>
-              </button>
-              <button class="btn btn-eye" (click)="QrcodeOpen()">
-                <i class="fa fa-qrcode"></i>
-              </button>
-              <button class="btn btn-danger" (click)="deleteadherent(item.id)">
-                <i class="fa-solid fa-trash"></i>
-              </button>
-            </td>
-          </tr>
-          }
-        </tbody>
-      </table>
+<main class="m-8">
+  <div class="bg-white rounded-lg shadow-lg">
+    <div class="p-4">
+      <div class="flex justify-between items-center bg-gray-100 rounded-md p-2">
+        <h1 class="text-xl font-extrabold uppercase my-2 mx-5">
+          Listes des Adherents
+        </h1>
+        <button
+          type="button"
+          class="bg-transparent border-none outline-none transition duration-200 hover:text-blue-600 active:scale-90"
+          (click)="openAdd()"
+        >
+          <i class="fa fa-add text-blue-500 text-2xl"></i>
+        </button>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full mt-4 border-collapse" id="dataExport">
+          <thead
+            class="text-center text-white"
+            [style.background-color]="'var(--blue)'"
+          >
+            <tr class="heading">
+              <th class="p-4 w-[300px] border border-orange-500">Nom</th>
+              <th class="p-4 w-[400px] border border-orange-500">Prenom</th>
+              <th class="p-4 w-[200px] border border-orange-500">Adresse</th>
+              <th class="p-4 w-[200px] border border-orange-500">Contact</th>
+              <th class="p-4 w-[200px] border border-orange-500">
+                Date d'adhesion
+              </th>
+              <th class="p-4 w-[200px] border border-orange-500">Categorie</th>
+              <th class="p-4 w-[150px] border border-orange-500">Action</th>
+            </tr>
+          </thead>
+          <tbody class="text-base text-center">
+            @for (item of filtrerDonnees(); track $index) {
+            <tr class="data even:bg-gray-50">
+              <td class="p-2 border border-gray-200 font-bold uppercase">
+                {{ item.nom_Adh }}
+              </td>
+              <td class="p-2 border border-gray-200">{{ item.prenom_Adh }}</td>
+              <td class="p-2 border border-gray-200">{{ item.adrs_Adh }}</td>
+              <td class="p-2 border border-gray-200">{{ item.tel_Adh }}</td>
+              <td class="p-2 border border-gray-200">{{ item.dt_adhesion }}</td>
+              <td class="p-2 border border-gray-200">{{ item.categorie }}</td>
+
+              <td
+                class="p-2 border-none flex justify-between items-center space-x-2"
+              >
+                <button
+                  class="text-green-500 p-2 rounded hover:bg-gray-200 transition-all duration-200 active:scale-90"
+                  (click)="updateadherent(item)"
+                >
+                  <i class="fa-solid fa-pencil"></i>
+                </button>
+                <button
+                  class="text-gray-600 p-2 rounded hover:bg-gray-200 transition-all duration-200 active:scale-90"
+                  (click)="QrcodeOpen(item)"
+                >
+                  <i class="fa fa-qrcode"></i>
+                </button>
+                <button
+                  class="text-red-500 p-2 rounded hover:bg-gray-200 transition-all duration-200 active:scale-90"
+                  (click)="deleteadherent(item.id)"
+                >
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </main>

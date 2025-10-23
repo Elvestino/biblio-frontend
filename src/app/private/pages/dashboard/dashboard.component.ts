@@ -1,10 +1,11 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { AdherentService } from '../../service/adherent.service';
 import { BibliothecaireService } from '../../service/bibliothecaire.service';
 import { EmprunterService } from '../../service/emprunter.service';
-import { Chart, ChartData, ChartOptions } from 'chart.js/auto';
+import { Chart } from 'chart.js/auto';
 import { LivreService } from '../../service/livre.service';
 import { Livre } from '../../model/livre.model';
+import { isPlatformBrowser } from '@angular/common';
 import { Emprunter } from '../../model/emprunter.model';
 
 @Component({
@@ -19,7 +20,8 @@ export class DashboardComponent implements OnInit {
     private adherent: AdherentService,
     private bibliothecaire: BibliothecaireService,
     private emprunt: EmprunterService,
-    private livre: LivreService
+    private livre: LivreService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.getlivre();
     this.getemprunt();
@@ -36,7 +38,6 @@ export class DashboardComponent implements OnInit {
     this.getemprunt();
     this.getadherent();
     this.getbibliothecaire();
-
     this.getData();
 
     /////////////////////////CHART ADHESION PAR MOIS ///////////////
@@ -279,12 +280,21 @@ export class DashboardComponent implements OnInit {
   }
 
   ////////////////////////RETOURNER ///////////////////
+  ////////////////////////RETOURNER ///////////////////
   key: string = 'myData';
   data: Emprunter[] = [];
+
   getData() {
-    const storedData = localStorage.getItem(this.key);
-    if (storedData) {
-      this.data = JSON.parse(storedData);
+    // 🌟 VÉRIFIEZ SI NOUS SOMMES DANS UN NAVIGATEUR AVANT D'UTILISER localStorage
+    if (isPlatformBrowser(this.platformId)) {
+      try {
+        const storedData = localStorage.getItem(this.key);
+        if (storedData) {
+          this.data = JSON.parse(storedData);
+        }
+      } catch (e) {
+        console.error("Erreur de parsing ou d'accès à localStorage:", e);
+      }
     }
   }
 

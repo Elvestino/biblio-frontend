@@ -1,9 +1,73 @@
-<!-- ///////////////////////////////////QRCODE//////////////////////// -->
 @if(qrcodeBibliothecaire){
-<section class="qrcode">
-  <div class="form-container">
+<section
+  class="fixed inset-0 z-10 flex items-center justify-center bg-opacity-40 backdrop-blur-sm animate-fade-in"
+>
+  <div
+    class="relative w-full max-w-xl min-h-[250px] rounded-lg bg-[color:var(--blue)] shadow-xl"
+  >
     <button
-      class="btn-close-form"
+      class="absolute top-0 right-0 w-10 h-10 text-xl text-[color:var(--primary)] bg-transparent opacity-60 transition-all duration-300 ease-in-out hover:text-red-500 hover:opacity-100 active:scale-90"
+      type="button"
+      aria-label="close button"
+      (click)="QrcodeClose()"
+    >
+      <i class="fa fa-times"></i>
+    </button>
+
+    <div class="p-8 bg-gray-100 m-6 rounded-lg">
+      <h1
+        class="text-xl font-bold uppercase tracking-wider text-center mb-4 text-[color:var(--blue)]"
+      >
+        QR Code du Bibliothécaire
+      </h1>
+      <hr class="border-t-2 border-black mb-6" />
+
+      <div
+        class="flex justify-center items-center h-full max-h-[500px]"
+        #content
+      >
+        <!-- <div class="w-full max-w-xs"> -->
+        <div class="p-4 border border-gray-300 rounded-lg bg-white">
+          <qrcode
+            [qrdata]="qrData"
+            [allowEmptyString]="false"
+            [ariaLabel]="'QR Code image with adherent details'"
+            [cssClass]="'center'"
+            [colorDark]="'#000000ff'"
+            [colorLight]="'#ffffffff'"
+            [elementType]="'canvas'"
+            [errorCorrectionLevel]="'M'"
+            [imageHeight]="75"
+            [imageWidth]="75"
+            [margin]="4"
+            [scale]="1"
+            [title]="'QR Code Adherent'"
+            [width]="400"
+          ></qrcode>
+        </div>
+        <!-- </div> -->
+      </div>
+
+      <div class="flex justify-center mt-6">
+        <button
+          class="download rounded-lg border-2 border-transparent bg-sky-600 text-white px-8 py-2 font-semibold transition-all duration-300 hover:bg-sky-700 active:scale-95"
+          (click)="Qr()"
+        >
+          <i class="fa fa-download mr-2"></i> Télécharger
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+}@if(isBibliothecaireComponentOpen){
+<section
+  class="fixed inset-0 z-10 flex items-center justify-center bg-opacity-40 backdrop-blur-sm animate-fade-in"
+>
+  <div
+    class="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-lg bg-[color:var(--blue)] shadow-xl"
+  >
+    <button
+      class="absolute top-0 right-0 w-10 h-10 text-xl text-[color:var(--primary)] bg-transparent opacity-60 transition-all duration-300 ease-in-out hover:text-red-500 hover:opacity-100 active:scale-90"
       type="button"
       aria-label="close button"
       (click)="closeForm()"
@@ -11,109 +75,90 @@
       <i class="fa fa-times"></i>
     </button>
 
-    <div class="container-form-body">
-      <h1>Qrcode Bibliothecaire</h1>
-      <hr />
-
-      <div class="container-form" #content>
-        <div class="qrcodeImage">
-          <div class="qr-container">
-            <img
-              [src]="adminQrLink"
-              alt="QR Code"
-              style="width: 100%; object-fit: cover"
-            />
-          </div>
-        </div>
-      </div>
-      <div class="btn-download">
-        <button class="download" (click)="Qr()">
-          <i class="fa fa-download"></i> Télécharger
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
-
-}
-
-<!-- //////////////////////////////////////////////////AJOUT/////////////////////////////////// -->
-@if(isBibliothecaireComponentOpen){
-<section class="add-bibliothecaire">
-  <div class="form-container">
-    <button
-      class="btn-close-form"
-      type="button"
-      aria-label="close buttton"
-      (click)="closeForm()"
-    >
-      <i class="fa fa-times"></i>
-    </button>
     <form
-      class="style-form"
+      class="bg-gray-100 rounded-xl m-6 p-6 space-y-5"
       (submit)="createbibliothecaire()"
       [formGroup]="BibliothecaireForm"
     >
-      <div class="container-form-body">
-        <h1>{{ isModifAction ? "Modification" : "Enregistrement" }}</h1>
-        <hr />
+      <div class="space-y-4">
+        <h1 class="text-xl font-extrabold uppercase tracking-wider text-center">
+          {{ isModifAction ? "Modification" : "Enregistrement" }}
+        </h1>
+        <hr class="border-t border-black" />
 
-        <div class="container-form nom_biblio">
-          <input type="text" formControlName="nom_biblio" required /><span
-            >Nom*
-          </span>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+          @for (field of ['nom_biblio', 'prenom_biblio', 'date_naissance',
+          'lieu_naissance', 'cin_biblio', 'tel_biblio']; track field) {
+
+          <div class="mb-5">
+            <div
+              class="relative pt-4 border-b-2"
+              [style.border-color]="
+                BibliothecaireForm.get(field)?.invalid &&
+                BibliothecaireForm.get(field)?.touched
+                  ? 'red'
+                  : 'var(--orange)'
+              "
+            >
+              <input
+                [type]="field.includes('date') ? 'date' : 'text'"
+                [formControlName]="field"
+                required
+                class="peer border-none text-base p-2 w-full outline-none bg-transparent z-10 text-[color:var(--blue)] transition-all duration-300"
+                [class.uppercase]="field === 'nom_biblio'"
+                [class.font-bold]="field === 'nom_biblio'"
+              />
+
+              <span
+                class="absolute left-0 top-0 p-2 text-base tracking-wider pointer-events-none text-gray-500 transition-all duration-500 ease-in-out peer-focus:text-xs peer-focus:-translate-y-4 peer-focus:text-[color:var(--orange)]"
+                [ngClass]="{
+                  'text-xs -translate-y-4 !text-[color:var(--orange)]':
+                    BibliothecaireForm.get(field)?.value ||
+                    BibliothecaireForm.get(field)?.value === 0
+                }"
+              >
+                {{
+                  field === "nom_biblio"
+                    ? "Nom*"
+                    : field === "prenom_biblio"
+                    ? "Prénom*"
+                    : field === "date_naissance"
+                    ? "Date de naissance*"
+                    : field === "lieu_naissance"
+                    ? "Lieu de naissance*"
+                    : field === "cin_biblio"
+                    ? "Carte d'Identité Nationale (CIN)*"
+                    : "Contact*"
+                }}
+              </span>
+            </div>
+
+            @if (BibliothecaireForm.get(field)?.touched &&
+            BibliothecaireForm.get(field)?.errors?.["required"]) {
+            <p class="uppercase text-xs font-bold text-red-500 mt-1 pb-1">
+              Le {{ field.split("_")[0] }} est requis(e).
+            </p>
+            }
+          </div>
+          }
         </div>
-        @if (nom_biblio?.touched && nom_biblio?.errors?.["required"]) {
-        <p class="error-text">Nom, s'il vous plait.</p>
-        }
-        <div class="container-form prenom_biblio">
-          <input type="text" formControlName="prenom_biblio" required />
-          <span>Prenom* </span>
-        </div>
-        @if (prenom_biblio?.touched && prenom_biblio?.errors?.["required"]) {
-        <p class="error-text">Prenom, s'il vous plait.</p>
-        }
-        <div class="container-form date_naissance">
-          <input type="date" formControlName="date_naissance" required />
-          <span>Date de naissance </span>
-        </div>
-        @if (date_naissance?.touched && date_naissance?.errors?.["required"]) {
-        <p class="error-text">Date de naissance , s'il vous plait.</p>
-        }
-        <div class="container-form lieu_naissance">
-          <input type="text" formControlName="lieu_naissance" required />
-          <span>Lieu de naissance </span>
-        </div>
-        @if (lieu_naissance?.touched && lieu_naissance?.errors?.["required"]) {
-        <p class="error-text">Lieu de naissance, s'il vous plait.</p>
-        }
-        <div class="container-form cin_biblio">
-          <input type="text" formControlName="cin_biblio" required />
-          <span>Carte d'Indentite Nationale (CIN)* </span>
-        </div>
-        @if (cin_biblio?.touched && cin_biblio?.errors?.["required"]) {
-        <p class="error-text">CIN, s'il vous plait.</p>
-        }
-        <div class="container-form tel_biblio">
-          <input type="text" formControlName="tel_biblio" required />
-          <span>Contact* </span>
-        </div>
-        @if (tel_biblio?.touched && tel_biblio?.errors?.["required"]) {
-        <p class="error-text">Numero de telephone, s'il vous plait.</p>
-        }
       </div>
-      <div class="btn-add">
+
+      <div class="flex justify-center pt-4">
         @if (BibliothecaireForm.valid) {
         <button
-          class="{{
-            isRegisterSuccess
-              ? 'btn btn-success transition'
-              : 'btn btn-primary transition'
-          }}"
+          class="rounded-lg font-bold uppercase text-white px-20 py-2 text-base transition-all duration-300 active:scale-90"
+          [ngClass]="{
+            'bg-green-500 hover:bg-green-600': isRegisterSuccess,
+            'bg-sky-600 hover:bg-sky-700': !isRegisterSuccess
+          }"
           type="submit"
+          [disabled]="BibliothecaireForm.invalid || isSubmitting"
         >
           @if(!isSubmitting && !isRegisterSuccess) {
-          {{ isModifAction ? "Modifier" : "Valider" }} }
+          {{ isModifAction ? "Modifier" : "Valider" }}
+          } @else if (isSubmitting) { Soumission... } @else if
+          (isRegisterSuccess) { Succès ! }
         </button>
         }
       </div>
@@ -121,71 +166,99 @@
   </div>
 </section>
 }
-<main class="main-bibliothecaire">
-  <div class="bibliothecaire">
-    <div class="head"></div>
-    <div class="table">
-      <div class="add">
-        <h1 class="title">Ajouter</h1>
 
-        <button
-          type="button"
-          class="btn btn-primary"
-          (click)="openAddBibliothecaire()"
+<main class="flex justify-center items-start min-h-screen">
+  <div class="w-full max-w-screen-2xl">
+    <!-- <div
+      class="hidden lg:block bg-cover bg-center h-screen"
+      style="
+        background-image: linear-gradient(
+            rgba(0, 0, 0, 0.4),
+            rgba(0, 0, 0, 0.4)
+          ),
+          url(../../../../assets/img/book5.jpg);
+      "
+    ></div> -->
+
+    <div class="p-5 lg:p-10 w-full overflow-x-auto">
+      <div class="mb-6 space-y-4">
+        <div
+          class="flex justify-between items-center bg-gray-100 p-3 rounded-lg shadow-md"
         >
-          <i class="fa fa-add"></i>
-        </button>
+          <h1 class="text-xl font-extrabold uppercase text-gray-800">
+            Liste des Bibliothécaires
+          </h1>
+          <div class="flex items-center justify-center gap-6">
+            <button
+              class="bg-sky-600 text-white px-4 py-2 rounded-lg font-semibold shadow-md hover:bg-sky-700 transition"
+              (click)="exportexcel()"
+            >
+              Exporter en Excel
+            </button>
+            <button
+              type="button"
+              class="bg-transparent border-none outline-none p-2 rounded-full transition-all duration-300 hover:bg-gray-200 active:scale-90"
+              (click)="openAddBibliothecaire()"
+            >
+              <i class="fa fa-plus text-[color:var(--blue)] text-xl"></i>
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div class="exportExcel">
-        <button class="btn btn-primary" (click)="exportexcel()">
-          Exporter en Excel
-        </button>
-      </div>
-      <!-- ///////////////////////////////////TABLE/////////////////////////////////// -->
-      <table class="section-table-bibliothecaire" id="dataExport">
-        <thead class="table-heading-bibliothecaire">
-          <tr class="heading">
-            <th>Nom</th>
-            <th>Prenom</th>
-            <th>Date de naissance</th>
-            <th>Lieu de naissance</th>
-            <th>CIN</th>
-            <th>Contact</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody class="table-body-bibliothecaire">
-          @for (item of bibliothecaires; track $index) {
-          <tr class="data">
-            <td>{{ item.nom_biblio }}</td>
-            <td>{{ item.prenom_biblio }}</td>
-            <td>{{ item.date_naissance }}</td>
-            <td>{{ item.lieu_naissance }}</td>
-            <td>{{ item.cin_biblio }}</td>
-            <td>{{ item.tel_biblio }}</td>
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse" id="dataExport">
+          <thead class="bg-[color:var(--blue)] text-white text-center">
+            <tr>
+              <th class="p-3">Nom</th>
+              <th class="p-3">Prenom</th>
+              <th class="p-3">Date de naissance</th>
+              <th class="p-3">Lieu de naissance</th>
+              <th class="p-3">CIN</th>
+              <th class="p-3">Contact</th>
+              <th class="p-3 w-32">Action</th>
+            </tr>
+          </thead>
 
-            <td class="data-control">
-              <button
-                class="btn btn-success"
-                (click)="updatebiBibliothecaire(item)"
-              >
-                <i class="fa-solid fa-pencil"></i>
-              </button>
-              <button class="btn btn-eye" (click)="QrcodeOpen()">
-                <i class="fa fa-qrcode"></i>
-              </button>
-              <button
-                class="btn btn-danger"
-                (click)="deleteBibliothecaire(item.id)"
-              >
-                <i class="fa-solid fa-trash"></i>
-              </button>
-            </td>
-          </tr>
-          }
-        </tbody>
-      </table>
+          <tbody>
+            @for (item of bibliothecaires; track $index) {
+            <tr
+              class="text-center border-b border-gray-200 hover:bg-gray-50 text-base"
+            >
+              <td class="p-2 font-bold uppercase">{{ item.nom_biblio }}</td>
+              <td class="p-2">{{ item.prenom_biblio }}</td>
+              <td class="p-2">{{ item.date_naissance }}</td>
+              <td class="p-2">{{ item.lieu_naissance }}</td>
+              <td class="p-2">{{ item.cin_biblio }}</td>
+              <td class="p-2">{{ item.tel_biblio }}</td>
+
+              <td class="p-2">
+                <div class="flex justify-around items-center space-x-2">
+                  <button
+                    class="text-green-500 p-2 rounded hover:bg-gray-200 transition-all duration-200 active:scale-90"
+                    (click)="updatebiBibliothecaire(item)"
+                  >
+                    <i class="fa-solid fa-pencil"></i>
+                  </button>
+                  <button
+                    class="text-gray-600 p-2 rounded hover:bg-gray-200 transition-all duration-200 active:scale-90"
+                    (click)="QrcodeOpen(item)"
+                  >
+                    <i class="fa fa-qrcode"></i>
+                  </button>
+                  <button
+                    class="text-red-500 p-2 rounded hover:bg-gray-200 transition-all duration-200 active:scale-90"
+                    (click)="deleteBibliothecaire(item.id)"
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </main>

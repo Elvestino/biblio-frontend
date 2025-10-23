@@ -1,11 +1,17 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+
 import { RouterOutlet } from '@angular/router';
 import { QrcodeAdherentComponent } from '../../component/qrcode-adherent/qrcode-adherent.component';
-
+import { CommonModule } from '@angular/common'; // <--- AJOUTÉ POUR NgClass et les directives Angular
 import { AdherentService } from '../../service/adherent.service';
 import Swal from 'sweetalert2';
 import { Adherent } from '../../model/adherent.model';
-import { v4 as uuidv4 } from 'uuid';
+import {
+  getCountries,
+  getCountryCallingCode,
+  CountryCode,
+} from 'libphonenumber-js';
+
 import {
   FormBuilder,
   FormsModule,
@@ -18,6 +24,10 @@ import jsPDF from 'jspdf';
 import { catchError, of } from 'rxjs';
 
 import * as XLSX from 'xlsx';
+interface CountryDialCode {
+  isoCode: CountryCode;
+  prefix: string;
+}
 @Component({
   selector: 'app-adherent',
   standalone: true,
@@ -27,6 +37,7 @@ import * as XLSX from 'xlsx';
     ReactiveFormsModule,
     FormsModule,
     QRCodeModule,
+    CommonModule, // <--- Correction pour le support de [ngClass]
   ],
   templateUrl: './adherent.component.html',
   styleUrl: './adherent.component.scss',
@@ -37,11 +48,12 @@ export class AdherentComponent implements OnInit {
     private formbuilder: FormBuilder,
     private cdr: ChangeDetectorRef
   ) {}
+
   isModifAction: boolean = false;
   filter: string[] = ['Tous', 'Eleve', 'Professeur', 'Externe'];
   isAdherentComponentOpen: boolean = false;
   qrcodeadherent: boolean = false;
-
+  countryDialCodes: CountryDialCode[] = [];
   adherent: Adherent[] = [];
 
   categorieSelectionnee: string = 'Tous';
@@ -54,44 +66,27 @@ export class AdherentComponent implements OnInit {
     prenom_Adh: '',
     tel_Adh: '',
   };
-  closeCard() {
-    this.qrcodeadherent = false;
-    this.isAdherentComponentOpen = false;
-    this.isModifAction = false;
+  // --- Chargement des indicatifs téléphoniques ---
 
-    this.AdherentForm.patchValue({
-      nom_Adh: '',
-      prenom_Adh: '',
-      dt_adhesion: new Date().toISOString().split('T')[0],
-      adrs_Adh: '',
-      tel_Adh: '',
-      categorie: '',
-    });
-  }
-  QrcodeClose() {
-    this.qrcodeadherent = false;
-  }
-  QrcodeOpen() {
-    this.qrcodeadherent = true;
-  }
-  openAdd() {
-    this.isAdherentComponentOpen = true;
-  }
+  // --- Propriétés d'état du Formulaire ---
   title = 'Enregistrement';
   formHeader = 'valider';
   categorie: string[] = ['Eleve', 'Professeur', 'Externe'];
   isSubmitting: boolean = false;
   isRegisterSuccess: boolean = false;
-
   isEditing = false;
+
+  // --- Définition du Formulaire Réactif ---
   AdherentForm = this.formbuilder.group({
     nom_Adh: ['', [Validators.required]],
     prenom_Adh: ['', [Validators.required]],
     adrs_Adh: ['', [Validators.required]],
-    tel_Adh: ['', [Validators.required]],
+    tel_Adh: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
     dt_adhesion: ['', [Validators.required]],
     categorie: ['', [Validators.required]],
   });
+
+  // --- Getters pour les Contrôles de Formulaire (utilisés dans le HTML pour la validation) ---
   get nom_Adh() {
     return this.AdherentForm.get('nom_Adh');
   }
@@ -104,41 +99,127 @@ export class AdherentComponent implements OnInit {
   get tel_Adh() {
     return this.AdherentForm.get('tel_Adh');
   }
-  ///////////////////OHTER CODE////////////////////////
+
+  ///////////////////LIFECYCLE & CHARGEMENT////////////////////////
   ngOnInit(): void {
+    this.loadCountryDialCodes();
     this.loadadherent();
   }
+  // Nouvelle méthode pour charger les codes pays
+  loadCountryDialCodes(): void {
+    const countries = getCountries(); // Obtient la liste des codes ISO ('FR', 'US', etc.)
+
+    this.countryDialCodes = countries
+      .map((isoCode: CountryCode) => {
+        try {
+          const prefix = `+${getCountryCallingCode(isoCode)}`;
+          return { isoCode, prefix };
+        } catch (e) {
+          // Gère les cas où un code pays pourrait ne pas avoir de code d'appel
+          return null;
+        }
+      })
+      .filter((item): item is CountryDialCode => item !== null) // Retire les erreurs
+      .sort((a, b) => a.prefix.localeCompare(b.prefix)); // Trie par préfixe (+1, +33, etc.)
+  }
+
   loadadherent() {
     this.adherentservice.getAlladherents().subscribe((data) => {
       this.adherent = data;
     });
   }
-  /////////////////////////////CREATE///////////////////////
+
+  ///////////////////GESTION DES MODALES (BOUTONS D'OUVERTURE/FERMETURE)////////////////////////
+  closeCard() {
+    this.qrcodeadherent = false;
+    this.isAdherentComponentOpen = false;
+    this.isModifAction = false;
+    this.isRegisterSuccess = false; // Réinitialisation de l'état de succès
+    this.isSubmitting = false; // S'assurer que l'état de soumission est réinitialisé
+
+    // Réinitialisation du formulaire à son état initial
+    this.AdherentForm.reset({
+      nom_Adh: '',
+      prenom_Adh: '',
+      // Initialise la date à aujourd'hui si le champ est vide
+      dt_adhesion: new Date().toISOString().split('T')[0],
+      adrs_Adh: '',
+      tel_Adh: '',
+      categorie: 'choix', // Assurez-vous que c'est la valeur de l'option par défaut
+    });
+  }
+
+  QrcodeClose() {
+    this.qrcodeadherent = false;
+    // Réinitialise selectedAdherent à un état vide (Bonne pratique)
+    this.selectedAdherent = {
+      adrs_Adh: '',
+      categorie: '',
+      dt_adhesion: new Date(),
+      id: '',
+      nom_Adh: '',
+      prenom_Adh: '',
+      tel_Adh: '',
+    };
+  }
+
+  QrcodeOpen(item: Adherent) {
+    this.selectedAdherent = item; // Stocke l'adhérent sélectionné
+    this.genererDonneesQrAvecAdherent(); // Génère le QR data
+    this.qrcodeadherent = true; // Ouvre la modale
+  }
+
+  openAdd() {
+    this.isModifAction = false;
+    this.isAdherentComponentOpen = true; // <--- C'est ICI que ça doit passer à TRUE
+    this.AdherentForm.reset({
+      dt_adhesion: new Date().toISOString().split('T')[0],
+      categorie: 'choix',
+    });
+  }
+  ///////////////////////////CRÉATION/MODIFICATION (BOUTON DE SOUBISSION)///////////////////////
 
   createadherent() {
-    this.isSubmitting = true;
+    if (this.AdherentForm.invalid) {
+      // Optionnel : marquer tous les champs comme touchés pour afficher les erreurs
+      this.AdherentForm.markAllAsTouched();
+      return;
+    }
 
-    if (this.isModifAction == true) {
-      // requete send modif
-      const updatedAdherent = {
-        ...this.AdherentForm.value,
-        id: this.selectedAdherent.id,
-      };
+    this.isSubmitting = true;
+    // Assurer que les valeurs sont traitées même si elles sont nulles/indéfinies
+    const formValues = this.AdherentForm.value;
+
+    const adherentToSave: Partial<Adherent> = {
+      nom_Adh: formValues.nom_Adh ?? '',
+      prenom_Adh: formValues.prenom_Adh ?? '',
+      adrs_Adh: formValues.adrs_Adh ?? '',
+      tel_Adh: formValues.tel_Adh ?? '',
+      dt_adhesion: formValues.dt_adhesion
+        ? new Date(formValues.dt_adhesion)
+        : new Date(),
+      categorie: formValues.categorie ?? '',
+    };
+
+    if (this.isModifAction) {
+      // Requete SEND MODIF
+      const updatedAdherent: Adherent = {
+        ...adherentToSave,
+        id: this.selectedAdherent.id, // Utilise l'ID stocké pour la modification
+      } as Adherent;
+
       this.adherentservice
         .updateadherent(this.selectedAdherent.id, updatedAdherent)
         .subscribe({
-          next: (res) => {
+          next: () => {
             Swal.fire({
               position: 'center',
               icon: 'success',
-              title: 'Adherent modifier',
+              title: 'Adhérent modifié',
               showConfirmButton: false,
               timer: 1500,
             }).then(() => {
               this.loadadherent();
-              this.AdherentForm.reset();
-              this.isSubmitting = false;
-              this.isRegisterSuccess = false;
               this.closeCard();
             });
           },
@@ -146,56 +227,46 @@ export class AdherentComponent implements OnInit {
             Swal.fire({
               position: 'center',
               icon: 'error',
-              title: "Erreur lors de la modification de l'adherent",
+              title: "Erreur lors de la modification de l'adhérent",
               showConfirmButton: false,
               timer: 1500,
             });
             console.error('Erreur lors de la modification :', err);
             this.isSubmitting = false;
-            this.isRegisterSuccess = false;
           },
         });
     } else {
-      //  requete send add
-      if (this.AdherentForm.valid) {
-        // const nouvelId = uuidv4();
-        const AdherentData = this.AdherentForm.value;
-        this.adherentservice.createadherent(AdherentData).subscribe({
-          next: (result) => {
-            Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'Adherent enregistré',
-              showConfirmButton: false,
-              timer: 1500,
-            }).then(() => {
-              this.loadadherent();
-              this.AdherentForm.reset();
-              this.isSubmitting = false;
-              this.isRegisterSuccess = true;
-              this.closeCard();
-            });
-          },
-          error: () => {
-            Swal.fire({
-              position: 'center',
-              icon: 'error',
-              title: "Erreur lors de l'enregistrement de l'adherent",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            console.log(
-              "Erreur lors de l'enregistrement : ",
-              this.AdherentForm.value
-            );
-            this.isSubmitting = false;
-          },
-        });
-      }
+      // Requete SEND ADD
+      this.adherentservice.createadherent(adherentToSave).subscribe({
+        next: () => {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Adhérent enregistré',
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            this.loadadherent();
+            this.isRegisterSuccess = true; // Afficher temporairement le succès
+            setTimeout(() => this.closeCard(), 500); // Ferme après 0.5s pour montrer le succès
+          });
+        },
+        error: (err) => {
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: "Erreur lors de l'enregistrement de l'adhérent",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          console.error("Erreur lors de l'enregistrement : ", err);
+          this.isSubmitting = false;
+        },
+      });
     }
   }
 
-  /////////////////////DELETE///////////////////////////
+  /////////////////////SUPPRESSION (BOUTON TRASH)///////////////////////////
   deleteadherent(id: string) {
     const swalWithBootstrapButtons = Swal.mixin({
       customClass: {
@@ -206,7 +277,7 @@ export class AdherentComponent implements OnInit {
     });
     swalWithBootstrapButtons
       .fire({
-        title: 'Voulez-vous vraiment supprimer le adherent ?',
+        title: 'Voulez-vous vraiment supprimer cet adhérent ?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'OUI!!, Supprimer',
@@ -215,20 +286,20 @@ export class AdherentComponent implements OnInit {
       })
       .then((result) => {
         if (result.isConfirmed) {
-          swalWithBootstrapButtons.fire({
-            title: 'Supprimer',
-            text: 'adherent supprimer avec success',
-            icon: 'success',
-            showConfirmButton: false,
-            timer: 1500,
-          });
           this.adherentservice.deleteadherent(id).subscribe(() => {
+            swalWithBootstrapButtons.fire({
+              title: 'Supprimer',
+              text: 'Adhérent supprimé avec succès',
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 1500,
+            });
             this.loadadherent();
           });
         } else if (result.dismiss === Swal.DismissReason.cancel) {
           swalWithBootstrapButtons.fire({
             title: 'Annuler',
-            text: 'Suppression du adherent annuler',
+            text: "Suppression de l'adhérent annulée",
             icon: 'error',
             showConfirmButton: false,
             timer: 1500,
@@ -237,21 +308,25 @@ export class AdherentComponent implements OnInit {
       });
   }
 
-  ////////////////////////////MODIF//////////////////////
+  ////////////////////////////MODIFICATION (BOUTON PENCIL)//////////////////////
   updateadherent(item: Adherent) {
     this.isModifAction = true;
+    this.isAdherentComponentOpen = true;
+
+    // Assurer que la date est au format 'YYYY-MM-DD' pour le champ input type="date"
     const dateAdhesion = new Date(item.dt_adhesion);
+    const formattedDate = dateAdhesion.toISOString().split('T')[0];
+
     this.AdherentForm.patchValue({
       nom_Adh: item.nom_Adh,
       prenom_Adh: item.prenom_Adh,
-      dt_adhesion: dateAdhesion.toISOString().split('T')[0],
+      dt_adhesion: formattedDate,
       adrs_Adh: item.adrs_Adh,
       tel_Adh: item.tel_Adh,
       categorie: item.categorie,
     });
 
     this.selectedAdherent = item;
-    this.isAdherentComponentOpen = true;
   }
 
   ////////////////////////////FILTRER//////////////////////
@@ -265,8 +340,7 @@ export class AdherentComponent implements OnInit {
     }
   }
 
-  /////////////////////////TOTAL///////////////////////////
-
+  /////////////////////////TOTAL DES CATÉGORIES///////////////////////////
   getTotalEleves(): number {
     return this.adherent.filter((item) => item.categorie === 'Eleve').length;
   }
@@ -280,8 +354,10 @@ export class AdherentComponent implements OnInit {
     return this.adherent.filter((item) => item.categorie === 'Externe').length;
   }
 
-  //////////////////////////QRCODE //////////////////////
+  //////////////////////////QRCODE ET EXPORT PDF//////////////////////
   @ViewChild('content', { static: false }) content: any;
+  qrData: string = ''; // Conserver le qrData
+
   Qr() {
     const content = this.content.nativeElement;
     html2canvas(content).then((canvas) => {
@@ -290,11 +366,15 @@ export class AdherentComponent implements OnInit {
       const imgwidth = 190;
       const imgheight = (canvas.height * imgwidth) / canvas.width;
       pdf.addImage(image, 'PNG', 10, 10, imgwidth, imgheight);
-      pdf.save('Qrcode_Bibliothecaire.pdf');
+      pdf.save('Qrcode_Adherent.pdf');
     });
     this.closeCard();
   }
-  qrData: string = '';
+
+  // NOTE: Les méthodes genererDonneesQrAvecAdherent et genererDonneesQr
+  // NE SONT PAS appelées correctement dans votre HTML actuel (QrcodeOpen() sans paramètre).
+  // Je les conserve, mais il faudrait lier le bouton du tableau pour qu'il appelle:
+  // (click)="QrcodeOpen(item)" et ajuster QrcodeOpen(item: Adherent).
 
   genererDonneesQrAvecAdherent(): void {
     if (!this.selectedAdherent) {
@@ -304,8 +384,8 @@ export class AdherentComponent implements OnInit {
       return;
     }
 
-    this.qrData = `${this.selectedAdherent.nom_Adh} ${this.selectedAdherent.prenom_Adh}\nAdresse: ${this.selectedAdherent.adrs_Adh}\nContact: ${this.selectedAdherent.tel_Adh}\nCategorie: ${this.selectedAdherent.categorie}`;
-    this.cdr.detectChanges(); // Assurez-vous que les changements sont détectés
+    this.qrData = `Nom: ${this.selectedAdherent.nom_Adh} \n Prenom: ${this.selectedAdherent.prenom_Adh} \n Adresse: ${this.selectedAdherent.adrs_Adh} \n Contact: ${this.selectedAdherent.tel_Adh} \n Date Adhesion: ${this.selectedAdherent.dt_adhesion} \n Categorie: ${this.selectedAdherent.categorie}`;
+    this.cdr.detectChanges(); // Nécessaire si les données changent en arrière-plan
   }
 
   genererDonneesQr(): void {
@@ -324,7 +404,7 @@ export class AdherentComponent implements OnInit {
             "Erreur lors de la récupération des données de l'adhérent :",
             error
           );
-          return of(null); // Utilisez 'of(null)' pour retourner un observable avec une valeur 'null'
+          return of(null);
         })
       )
       .subscribe((adherentData) => {
@@ -335,8 +415,7 @@ export class AdherentComponent implements OnInit {
       });
   }
 
-  ////////////////EXCEL EXPORT //////////////////////
-
+  ////////////////EXPORT EXCEL //////////////////////
   fileName = 'AdherentExcel.xlsx';
   exportexcel() {
     let data = document.getElementById('dataExport');
