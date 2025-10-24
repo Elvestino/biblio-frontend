@@ -88,4 +88,16 @@ export class LivreEmprunterComponent implements OnInit {
   trackByFn(index: number, item: any): number {
     return item.id;
   }
+
+  //pagination
+  currentPage: number = 1;
+  itemsPerPage: number = 8;
+  get totalPages(): number {
+    return Math.ceil(this.AllEmprunter.length / this.itemsPerPage);
+  }
+
+  get paginatedEmprunts(): Emprunter[] {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    return this.AllEmprunter.slice(startIndex, startIndex + this.itemsPerPage);
+  }
 }

@@ -19,44 +19,47 @@ export class EmprunterService {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
-  emprunterLivre(
+  // emprunterLivre(
+  //   adherentId: number,
+  //   livreId: number,
+  //   joursEmprunt: number
+  // ): Observable<any> {
+  //   return this.http
+  //     .post(`${this.apiUrl}/save`, {
+  //       adherentId: adherentId,
+  //       livreId: livreId,
+  //       joursEmprunt: joursEmprunt,
+  //     })
+  //     .pipe(
+  //       tap(() => {
+  //         // Mettre à jour l'état du livre une fois emprunté
+  //         this.updateLivreDisponibilite(livreId, false); // Mettre le livre non disponible
+  //       })
+  //     );
+  // }
+  emprunterLivreMultiple(
     adherentId: number,
     livreId: number,
+    quantity: number,
     joursEmprunt: number
   ): Observable<any> {
     return this.http
-      .post(`${this.apiUrl}/save`, {
+      .post(`${this.apiUrl}/save-multiple`, {
         adherentId: adherentId,
         livreId: livreId,
+        quantity: quantity,
         joursEmprunt: joursEmprunt,
       })
       .pipe(
         tap(() => {
-          // Mettre à jour l'état du livre une fois emprunté
-          this.updateLivreDisponibilite(livreId, false); // Mettre le livre non disponible
+          // Optionnel : mettre à jour la disponibilité si nécessaire
+          if (quantity >= 1) {
+            this.updateLivreDisponibilite(livreId, false).subscribe();
+          }
         })
       );
   }
 
-  // // Méthode pour mettre à jour l'état du livre
-  // updateLivreDisponibilite(livreId: number, disponibilite: boolean): void {
-  //   // Faites un appel HTTP pour mettre à jour l'état du livre dans le backend
-  //   this.http
-  //     .put(`${environment.apiBaseURL}/api/livre/${livreId}/disponibilite`, {
-  //       disponible: disponibilite,
-  //     })
-  //     .subscribe(
-  //       (response) =>
-  //         console.log(
-  //           `Livre ${livreId} disponibilité mise à jour: ${disponibilite}`
-  //         ),
-  //       (error) =>
-  //         console.error(
-  //           'Erreur lors de la mise à jour de la disponibilité du livre:',
-  //           error
-  //         )
-  //     );
-  // }
   public updateLivreDisponibilite(
     livreId: number,
     disponibilite: boolean

@@ -81,48 +81,52 @@
 
   <!-- Deuxième section -->
   <section
-    class="grid grid-cols-1 xl:grid-cols-3 gap-8 bg-gray-200 p-6 rounded-lg shadow-md"
+    class="grid grid-cols-1 xl:grid-cols-2 gap-6 bg-gray-200 p-6 rounded-lg shadow-md"
   >
-    <!-- Charts principaux -->
-    <div class="xl:col-span-2 flex flex-col gap-6">
+    <!-- Ligne 1 : Livres par Catégories (3/4) + Historique (1/4) -->
+    <div class="flex flex-col xl:flex-row gap-6 xl:col-span-2">
+      <!-- Livres par Catégories -->
       <div
-        class="bg-gray-100 rounded-xl shadow-md p-4 border border-[color:var(--blue)]"
+        class="flex-1 xl:basis-3/4 bg-gray-100 rounded-xl shadow-md p-4 border border-[color:var(--blue)]"
       >
         <h1 class="text-lg font-bold uppercase mb-3 text-gray-700">
           Livres par Catégories
         </h1>
-        <canvas id="bar_chart" class="w-full h-60"></canvas>
+        <canvas id="bar_chart" class="w-full h-72"></canvas>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-6">
-        <div
-          class="bg-gray-100 rounded-xl shadow-md p-4 border border-[color:var(--blue)]"
-        >
-          <h1 class="text-lg font-bold uppercase mb-3 text-gray-700">
-            Nombre d'adhésions par mois
-          </h1>
-          <canvas id="chat_mois" class="w-full h-52"></canvas>
-        </div>
-
-        <div
-          class="bg-gray-100 rounded-xl shadow-md p-4 border border-[color:var(--blue)]"
-        >
-          <h1 class="text-lg font-bold uppercase mb-3 text-gray-700">
-            Catégorie la plus empruntée
-          </h1>
-          <canvas id="bar_chart_emprunt" class="w-full h-52"></canvas>
-        </div>
+      <!-- Historique des Emprunts et Retours -->
+      <div
+        class="flex-1 xl:basis-1/4 bg-gray-100 rounded-xl shadow-md p-4 border border-[color:var(--blue)]"
+      >
+        <h1 class="text-lg font-bold uppercase mb-3 text-gray-700">
+          Historique des Emprunts et Retours
+        </h1>
+        <canvas id="emprunter_chart" class="w-full h-72"></canvas>
       </div>
     </div>
 
-    <!-- Chart secondaire -->
-    <div
-      class="bg-gray-100 rounded-xl shadow-md p-4 border border-[color:var(--blue)]"
-    >
-      <h1 class="text-lg font-bold uppercase mb-3 text-gray-700">
-        Historique des Emprunts et Retours
-      </h1>
-      <canvas id="emprunter_chart" class="w-full h-96"></canvas>
+    <!-- Ligne 2 : Nombre d'adhésions + Catégorie la plus empruntée -->
+    <div class="grid xl:grid-cols-2 gap-6 xl:col-span-2">
+      <!-- Nombre d'adhésions par mois -->
+      <div
+        class="bg-gray-100 rounded-xl shadow-md p-4 border border-[color:var(--blue)]"
+      >
+        <h1 class="text-lg font-bold uppercase mb-3 text-gray-700">
+          Nombre d'adhésions par mois
+        </h1>
+        <canvas id="chat_mois" class="w-full h-52"></canvas>
+      </div>
+
+      <!-- Catégorie la plus empruntée -->
+      <div
+        class="bg-gray-100 rounded-xl shadow-md p-4 border border-[color:var(--blue)]"
+      >
+        <h1 class="text-lg font-bold uppercase mb-3 text-gray-700">
+          Catégorie la plus empruntée
+        </h1>
+        <canvas id="bar_chart_emprunt" class="w-full h-52"></canvas>
+      </div>
     </div>
   </section>
 </main>

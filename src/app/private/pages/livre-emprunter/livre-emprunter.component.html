@@ -29,7 +29,7 @@
     </thead>
     <tbody class="text-[16px]">
       <tr
-        *ngFor="let item of AllEmprunter; trackBy: trackByFn"
+        *ngFor="let item of paginatedEmprunts; trackBy: trackByFn"
         class="odd:bg-white border border-gray-200"
       >
         <td class="px-5 py-3 font-bold uppercase">
@@ -53,4 +53,26 @@
       </tr>
     </tbody>
   </table>
+  <!-- Pagination -->
+  <div class="flex justify-end items-center gap-3 mt-6 mr-5">
+    <button
+      class="flex items-center px-3 py-1 bg-gray-200 rounded-full font-semibold hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200"
+      [disabled]="currentPage === 1"
+      (click)="currentPage = currentPage - 1"
+    >
+      <i class="fa fa-arrow-left mr-2 p-1"></i>
+    </button>
+
+    <span class="font-bold text-gray-700">
+      {{ currentPage }} / {{ totalPages }}
+    </span>
+
+    <button
+      class="flex items-center px-3 py-1 bg-gray-200 rounded-full font-semibold hover:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200"
+      [disabled]="currentPage === totalPages"
+      (click)="currentPage = currentPage + 1"
+    >
+      <i class="fa fa-arrow-right ml-2 p-1"></i>
+    </button>
+  </div>
 </div>

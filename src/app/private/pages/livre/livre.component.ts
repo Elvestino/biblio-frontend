@@ -286,23 +286,28 @@ export class LivreComponent implements OnInit {
   isButtonDisabled(): boolean {
     const livre = this.selectedlivre;
 
-    // Si la quantité est 0, le livre est indisponible
-    if (livre.quantity === 0) {
-      this.verification = 'Indisponible';
-      return true;
-    }
-
-    // Vérifier si le livre est actuellement emprunté et non retourné
-    const emprunt = this.AllEmprunter.find(
+    // Récupérer tous les emprunts actifs pour ce livre
+    const empruntsActifs = this.AllEmprunter.filter(
       (item) => item.livre.id === livre.id && item.status === 'Emprunté'
     );
 
-    if (emprunt) {
+    // Quantité déjà empruntée par tous les étudiants
+    const totalEmpruntes = empruntsActifs.reduce(
+      (sum, item) => sum + (item.quantity || 1),
+      0
+    );
+
+    // Quantité restante
+    const quantityRestante = livre.quantity - totalEmpruntes;
+
+    if (quantityRestante <= 0) {
       this.verification = 'Indisponible';
       return true;
     }
 
-    this.verification = 'Disponible';
+    this.verification = `Disponible (${quantityRestante} restant${
+      quantityRestante > 1 ? 's' : ''
+    })`;
     return false;
   }
 
@@ -345,140 +350,111 @@ export class LivreComponent implements OnInit {
   };
   createEmprunter() {
     this.isSubmitting = true;
-    if (this.EmprunterLivre.valid) {
-      const formValue = this.EmprunterLivre.value;
-      const livre = this.livres.find(
-        (l) => l.titreLivre === formValue.titreLivre
-      );
-      const adherent = this.allAdherent.find(
-        (a) => a.nom_Adh === formValue.nom_Adh
-      );
 
-      if (!livre || !adherent) {
-        console.error('Livre ou adhérent non trouvé.');
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Livre ou adhérent non trouvé',
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        this.isSubmitting = false;
-        return;
-      }
+    if (!this.EmprunterLivre.valid) {
+      this.isSubmitting = false;
+      return;
+    }
 
-      const livreId = Number(livre.id);
-      const adherentId = Number(adherent.id);
-      const joursEmprunt = Number(formValue.joursEmprunt);
-      const count = this.selectedBorrowCount;
+    const formValue = this.EmprunterLivre.value;
+    const livre = this.livres.find(
+      (l) => l.titreLivre === formValue.titreLivre
+    );
+    const adherent = this.allAdherent.find(
+      (a) => a.nom_Adh === formValue.nom_Adh
+    );
 
-      if (isNaN(livreId) || isNaN(adherentId) || isNaN(joursEmprunt)) {
-        console.error(
-          'Les identifiants et le nombre de jours doivent être des nombres valides.'
-        );
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title:
-            'Les identifiants et le nombre de jours doivent être des nombres valides',
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        this.isSubmitting = false;
-        return;
-      }
-      if (count > livre.quantity) {
-        Swal.fire({
-          position: 'center',
-          icon: 'error',
-          title: 'Le nombre demandé dépasse la quantité disponible',
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        this.isSubmitting = false;
-        return;
-      }
-      // Boucle pour emprunter plusieurs exemplaires
-      for (let i = 0; i < count; i++) {
-        this.emprunterservice
-          .emprunterLivre(adherentId, livreId, joursEmprunt)
-          .subscribe({
-            next: () => {
-              // Décrémenter la quantité localement
-              livre.quantity = livre.quantity - 1;
-
-              // Mettre à jour le backend
-              this.livreService.updatelivre(livre.id, livre).subscribe();
-            },
-            error: (err) => {
-              Swal.fire({
-                position: 'center',
-                icon: 'error',
-                title: "Erreur lors de l'enregistrement de l'emprunt du livre",
-                showConfirmButton: false,
-                timer: 1500,
-              });
-              this.isSubmitting = false;
-            },
-          });
-      }
-
-      // Après la boucle
+    if (!livre || !adherent) {
       Swal.fire({
         position: 'center',
-        icon: 'success',
-        title: `${count} exemplaire(s) emprunté(s) avec succès`,
+        icon: 'error',
+        title: 'Livre ou adhérent non trouvé',
         showConfirmButton: false,
         timer: 1500,
-      }).then(() => {
-        this.getAllEmprunter();
-        this.loadlivres();
-        this.closeEmpreinte();
-        this.EmprunterLivre.reset();
-        this.borrowCount = 0; // reset
-        this.isSubmitting = false;
-        this.isRegisterSuccess = true;
       });
-
-      ///////////////EMPRUNTER////////////
-      this.emprunterservice
-        .emprunterLivre(adherentId, livreId, joursEmprunt)
-        .subscribe({
-          next: (result) => {
-            // Décrémenter la quantité du livre
-            livre.quantity = livre.quantity - 1;
-
-            // Optionnel : mettre à jour le livre côté backend
-            this.livreService.updatelivre(livre.id, livre).subscribe();
-
-            Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'Emprunt du livre enregistré',
-              showConfirmButton: false,
-              timer: 1500,
-            }).then(() => {
-              this.getAllEmprunter();
-              this.loadlivres();
-              this.closeEmpreinte();
-              this.EmprunterLivre.reset();
-              this.isSubmitting = false;
-              this.isRegisterSuccess = true;
-            });
-          },
-          error: (err) => {
-            Swal.fire({
-              position: 'center',
-              icon: 'error',
-              title: "Erreur lors de l'enregistrement de l'emprunt du livre",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-            this.isSubmitting = false;
-          },
-        });
+      this.isSubmitting = false;
+      return;
     }
+
+    const livreId = Number(livre.id);
+    const adherentId = Number(adherent.id);
+    const joursEmprunt = Number(formValue.joursEmprunt);
+    const count = this.selectedBorrowCount;
+
+    if (isNaN(livreId) || isNaN(adherentId) || isNaN(joursEmprunt)) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Les identifiants et le nombre de jours doivent être valides',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      this.isSubmitting = false;
+      return;
+    }
+
+    // Calculer la quantité restante en tenant compte des emprunts actifs
+    const empruntsActifs = this.AllEmprunter.filter(
+      (item) => item.livre.id === livre.id && item.status === 'Emprunté'
+    );
+    const totalEmpruntes = empruntsActifs.reduce(
+      (sum, item) => sum + (item.quantity || 1),
+      0
+    );
+    const quantityRestante = livre.quantity - totalEmpruntes;
+
+    if (count > quantityRestante) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Le nombre demandé dépasse la quantité disponible',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      this.isSubmitting = false;
+      return;
+    }
+
+    // Appel unique pour emprunter plusieurs exemplaires
+    this.emprunterservice
+      .emprunterLivreMultiple(adherentId, livreId, count, joursEmprunt)
+      .subscribe({
+        next: (response) => {
+          console.log('Reponse du backend réussi :', response.message);
+          // Mettre à jour la quantité côté frontend et backend
+          livre.quantity -= count;
+          this.livreService.updatelivre(livre.id, livre).subscribe();
+
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: `${count} exemplaire(s) emprunté(s) avec succès`,
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            this.getAllEmprunter();
+            this.loadlivres();
+            this.closeEmpreinte();
+            this.EmprunterLivre.reset();
+            this.borrowCount = 0;
+            this.isSubmitting = false;
+            this.isRegisterSuccess = true;
+          });
+        },
+        error: (err: any) => {
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: "Erreur lors de l'emprunt du livre",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          console.error("Erreur lors de l'emprunt :", err);
+          this.isSubmitting = false;
+        },
+      });
   }
+
   retournerLivre(empruntId: number): void {
     this.emprunterservice.retournerLivre(empruntId).subscribe({
       next: (result) => {
