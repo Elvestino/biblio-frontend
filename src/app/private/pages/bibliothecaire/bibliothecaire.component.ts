@@ -285,10 +285,10 @@ export class BibliothecaireComponent implements OnInit {
                 showConfirmButton: false,
                 timer: 1500,
               });
-              console.log(
-                "Erreur lors de l'enregistrement : ",
-                this.BibliothecaireForm.value
-              );
+              // console.log(
+              //   "Erreur lors de l'enregistrement : ",
+              //   this.BibliothecaireForm.value
+              // );
               this.isSubmitting = false;
             },
           });
@@ -297,7 +297,7 @@ export class BibliothecaireComponent implements OnInit {
   }
 
   updatebiBibliothecaire(item: Bibliothecaire) {
-    console.log('Données a modifier :', item);
+    // console.log('Données a modifier :', item);
     this.isModifAction = true;
     const dateAdhesion = new Date(item.date_naissance);
     this.BibliothecaireForm.patchValue({

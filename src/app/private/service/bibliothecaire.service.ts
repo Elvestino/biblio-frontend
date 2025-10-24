@@ -29,7 +29,7 @@ export class BibliothecaireService {
 
   updateBibliothecaire(id: string, bibliothecaire: any): Observable<any> {
     return this.http.put<any>(
-      `${this.apiUrl}/ibliothecaire/${id}`,
+      `${this.apiUrl}/bibliothecaire/${id}`,
       bibliothecaire
     );
   }
