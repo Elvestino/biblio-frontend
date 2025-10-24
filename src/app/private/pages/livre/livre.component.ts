@@ -270,15 +270,20 @@ export class LivreComponent implements OnInit {
   }
   ///////////////////////IMAGE LIVRE //////////////////////
   // Pour gérer le fichier sélectionné
-  selectedFile!: File;
+  selectedFile: File | null = null;
+
   imagePreview: string | ArrayBuffer | null = null;
 
   // Méthode pour afficher un aperçu local avant upload
   onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
+    const file: File | null = event.target.files[0] ?? null; // récupère le fichier ou null
+    if (!file) return; // rien à faire si aucun fichier sélectionné
+
+    this.selectedFile = file;
+
     const reader = new FileReader();
     reader.onload = () => (this.imagePreview = reader.result);
-    reader.readAsDataURL(this.selectedFile);
+    reader.readAsDataURL(file); // ✅ on est sûr que file n'est pas null
   }
 
   //////////////////////////CONDITION INDISPONIBLE/////////////
@@ -591,16 +596,122 @@ export class LivreComponent implements OnInit {
       auteurLivre: item.auteurLivre,
       description: item.description,
       categorie: item.categorie,
+      imageUrl: item.imageUrl,
       quantity: item.quantity,
       editionLivre: item.editionLivre,
     });
-
     this.selectedlivre = item;
+
+    // Réinitialiser le fichier sélectionné pour pouvoir choisir un nouveau
+    this.selectedFile = null;
+    this.imagePreview = item.imageUrl ? this.apiBaseURL + item.imageUrl : null;
+
     this.isAddLivre = true;
   }
 
   createlivre() {
     this.isSubmitting = true;
+    if (this.isModifAction) {
+      this.isSubmitting = true;
+
+      // Vérifier si un nouveau fichier a été sélectionné
+      if (this.selectedFile) {
+        const formData = new FormData();
+        formData.append('file', this.selectedFile);
+
+        // Étape 1 : upload du fichier
+        this.livreService.uploadImage(formData).subscribe({
+          next: (imageUrl: string) => {
+            // Étape 2 : mettre à jour l'URL dans le formulaire
+            this.LivreForm.patchValue({ imageUrl });
+
+            // Étape 3 : envoyer le formulaire modifié avec la nouvelle image
+            const updatedlivre = {
+              ...this.LivreForm.value,
+              id: this.selectedlivre.id,
+            };
+            this.livreService
+              .updatelivre(this.selectedlivre.id, updatedlivre)
+              .subscribe({
+                next: (res) => {
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Livre modifié avec succès',
+                    showConfirmButton: false,
+                    timer: 1500,
+                  }).then(() => {
+                    this.loadlivres();
+                    this.LivreForm.reset();
+                    this.selectedFile = null;
+                    this.imagePreview = null;
+                    this.isSubmitting = false;
+                    this.isRegisterSuccess = false;
+                    this.closeCard();
+                  });
+                },
+                error: (err) => {
+                  Swal.fire({
+                    position: 'center',
+                    icon: 'error',
+                    title: 'Erreur lors de la modification du livre',
+                    showConfirmButton: false,
+                    timer: 1500,
+                  });
+                  console.error('Erreur lors de la modification :', err);
+                  this.isSubmitting = false;
+                  this.isRegisterSuccess = false;
+                },
+              });
+          },
+          error: (err) => {
+            Swal.fire({
+              icon: 'error',
+              title: "Erreur d'upload de l'image",
+              text: err.message,
+            });
+            this.isSubmitting = false;
+          },
+        });
+      } else {
+        // Aucun nouveau fichier : utiliser l'image existante
+        const updatedlivre = {
+          ...this.LivreForm.value,
+          id: this.selectedlivre.id,
+        };
+        this.livreService
+          .updatelivre(this.selectedlivre.id, updatedlivre)
+          .subscribe({
+            next: (res) => {
+              Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Livre modifié avec succès',
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(() => {
+                this.loadlivres();
+                this.LivreForm.reset();
+                this.isSubmitting = false;
+                this.isRegisterSuccess = false;
+                this.closeCard();
+              });
+            },
+            error: (err) => {
+              Swal.fire({
+                position: 'center',
+                icon: 'error',
+                title: 'Erreur lors de la modification du livre',
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              console.error('Erreur lors de la modification :', err);
+              this.isSubmitting = false;
+              this.isRegisterSuccess = false;
+            },
+          });
+      }
+    }
 
     if (this.isModifAction == true) {
       // requete send modif

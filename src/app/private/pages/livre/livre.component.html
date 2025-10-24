@@ -281,15 +281,18 @@
         </h1>
         <hr class="border-t border-black mb-4" />
 
-        <!-- /////////////////////// image -->
-        <div class="mb-5">
+        <!-- /////////////////////// image //////////////////// -->
+        <div class="mb-5 flex flex-col items-center">
           <img
-            *ngIf="imagePreview"
-            [src]="imagePreview"
+            *ngIf="imagePreview || selectedlivre.imageUrl"
+            [src]="
+              imagePreview ? imagePreview : apiBaseURL + selectedlivre.imageUrl
+            "
             alt="Aperçu"
             class="w-32 h-32 mt-2 object-cover rounded shadow"
           />
-          <label class="block text-base text-gray-600 mb-1"
+
+          <label class="block text-base text-gray-600 mb-1 mt-2"
             >Image du livre</label
           >
           <input
@@ -299,6 +302,7 @@
             class="w-full p-2 border rounded"
           />
         </div>
+
         <!-- ////////////////////// -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8">
           <div class="mb-5">
@@ -555,17 +559,17 @@
       </div>
 
       <!-- Boutons d’action (à droite) -->
-      <div class="flex justify-end items-center mt-3 px-5">
+      <div class="flex justify-end items-center">
         <div class="flex gap-2">
           <button
-            class="p-2 rounded-md bg-green-500 text-white hover:bg-green-600 transition active:scale-95"
+            class="p-3 bg-green-500 text-white hover:bg-green-600 transition active:scale-95"
             (click)="updatelivre(item)"
             title="Modifier"
           >
             <i class="fas fa-pencil"></i>
           </button>
           <button
-            class="p-2 rounded-md bg-red-500 text-white hover:bg-red-600 transition active:scale-95"
+            class="p-3 bg-red-500 text-white hover:bg-red-600 transition active:scale-95"
             (click)="deletelivre(item.id)"
             title="Supprimer"
           >
