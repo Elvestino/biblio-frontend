@@ -547,7 +547,7 @@
   <section class="grid gap-10 mt-5 p-5 md:grid-cols-2 lg:grid-cols-3">
     @for (item of livres; track $index) {
     <div
-      class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition relative flex flex-col"
+      class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl relative flex flex-col hover:-translate-y-3 transition"
     >
       <!-- Image -->
       <div class="h-64 w-full">
@@ -562,14 +562,14 @@
       <div class="flex justify-end items-center">
         <div class="flex gap-2">
           <button
-            class="p-3 bg-green-500 text-white hover:bg-green-600 transition active:scale-95"
+            class="p-3 bg-green-500 text-white hover:bg-green-600 transition active:scale-95 rounded-b-md"
             (click)="updatelivre(item)"
             title="Modifier"
           >
             <i class="fas fa-pencil"></i>
           </button>
           <button
-            class="p-3 bg-red-500 text-white hover:bg-red-600 transition active:scale-95"
+            class="p-3 bg-red-500 text-white hover:bg-red-600 transition active:scale-95 rounded-b-md"
             (click)="deletelivre(item.id)"
             title="Supprimer"
           >
