@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit {
     /////////////////////////CHART ADHESION PAR MOIS ///////////////
     for (let i = 0; i < this.adherentdata.length; i++) {
       const element = this.adherentdata[i].dt_adhesion;
-      console.log(element);
+      // console.log(element);
       this.date_adhesion.push(element);
     }
     const CountDate: { [key: number]: number } = this.date_adhesion.reduce(

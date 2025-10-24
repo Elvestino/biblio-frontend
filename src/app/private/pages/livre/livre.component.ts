@@ -425,7 +425,7 @@ export class LivreComponent implements OnInit {
       .emprunterLivreMultiple(adherentId, livreId, count, joursEmprunt)
       .subscribe({
         next: (response) => {
-          console.log('Reponse du backend réussi :', response.message);
+          //  console.log('Reponse du backend réussi :', response.message);
           // Mettre à jour la quantité côté frontend et backend
           livre.quantity -= count;
           this.livreService.updatelivre(livre.id, livre).subscribe();
